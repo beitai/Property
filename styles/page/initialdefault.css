@@ -1,0 +1,278 @@
+.menu_box {
+    width: 15%;
+    min-height: 30px;
+    float: left;
+    padding: 40px 10px 0px 10px;
+    text-align: center;
+    font-size: 16px;
+}
+
+    .menu_box label {
+        width: 100%;
+        margin-top: 10px;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+.ModuleBox {
+    float: none;
+    height: 80px;
+    width: 80px;
+    margin: 0 auto;
+    padding: 0px;
+    text-align: center;
+    font-size: 16px;
+    color: #302f2f;
+    text-decoration: none;
+    /*background: url(../../styles/images/Icons/newicons.png) no-repeat;*/
+    padding-top: 0px;
+    background-size: 100% 100% !important;
+    background: url(../../styles/images/homeicons/收费设置.png) no-repeat center center;
+}
+/***资源管理***/
+.fyda {
+    /*background-position: -111px -294px;*/
+    background: url(../../styles/images/homeicons/资源管理.png) no-repeat center center;
+}
+/***收费设置***/
+.sfsz {
+    /*background-position: -530px -294px;*/
+    background: url(../../styles/images/homeicons/收费设置.png) no-repeat center center;
+}
+/***账单处理***/
+.gtcl {
+    /*background-position: -755px -294px;*/
+    background: url(../../styles/images/homeicons/账单处理.png) no-repeat center center;
+}
+/***收费中心***/
+.sfzx {
+    /*background-position: -319px -294px;*/
+    background: url(../../styles/images/homeicons/收费中心.png) no-repeat center center;
+}
+/***管理看板***/
+.glkb {
+    /*background-position: -1684px -294px;*/
+    background: url(../../styles/images/homeicons/管理看板.png) no-repeat center center;
+}
+/***催收中心***/
+.cszx {
+    /*background-position: -984px -294px;*/
+    background: url(../../styles/images/homeicons/催收中心.png) no-repeat center center;
+}
+/***三表登记***/
+.sanbiao {
+    /*background-position: -1212px -501px;*/
+    background: url(../../styles/images/homeicons/三表台账.png) no-repeat center center;
+}
+/***财务审计***/
+.cwsj {
+    /*background-position: -110px -501px;*/
+    background: url(../../styles/images/homeicons/财务审计.png) no-repeat center center;
+}
+/***统计报表***/
+.tjtz {
+    /*background-position: -1212px -294px;*/
+    background: url(../../styles/images/homeicons/统计报表.png) no-repeat center center;
+}
+/***冻库管理***/
+.dkgl {
+    background: url(../../styles/images/Icons/dkgl.jpg) no-repeat center center;
+}
+/***公司管理 账户管理***/
+.jlfy {
+    /*background-position: -1685px -501px;*/
+    background: url(../../styles/images/homeicons/账户管理.png) no-repeat center center;
+}
+/***客服总台***/
+.kfzx {
+    /*background-position: -1450px -294px;*/
+    background: url(../../styles/images/homeicons/客服中心.png) no-repeat center center;
+}
+/***仓库管理***/
+.ckgl {
+    /*background-position: -530px -501px;*/
+    background: url(../../styles/images/homeicons/仓库管理.png) no-repeat center center;
+}
+/***支出登记***/
+.zcdj {
+    /*background-position: -319px -501px;*/
+    background: url(../../styles/images/homeicons/支出登记.png) no-repeat center center;
+}
+/***微信平台***/
+.weixin {
+    /*background-position: -1449px -501px;*/
+    background: url(../../styles/images/homeicons/微信平台.png) no-repeat center center;
+}
+/***工程设备***/
+.gcsb {
+    /*background-position: -755px -501px;*/
+    background: url(../../styles/images/homeicons/工程设备.png) no-repeat center center;
+}
+/***租赁管理***/
+.htgl {
+    /*background-position: -982px -501px;*/
+    background: url(../../styles/images/homeicons/租赁管理.png) no-repeat center center;
+}
+/***品控管理***/
+.pinkong {
+    /*background-position: -110px -705px;*/
+    background: url(../../styles/images/homeicons/品控管理.png) no-repeat center center;
+}
+/***绿化***/
+.lvhua {
+    /*background-position: -319px -706px;*/
+    background: url(../../styles/images/homeicons/绿化.png) no-repeat center center;
+}
+/***安防***/
+.anfang {
+    /*background-position: -530px -709px;*/
+    background: url(../../styles/images/homeicons/安防.png) no-repeat center center;
+}
+/***保洁***/
+.baojie {
+    /*background-position: -755px -711px;*/
+    background: url(../../styles/images/homeicons/保洁.png) no-repeat center center;
+}
+/***通知公告***/
+.tongzhi {
+    /*background-position: -989px -709px;*/
+    background: url(../../styles/images/homeicons/通知公告.png) no-repeat center center;
+}
+/***客户管理***/
+.kehumgr {
+    /*background-position: -1212px -711px;*/
+    background: url(../../styles/images/homeicons/客户管理.png) no-repeat center center;
+}
+/***合同管理***/
+.hetongmgr {
+    /*background-position: -1448px -712px;*/
+    background: url(../../styles/images/homeicons/合同管理.png) no-repeat center center;
+}
+/***招商***/
+.zhaoshang {
+    /*background-position: -1685px -711px;*/
+    background: url(../../styles/images/homeicons/招商.png) no-repeat center center;
+}
+/***增值服务***/
+.zengzhi {
+    /*background-position: -111px -912px;*/
+    background: url(../../styles/images/homeicons/增值服务.png) no-repeat center center;
+}
+/***周边商家***/
+.zhoubian {
+    /*background-position: -320px -911px;*/
+    background: url(../../styles/images/homeicons/周边商家.png) no-repeat center center;
+}
+/***第三方***/
+.disanfang {
+    /*background-position: -529px -911px;*/
+    background: url(../../styles/images/homeicons/第三方.png) no-repeat center center;
+}
+/***定制商城***/
+.dingzhimall {
+    /*background-position: -762px -911px;*/
+    background: url(../../styles/images/homeicons/定制商城.png) no-repeat center center;
+}
+
+.zyda {
+    background: url(../../styles/images/Icons/zyda.png) no-repeat;
+}
+
+.shezhi {
+    background: url(../../styles/images/Icons/shezhi.png) no-repeat;
+}
+
+.yztz {
+    background: url(../../styles/images/Icons/业主台账.png?v=1) no-repeat;
+}
+
+.jbbb {
+    background: url(../../styles/images/Icons/交班报表.png) no-repeat;
+}
+
+.dhsz {
+    background: url(../../styles/images/Icons/单号设置.png) no-repeat;
+}
+
+.htda {
+    background-position: -150px -675px;
+}
+
+.drzd {
+    background-position: -200px 0px;
+}
+
+.ystz {
+    background: url(../../styles/images/Icons/应收台账.png) no-repeat;
+}
+
+.fytz {
+    background: url(../../styles/images/Icons/房源台账.png) no-repeat;
+}
+
+
+
+.cbcl {
+    background-position: -5px -122px;
+}
+
+.yjtz {
+    background: url(../../styles/images/Icons/押金台账.png) no-repeat;
+}
+
+.srtz {
+    background: url(../../styles/images/Icons/收入台账.png) no-repeat;
+}
+
+.skgl {
+    background: url(../../styles/images/Icons/收款管理.png) no-repeat;
+}
+
+.qxgl {
+    background: url(../../styles/images/Icons/权限管理.png) no-repeat;
+}
+
+.qftz {
+    background: url(../../styles/images/Icons/欠费台账.png) no-repeat;
+}
+
+.yhgl {
+    background: url(../../styles/images/Icons/用户管理.png) no-repeat;
+}
+
+.xtsz {
+    background: url(../../styles/images/Icons/系统设置.png) no-repeat;
+}
+
+.jsfp {
+    background: url(../../styles/images/Icons/角色分配.png) no-repeat;
+}
+
+.ystz {
+    background: url(../../styles/images/Icons/预收台账.png) no-repeat;
+}
+
+.jszx {
+    background-position: -282px -675px;
+}
+
+.lyfc {
+    background: url(../../styles/images/Icons/联营分成.png) no-repeat;
+}
+
+.fzjs {
+    background: url(../../styles/images/Icons/返租结算.png) no-repeat;
+}
+
+.fpgl {
+    background: url(../../styles/images/Icons/发票管理.png) no-repeat;
+}
+.sqgl {
+    /*background-position: -111px -294px;*/
+    background: url(../../styles/images/Icons/社区管理.png) no-repeat center center;
+}
+.shfw {
+    /*background-position: -111px -294px;*/
+    background: url(../../styles/images/Icons/生活服务.png) no-repeat center center;
+}

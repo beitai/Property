@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+
+    <script>
+        var CompanyID, hdIDs, tdStartTime, tdEndTime;
+        $(function () {
+            //$("#layout").layout("collapse", "north");
+            CompanyID = "1";
+            hdIDs = $("#content_hdIDs");
+            tdStartTime = $("#content_tdStartTime");
+            tdEndTime = $("#content_tdEndTime");
+        })
+    </script>
+    <script src="../js/Page/Analysis/ToChargeAnalysisDetails.js?t=2019-09061000"></script>
+    <style>
+        .operationtable {
+            width: 100%;
+        }
+
+        .operationtable td {
+            text-align: center;
+        }
+
+        .sfdd {
+            width: 100%;
+            height: 32px;
+            background: url("../styles/images/buttons/print.png") no-repeat center center;
+            display: block;
+        }
+
+        .operation_box {
+            position: relative;
+            text-align: right;
+        }
+    </style>
+    <script src="../js/Lodop/LodopFuncs.js?t=2019-09061000"></script>
+    <script>
+        function printChargeFee() {
+            var rows = $('#tt_table').datagrid("getSelections");
+            if (rows.length == 0) {
+                show_message('请选择一条数据，操作取消', 'warning');
+                return;
+            }
+            MaskUtil.mask('body', '打印中');
+            var RoomFeeIDList = [];
+            $.each(rows, function (index, row) {
+                RoomFeeIDList.push(row.ID);
+            });
+            var pageWidth = 210;
+            var pageHeight = 99;
+            var iframe = document.getElementById("myframe");
+            $('#ids').val(JSON.stringify(RoomFeeIDList));
+            var url = "../PrintPage/printcuifeiview.aspx?PageWidth=" + pageWidth + "&PageHeight=" + pageHeight;
+            iframe.src = url;
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", function () {
+                    MaskUtil.unmask();
+                    setTimeout(function () {
+                        var strHtml = iframe.contentWindow.document.documentElement.innerHTML;
+                        LODOPPrint(strHtml, pageWidth, pageHeight);
+                    }, 1000);
+                });
+            } else {
+                iframe.onload = function () {
+                    MaskUtil.unmask();
+                    setTimeout(function () {
+                        var strHtml = iframe.contentWindow.document.documentElement.innerHTML;
+                        LODOPPrint(strHtml, pageWidth, pageHeight);
+                    }, 1000);
+                };
+            }
+        }
+        function LODOPPrint(strHtml, pageWidth, pageHeight) {
+            try {
+                LODOP = getLodop();
+                if ((LODOP != null) && (typeof (LODOP.VERSION) != "undefined")) {
+                    LODOP.PRINT_INIT("打印单据_催收单");
+                    LODOP.SET_PRINT_PAGESIZE(1, '210mm', 0, '')
+                    LODOP.ADD_PRINT_TABLE(0, '3%', '94%', '100%', strHtml);
+                    LODOP.PREVIEW();
+                }
+                else {
+                    alert("Error:该浏览器不支持打印插件!");
+                }
+            } catch (err) {
+                alert("Error:本机未安装或需要升级!");
+            }
+        }
+
+    </script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./ToChargeAnalysisDetails.html" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJMjYzNzM0NTg0ZGQpSSTEepu0fnJjpnNkQWMloUMcZA==" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C3C3AF70" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAARbIS/5N+YtjTZoDArdnfBcKaCDixSabOrBm/NZMGDitRZaznq9o2+K4RRVAwh23O1/W8JrguZmInRDQbZb5NLTftMx+56qrWM4m+bsaBQZuozlBZM=" />
+                    </div>
+                    <div id="main_form_layout" class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth">
+                            <div class="tdsearch">
+                                <label>
+                                    时间:
+                                    <input name="ctl00$content$tdStartTime" type="text" id="content_tdStartTime"
+                                        class="easyui-datebox" />
+                                    -
+                                    <input name="ctl00$content$tdEndTime" type="text" id="content_tdEndTime"
+                                        class="easyui-datebox" />
+                                </label>
+                                <label>
+                                    收费项目:
+                                    <input class="easyui-combobox" id="tdChargeSummaryName" style="width: 150px;" />
+                                </label>
+                                <label>
+                                    房间状态:
+                                    <input class="easyui-combobox" id="tdRoomState" style="width: 150px;" />
+                                </label>
+                                <label>
+                                    房源属性:
+                                    <input class="easyui-combobox" id="tdRoomProperty" style="width: 150px;" />
+                                </label>
+                                <label class="searchlabel" style="margin-left: 10px;">
+                                    <a href="javascript:void(0)" onclick="SearchTT()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <table id="tt_table">
+                            </table>
+                            <div id="tb">
+                                <a href="javascript:void(0)" onclick="do_export()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                <input type="hidden" name="ctl00$content$hdIDs" id="content_hdIDs" />
+                                <a href="javascript:void(0)" onclick="printChargeFee()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-print'">打印</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <input type="text" style="display: none" id="ids" />
+                <iframe name="myiframe" id="myframe" style="display: none;" src="" width="100%" height="100%"></iframe>
+                <style id="style1" type="text/css">
+                    table.innertable {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        border: none;
+                        font-size: 12px;
+                        font-family: 'Microsoft YaHei';
+                    }
+
+                    table.sfxm tr.haveborder td table.innertable td {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        border-top: none;
+                        border-bottom: none;
+                        font-family: 'Microsoft YaHei';
+                    }
+
+                    #innerTable {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    input {
+                        border: none;
+                        border-bottom: solid 1px #ccc;
+                        font-size: 12px;
+                        font-family: 'Microsoft YaHei';
+                    }
+
+                    table.sfxm {
+                        margin-top: 5px;
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        font-size: 12px;
+                        font-family: 'Microsoft YaHei';
+                        font-weight: normal;
+                    }
+
+                    table.sfxm thead,
+                    table.sfxm tbody,
+                    table.sfxm tfoot {
+                        padding: 0;
+                    }
+
+
+                    table.sfxm tr.haveborder td,
+                    table.sfxm tr.haveborder th {
+                        text-align: center;
+                        border: solid #cccccc;
+                        border-width: 1px;
+                        padding: 0;
+                        font-weight: normal;
+                    }
+
+                    ,
+                    table.sfxm tr.haveborder th {
+                        text-align: center;
+                        border: solid #cccccc;
+                        border-width: 1px 1px 0px 1px;
+                        padding: 0;
+                    }
+
+                    table.sfxm tfoot tr.haveborder th.lefttd {
+                        text-align: left;
+                    }
+
+
+
+                    .skdh {
+                        margin: 20px 0 0 0;
+                        text-align: right;
+                        font-weight: normal;
+                    }
+
+                    .skdh input {
+                        border: none;
+                        border-bottom: solid 1px #cccccc;
+                        width: 120px;
+                    }
+
+                    .systitle {
+                        font-size: 20px;
+                        text-align: center;
+                        font-weight: normal;
+                    }
+
+                    .sksj {
+                        font-size: 14px;
+                        text-align: center;
+                        font-weight: normal;
+                    }
+
+                    .fjdz {
+                        text-align: left;
+                        font-weight: normal;
+                        font-size: 12px;
+                    }
+
+                    .fjdz input {
+                        border: none;
+                        border-bottom: solid 1px #cccccc;
+                        width: 80%;
+                    }
+
+                    .khxm {
+                        text-align: right;
+                        font-weight: normal;
+                        font-size: 12px;
+                    }
+
+                    .khxm input {
+                        border: none;
+                        border-bottom: solid 1px #cccccc;
+                        width: 50%;
+                    }
+
+                    .clear {
+                        clear: both;
+                    }
+
+
+
+                    .shoudao {
+                        width: 50px;
+                        border: none;
+                        border-bottom: solid 1px #ccc;
+                    }
+
+                    table.skxx {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        font-size: 12px;
+                    }
+
+                    table.heji {
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        width: 100%;
+                    }
+
+                    table.heji td {
+                        text-align: left;
+                        padding: 5px 0;
+                        border: solid 1px #ccc;
+                    }
+
+                    table.skxx td {
+                        text-align: left;
+                        font-weight: normal;
+                    }
+
+                    table.skxx td.skr {
+                        width: 10%;
+                    }
+
+                    table.skxx td.skfs,
+                    table.skxx td.zhekou {
+                        width: 5%;
+                    }
+
+                    .skr input,
+                    .skrq input,
+                    .skfs input,
+                    .zhekou input {
+                        width: 100%;
+                    }
+
+                    .shuoming {
+                        width: 100%;
+                        text-align: left;
+                        font-weight: normal;
+                    }
+
+                    .shuoming input {
+                        width: 95%;
+                    }
+
+                    .opeation {
+                        text-align: right;
+                        margin-top: 50px;
+                    }
+                </style>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

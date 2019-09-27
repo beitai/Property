@@ -1,0 +1,428 @@
+.btn.btn-white {
+    border: none;
+    background-color: transparent !important;
+}
+
+.datagrid-toolbar .btn.btn-white {
+    padding: 6px !important;
+}
+
+.addbutton {
+    background: url(../styles/images/buttons/add.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.cancelbutton {
+    background: url(../styles/images/buttons/cancel.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.confirmbutton {
+    background: url(../styles/images/buttons/confirm.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.editbutton {
+    background: url(../styles/images/buttons/edit.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.exportbutton {
+    background: url(../styles/images/buttons/export.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.importbutton {
+    background: url(../styles/images/buttons/import.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.removebutton {
+    background: url(../styles/images/buttons/remove.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.savebutton {
+    background: url(../styles/images/buttons/save.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.searchbutton {
+    background: url(../styles/images/buttons/search.png) no-repeat;
+    background-size: 25px 25px;
+    width: 30px;
+    height: 30px;
+    display: table-cell;
+    vertical-align: middle;
+    border: none;
+    cursor: pointer;
+}
+
+.viewbutton {
+    background: url(../styles/images/buttons/view.png) no-repeat;
+    background-size: 70px 25px;
+    width: 70px;
+    height: 25px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.buttonmin {
+    background-size: 55px 20px;
+    width: 55px;
+    height: 20px;
+}
+
+.datagrid-row-selected a, .datagrid-row-selected a.btn.btn-link {
+    color: #fff !important;
+}
+
+.btntoolbar .l-btn-text {
+    font-size: 14px;
+    line-height: 30px;
+    color: #005b93;
+}
+
+
+.btntoolbar.l-btn {
+    padding: 6px 12px;
+    line-height: 30px;
+}
+
+    .btntoolbar.l-btn:hover {
+        border-radius: 0;
+        border: 0px;
+        padding: 6px 12px;
+    }
+
+.btnlinkbar .l-btn-text {
+    font-size: 14px;
+    line-height: 24px;
+    color: #005b93;
+}
+
+
+.btnlinkbar.l-btn {
+    padding: 3px;
+    line-height: 24px;
+}
+
+    .btnlinkbar.l-btn:hover {
+        border-radius: 0;
+        border: 0px;
+        padding: 3px;
+    }
+
+.linebar {
+    border: solid 1px #ccc;
+    border-radius: 0;
+}
+
+    .linebar.l-btn:hover {
+        border: solid 1px #ccc;
+    }
+
+.btntoolbar .l-btn-icon, .btnlinkbar .l-btn-icon {
+    background-size: 18px auto !important;
+    width: 18px;
+    height: 18px;
+    margin-top: -9px;
+    line-height: 18px;
+    font-size: 0px;
+}
+
+.icon-add {
+    background: url('../styles/images/newicons/add新增.png') no-repeat center center;
+}
+
+.icon-edit {
+    background: url('../styles/images/newicons/edit编辑.png') no-repeat center center;
+}
+
+.icon-remove {
+    background: url('../styles/images/newicons/remove删除.png') no-repeat center center;
+}
+
+.icon-export {
+    background: url('../styles/images/newicons/export导出.png') no-repeat center center;
+}
+
+.icon-import {
+    background: url('../styles/images/newicons/import导入.png') no-repeat center center;
+}
+
+.icon-setting {
+    background: url('../styles/images/newicons/setting配置.png') no-repeat center center;
+}
+
+.icon-config {
+    background: url('../styles/images/newicons/config设置.png') no-repeat center center;
+}
+
+.icon-start {
+    background: url('../styles/images/newicons/start关注.png') no-repeat center center;
+}
+
+.icon-params {
+    background: url('../styles/images/newicons/params参数设置.png') no-repeat center center;
+}
+
+.icon-search {
+    background: url('../styles/images/newicons/search搜索.png') no-repeat center center;
+}
+
+.icon-order {
+    background: url('../styles/images/newicons/order工单发布.png') no-repeat center center;
+}
+
+.icon-link {
+    background: url('../styles/images/newicons/link关联.png') no-repeat center center;
+}
+
+.icon-dichong {
+    background: url('../styles/images/newicons/dichong批量冲抵.png') no-repeat center center;
+}
+
+.icon-zhuanyi {
+    background: url('../styles/images/newicons/zhuanyi账单转移.png') no-repeat center center;
+}
+
+.icon-save {
+    background: url('../styles/images/newicons/save保存.png') no-repeat center center;
+}
+
+.icon-mission {
+    background: url('../styles/images/newicons/mission任务.png') no-repeat center center;
+}
+
+.icon-close {
+    background: url('../styles/images/newicons/close关闭.png') no-repeat center center;
+}
+
+.icon-cancel {
+    background: url('../styles/images/newicons/close关闭.png') no-repeat center center;
+}
+
+.icon-print {
+    background: url('../styles/images/newicons/print收款打印.png') no-repeat center center;
+}
+
+.icon-detail {
+    background: url('../styles/images/newicons/detail详情.png') no-repeat center center;
+}
+
+.icon-balance {
+    background: url('../styles/icons/balance结算.png') no-repeat center center;
+}
+
+.icon-cancelorder {
+    background: url('../styles/images/newicons/cancelorder撤销.png') no-repeat center center;
+}
+
+.icon-materialout {
+    background: url('../styles/icons/出库.png') no-repeat center center;
+}
+
+.icon-shoufei {
+    background: url('../styles/images/newicons/print收款打印.png') no-repeat center center;
+}
+
+.icon-zuofei {
+    background: url('../styles/images/newicons/shoufei作废.png') no-repeat center center;
+}
+
+.icon-shenhe {
+    background: url('../styles/icons/审核.png') no-repeat center center;
+}
+
+.icon-mingxi {
+    background: url('../styles/images/newicons/detail详情.png') no-repeat center center;
+}
+
+.icon-lishi {
+    background: url('../styles/icons/历史.png') no-repeat center center;
+}
+
+.icon-hetong {
+    background: url('../styles/icons/合同.png') no-repeat center center;
+}
+
+.icon-baozhengjin {
+    background: url('../styles/icons/保证金.png') no-repeat center center;
+}
+
+.icon-yushoukuan {
+    background: url('../styles/icons/预收款.png') no-repeat center center;
+}
+
+.icon-beiwanglu {
+    background: url('../styles/icons/备忘录.png') no-repeat center center;
+}
+
+.icon-jiaoban {
+    background: url('../styles/images/newicons/jiaoban交班报表.png') no-repeat center center;
+}
+
+.icon-tuikuan {
+    background: url('../styles/icons/退款.png') no-repeat center center;
+}
+
+.icon-tingyong {
+    background: url('../styles/images/newicons/tingyong停用.png') no-repeat center center;
+}
+
+.icon-shengcheng {
+    background: url('../styles/icons/生成.png') no-repeat center center;
+}
+
+.icon-xiangmubanjie {
+    background: url('../styles/images/newicons/banjie办结.png') no-repeat center center;
+}
+
+.icon-paidan {
+    background: url('../styles/icons/派单.png') no-repeat center center;
+}
+
+.icon-chuli {
+    background: url('../styles/images/newicons/chuli处理.png') no-repeat center center;
+}
+
+.icon-banjie {
+    background: url('../styles/images/newicons/banjie办结.png') no-repeat center center;
+}
+
+.icon-huifang {
+    background: url('../styles/icons/回访.png') no-repeat center center;
+}
+
+.icon-qiyong {
+    background: url('../styles/images/newicons/qiyong启用.png') no-repeat center center;
+}
+
+.icon-biangeng {
+    background: url('../styles/icons/变更.png') no-repeat center center;
+}
+
+.icon-gongtan {
+    background: url('../styles/icons/摊销费.png') no-repeat center center;
+}
+
+.icon-chaobiao {
+    background: url('../styles/icons/抄表-01.png') no-repeat center center;
+}
+
+.icon-sanbiao {
+    background: url('../styles/icons/三表.png') no-repeat center center;
+}
+
+.icon-paixu {
+    background: url('../styles/icons/排序.png') no-repeat center center;
+}
+
+.icon-tongbu {
+    background: url('../styles/icons/同步.png') no-repeat center center;
+}
+
+.icon-guazhang {
+    background: url('../styles/icons/挂账.png') no-repeat center center;
+}
+
+.icon-bangding {
+    background: url('../styles/icons/绑定.png') no-repeat center center;
+}
+
+.icon-tongzhi {
+    background: url('../styles/icons/通知.png') no-repeat center center;
+}
+
+.icon-fahuo {
+    background: url('../styles/icons/发货.png') no-repeat center center;
+}
+
+.icon-wancheng {
+    background: url('../styles/icons/完成.png') no-repeat center center;
+}
+
+.icon-guanbi_2 {
+    background: url('../styles/icons/关闭_2.png') no-repeat center center;
+}
+
+.icon-guanlian {
+    background: url('../styles/icons/关联.png') no-repeat center center;
+}
+
+.icon-more {
+    background: url('../styles/icons/更多.png') no-repeat center center;
+}
+
+.icon-reset {
+    background: url('../styles/icons/重置.png') no-repeat center center;
+}
+
+.icon-choose {
+    background: url('../styles/icons/选择.png') no-repeat center center;
+}
+
+.window {
+    border-color: #fff;
+    border-radius: 5px;
+    padding: 0px;
+    border: 0px;
+}
+
+    .window .window-body {
+        border: 0px;
+    }
+
+    .window .window-header {
+        padding: 5px;
+    }
+
+        .window .window-header .panel-icon, .window .window-header .panel-tool {
+            margin-top: -9px;
+        }
+
+.window-mask {
+    background: #000;
+}

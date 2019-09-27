@@ -1,0 +1,20 @@
+{
+    "status": true,
+    "list": [
+        {
+            "ID": 6,
+            "Value": "",
+            "count": 1
+        },
+        {
+            "ID": 131,
+            "Value": "23",
+            "count": 2
+        },
+        {
+            "ID": 132,
+            "Value": "1",
+            "count": 3
+        }
+    ]
+}

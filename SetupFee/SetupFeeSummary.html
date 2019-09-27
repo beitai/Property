@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <link href="../styles/main.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var CompanyID;
+        $(function () {
+            CompanyID = "1";
+        })
+    </script>
+    <script src="../js/Page/SetupFee/SetupFeeSummary.js?v=2019-08291000"></script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./SetupFeeSummary.html" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTE3Mzg3MTM4MTYPZBYCZg9kFgICAw9kFgICAQ9kFgJmDxYCHgtfIUl0ZW1Db3VudAIIFhBmD2QWAmYPFQQG5pS25YWlATEBMQExZAIBD2QWAmYPFQQG5Luj5pS2ATIBMgEyZAICD2QWAmYPFQQG5oq86YeRATMBMwEzZAIDD2QWAmYPFQQG6aKE5pS2ATQBNAE0ZAIED2QWAmYPFQQH5Luj5pS2MgE1ATUBNWQCBQ9kFgJmDxUECeaUtuasvumhuQIzMwIzMwIzM2QCBg9kFgJmDxUECeaUtuasvlJUWAIzNQIzNQIzNWQCBw9kFgJmDxUECeeJqeS4mui0uQIzNgIzNgIzNmRkjV5qJ9Y0rvUDsLPISfsacteS80w=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E72502DF" />
+                    </div>
+                    <div class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="searcharea">
+                            <div
+                                style="height: 50px; background-color: #fff; padding: 3px 5px; border-bottom: 1px solid #e0e2e5;">
+
+                                <a href="javascript:void(0)" onclick="addFee()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-add'">增加</a>
+
+                                <a href="javascript:void(0)" onclick="editFee()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-edit'">修改</a>
+
+                                <a href="javascript:void(0)" onclick="deleteFee()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-remove'">删除</a>
+
+                                <a href="javascript:void(0)" onclick="do_start()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-qiyong'">启用周期费用</a>
+
+                                <input type="hidden" value="收入" id="hdSelectedTitle" />
+                                <input type="text" class="easyui-searchbox" id="tdKeywords"
+                                    data-options="prompt:'关键字搜索',searcher:SearchTT" />
+                                <a href="javascript:void(0)" onclick="SearchTT()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <div id="ChargeSummaryAccording"
+                                data-options="fit:true,tabPosition:'left',headerWidth:100,tabHeight:35"
+                                class="easyui-tabs" style="width: 100%; height: 100%; margin: 0 auto;">
+
+                                <div title="收入" data-options="id:1" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_1"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=1" />
+                                </div>
+
+                                <div title="代收" data-options="id:2" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_2"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=2" />
+                                </div>
+
+                                <div title="押金" data-options="id:3" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_3"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=3" />
+                                </div>
+
+                                <div title="预收" data-options="id:4" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_4"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=4" />
+                                </div>
+
+                                <div title="代收2" data-options="id:5" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_5"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=5" />
+                                </div>
+
+                                <div title="收款项" data-options="id:33" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_33"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=33" />
+                                </div>
+
+                                <div title="收款RTX" data-options="id:35" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_35"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=35" />
+                                </div>
+
+                                <div title="物业费" data-options="id:36" style="overflow: auto; padding: 0px;">
+                                    <iframe name="feeframe" src="" id="iframe_36"
+                                        style="width: 100%; height: 99%; border: 0;"></iframe>
+                                    <input type="hidden" value="../SetupFee/SetupFeeList.html?CategoryID=36" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

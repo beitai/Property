@@ -1,0 +1,116 @@
+{
+    "rows": [
+        {
+            "ID": 20,
+            "CategoryName": "会议室费用",
+            "SortOrder": 0,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 21,
+            "CategoryName": "场地费用",
+            "SortOrder": 0,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 14,
+            "CategoryName": "物业费欠缴",
+            "SortOrder": 1,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 7,
+            "CategoryName": "电梯费欠缴",
+            "SortOrder": 2,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 5,
+            "CategoryName": "水费欠缴",
+            "SortOrder": 3,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 12,
+            "CategoryName": "运维费欠缴",
+            "SortOrder": 4,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 15,
+            "CategoryName": "租车位费",
+            "SortOrder": 5,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 16,
+            "CategoryName": "物业费",
+            "SortOrder": 6,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        },
+        {
+            "ID": 19,
+            "CategoryName": "流动车位费",
+            "SortOrder": 7,
+            "IsNew": false,
+            "IsDirty": false,
+            "IsDeleted": false,
+            "IsValid": true,
+            "ValidationErrors": [],
+            "JsonIgnoreFields": null,
+            "IsSaveRequired": false
+        }
+    ],
+    "total": 9,
+    "page": 1,
+    "dataTable": null,
+    "footer": null
+}

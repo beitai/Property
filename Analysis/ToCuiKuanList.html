@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+
+    <script>
+        var CompanyID, hdIDs, tdStartTime, tdEndTime;
+        $(function () {
+            //$("#layout").layout("collapse", "north");
+            CompanyID = "1";
+            hdIDs = $("#content_hdIDs");
+            tdStartTime = $("#content_tdStartTime");
+            tdEndTime = $("#content_tdEndTime");
+        })
+    </script>
+    <script src="../js/Page/Analysis/ToCuiKuanList.js?t=2019-09061000"></script>
+    <style>
+        .operationtable {
+            width: 100%;
+        }
+
+        .operationtable td {
+            text-align: center;
+        }
+
+        .sfdd {
+            width: 100%;
+            height: 32px;
+            background: url("../styles/images/buttons/print.png") no-repeat center center;
+            display: block;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./ToCuiKuanList.aspx" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKMTY0NTQ4MDUxMWRkBBhtBUaQCj8BN9r48fKzizCxGX0=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="124A4F26" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAATGMqSBh3r2Ak2Y/xg/khuUKaCDixSabOrBm/NZMGDitRZaznq9o2+K4RRVAwh23O1/W8JrguZmInRDQbZb5NLTD9lPcv1hMYN5XalG3R/JaRT0rz8=" />
+                    </div>
+                    <div id="layout" class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth">
+                            <div class="tdsearch">
+                                <label>
+                                    时间:
+                                    <input name="ctl00$content$tdStartTime" type="text" id="content_tdStartTime"
+                                        class="easyui-datebox" style="width: 120px;" />
+                                    -
+                                    <input name="ctl00$content$tdEndTime" type="text" id="content_tdEndTime"
+                                        class="easyui-datebox" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    收费项目:
+                                    <input class="easyui-combobox" id="tdChargeSummaryName" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    房间状态:
+                                    <input class="easyui-combobox" id="tdRoomState" style="width: 100px;" />
+                                </label>
+                                <label>
+                                    房源属性:
+                                    <input class="easyui-combobox" id="tdRoomProperty" style="width: 100px;" />
+                                </label>
+                                <label>
+                                    所属部门:
+                                    <input class="easyui-textbox" id="tdRelationBelongTeam" style="width: 100px;" />
+                                </label>
+                                <label class="searchlabel">
+                                    <a href="javascript:void(0)" onclick="SearchTT()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <table id="tt_table">
+                            </table>
+                            <div id="tb">
+                                <a href="javascript:void(0)" onclick="do_export()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                <a href="javascript:void(0)" onclick="createCuiShou()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-save'">生成催收单</a>
+                                <input type="hidden" name="ctl00$content$hdIDs" id="content_hdIDs" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

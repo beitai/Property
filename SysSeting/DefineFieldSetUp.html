@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908281000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908281000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908281000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908281000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var count = 0;
+        var TableName = "";
+        $(function () {
+            TableName = "RoomBasic";
+            getDefineFields();
+        });
+        function getDefineFields() {
+            var options = { visit: 'getdefinefield', TableName: TableName, sessionId: sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                url: window.SERVERPATH + "api/getdefinefield",
+                data: options,
+                success: function (data) {
+
+                    //  == update
+                    // data = { "status": true, "list": [{ "ID": 9, "FieldName": "合同签订日期", "Table_Name": "RoomBasic", "AddTime": "2017-08-26T13:54:35.55", "IsShown": false, "SortOrder": 111, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 10, "FieldName": "清华园大溪地", "Table_Name": "RoomBasic", "AddTime": "2017-08-26T14:49:28.053", "IsShown": false, "SortOrder": 112, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 11, "FieldName": "购买产权比例", "Table_Name": "RoomBasic", "AddTime": "2017-08-26T14:49:28.163", "IsShown": false, "SortOrder": 6, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 42, "FieldName": "所属管理公司", "Table_Name": "RoomBasic", "AddTime": "2018-04-11T08:57:15.83", "IsShown": false, "SortOrder": 7, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 45, "FieldName": "入职日期", "Table_Name": "RoomBasic", "AddTime": "2018-10-17T15:39:11.643", "IsShown": false, "SortOrder": 6, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 47, "FieldName": "有效面积", "Table_Name": "RoomBasic", "AddTime": "2018-12-21T17:31:54.123", "IsShown": false, "SortOrder": 0, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 48, "FieldName": "车位号", "Table_Name": "RoomBasic", "AddTime": "2018-12-29T11:44:03.293", "IsShown": false, "SortOrder": 9, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 49, "FieldName": "是否常驻", "Table_Name": "RoomBasic", "AddTime": "2019-01-02T16:48:12.05", "IsShown": false, "SortOrder": 0, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 50, "FieldName": "车牌号", "Table_Name": "RoomBasic", "AddTime": "2019-02-25T10:10:36.647", "IsShown": false, "SortOrder": 4, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 51, "FieldName": "经营品牌", "Table_Name": "RoomBasic", "AddTime": "2019-04-06T12:02:19.633", "IsShown": false, "SortOrder": 0, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 52, "FieldName": "国籍", "Table_Name": "RoomBasic", "AddTime": "2019-07-22T10:04:27.397", "IsShown": false, "SortOrder": 0, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 53, "FieldName": "测试字段", "Table_Name": "RoomBasic", "AddTime": "2019-08-27T10:38:34.813", "IsShown": false, "SortOrder": 0, "ColumnName": "", "OriFieldName": "", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }], "exist_list": [{ "ID": 1, "FieldName": "计费面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": true, "SortOrder": 6, "ColumnName": "BuildingArea", "OriFieldName": "计费面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 2, "FieldName": "合同面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": true, "SortOrder": 6, "ColumnName": "ContractArea", "OriFieldName": "合同面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 3, "FieldName": "建筑面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 12, "ColumnName": "BuildOutArea", "OriFieldName": "建筑面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 4, "FieldName": "套内面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 14, "ColumnName": "BuildInArea", "OriFieldName": "套内面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 5, "FieldName": "公摊面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 15, "ColumnName": "GonTanArea", "OriFieldName": "公摊面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 6, "FieldName": "产权面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 16, "ColumnName": "ChanQuanArea", "OriFieldName": "产权面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 7, "FieldName": "使用面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 17, "ColumnName": "UseArea", "OriFieldName": "使用面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }, { "ID": 8, "FieldName": "配套面积", "Table_Name": "RoomBasic", "AddTime": "0001-01-01T00:00:00", "IsShown": false, "SortOrder": 18, "ColumnName": "PeiTaoArea", "OriFieldName": "配套面积", "IsNew": false, "IsDirty": false, "IsDeleted": false, "IsValid": true, "ValidationErrors": [], "JsonIgnoreFields": null, "IsSaveRequired": false }] }
+
+                    if (!data.status) {
+                        show_message("获取列表失败", "info");
+                        return;
+                    }
+                    if (data.list.length == 0) {
+                        addRow();
+                        return;
+                    }
+                    $.each(data.list, function (index, item) {
+                        var html = '';
+                        html += '<div class="field" id="field_' + item.ID + '">';
+                        html += '<input type="text" data-id="' + item.ID + '" id="old_' + item.ID + '" value="' + item.FieldName + '">';
+                        html += '<a href="javascript:void(0)" onclick="deleteField(\'old_' + item.ID + '\')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:\'icon-remove\'">删除</a>';
+                        html += '</div>';
+                        $(html).appendTo('#tablefiled');
+                        count = item.ID;
+                        $.parser.parse('#tablefiled');
+                    })
+                }
+            });
+        }
+
+        function do_save() {
+            if ($("input[type='text']").length == 0) {
+                show_message("请添加字段", "info");
+                return;
+            }
+            var IDList = [];
+            var List = [];
+            $("input[type='text']").each(function () {
+                var data_id = $(this).attr('data-id');
+                var data_value = $(this).val();
+                if (data_value == '') {
+                    return true;
+                }
+                List.push({ id: data_id, value: data_value });
+            });
+            if (List.length == 0) {
+                show_message("字段名称不能为空", "info");
+                return;
+            }
+            var options = { visit: 'savedefinefield', list: JSON.stringify(List), TableName: TableName, sessionId: sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                url: window.SERVERPATH + "api/savedefinefield",
+                data: options,
+                success: function (message) {
+
+                    // message.status = true;   
+
+                    if (message.status) {
+                        show_message('保存成功', 'success');
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+        function closeWin() {
+            parent.$("#winadd").window("close");
+        }
+        function do_add() {
+            count++;
+            var html = '';
+            html += '<div class="field" id="field_' + count + '">';
+            html += '<input type="text" data-id="0" data-count="' + count + '" id="new_' + count + '" value="">';
+            html += '<a href="javascript:void(0)" onclick="deleteField(\'new_' + count + '\')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:\'icon-remove\'">删除</a>';
+            html += '</div>';
+            $(html).appendTo('#tablefiled');
+            $.parser.parse('#field_' + count);
+        }
+        function deleteField(id) {
+            id = id.trim();
+            var data_id = $("#" + id).attr('data-id');
+            if (data_id > 0) {
+                top.$.messager.confirm('提示', '确认删除', function (r) {
+                    if (r) {
+                        var options = { visit: 'removedefinefield', ID: data_id, TableName: TableName, sessionId: sessionId };
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                            url: window.SERVERPATH + "api/removedefinefield",
+                            data: options,
+                            success: function (message) {
+
+                                // message.status = true;
+
+                                if (message.status) {
+                                    show_message('删除成功', 'success', function () {
+                                        $('#field_' + data_id).remove();
+                                    });
+                                }
+                                else if (message.msg) {
+                                    show_message(message.msg, "warning");
+                                } else {
+                                    show_message('系统错误', 'error');
+                                }
+                            }
+                        });
+                    }
+                })
+                return;
+            }
+            var data_count = $("#" + id).attr('data-count');
+            $('#field_' + data_count).remove();
+        }
+    </script>
+    <style type="text/css">
+        .panel-body {
+            background: #f0f0f0;
+        }
+
+        .add,
+        .exist {
+            width: 96%;
+            margin: 0 auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            border-spacing: 0px;
+            border: solid 0px #f0f0f0;
+            background: #fff;
+        }
+
+        .field {
+            padding: 3px 5px;
+            text-align: left;
+            border-right: solid 0px #f0f0f0;
+            border-bottom: solid 0px #f0f0f0;
+            width: 33%;
+            display: inline-table;
+        }
+
+        .exist_field {
+            padding: 3px 5px;
+            text-align: left;
+            border: solid 0px #ddd;
+            width: 50%;
+            display: inline-table;
+        }
+
+        .exist_field .exist_field_label {
+            text-align: right;
+            width: 30%;
+            display: inline-table;
+            padding-right: 10px;
+        }
+
+        .exist_field input {
+            text-align: left;
+            width: 70%;
+            display: inline-table;
+            padding-left: 10px;
+            border: 0;
+            border-left: 1px #ddd solid;
+        }
+
+        input[type=text] {
+            height: 30px;
+            border-radius: 5px !important;
+            border: 1px #ddd solid;
+            margin: 10px;
+        }
+
+        .add .title,
+        .exist .title {
+            text-align: center;
+            padding: 5px 0;
+            color: #000;
+            background-color: #ccc;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./DefineFieldSetUp.aspx?TableName=RoomBasic" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKMTE2MzI0MTkzNWRkqMbB2WiKz6+xl1ppYMLRuLKUTRU=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="0F1AA5A2" />
+                    </div>
+                    <div class="table_title">
+                        自定义参数
+                        <a href="javascript:void(0)" onclick="do_add()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-add'">新增</a>
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                    </div>
+                    <div class="add" id="tablefiled">
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

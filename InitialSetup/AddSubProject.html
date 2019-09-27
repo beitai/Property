@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908271000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908271000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908271000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908271000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var ProjectID, FullName, ParentID, TabList = [];
+        $(function () {
+            // ProjectID = "1";
+            // ParentID = "0";
+            // FullName = "";
+            ProjectID = getQueryString("ProjectID");
+            // 下面两个暂时不知道去哪里获取。。
+            ParentID = getQueryString("ParentID");
+            // FullName = getQueryString("FullName");
+
+            var FullName;
+            if (ProjectID != 1) {
+                $.ajax({
+                    async: false,
+                    type: 'get',
+                    url: window.SERVERPATH + 'api/getNameById?ID=' + ProjectID + "&sessionId=" + sessionId,
+                    success: function (res) {
+                        res = JSON.parse(res);
+                        FullName = res.name;
+                        // console.log('拿到名字');
+                        // console.log(FullName);
+                    }
+                });
+            }
+            /*  console.log('第二层页面获取的参数');
+             console.log(ProjectID);
+             console.log(ParentID);
+             console.log(FullName); */
+
+            $('#projectname').textbox('setValue', FullName);
+            get_tab_list();
+            top.isUpdate = false;
+            if (ProjectID != 1) {
+                $("#projectname").textbox({ disabled: true });
+                $("#divedit").removeClass("hidefield");
+                $("#divsave").addClass("hidefield");
+            }
+            else {
+                $("#projectname").textbox({ disabled: false });
+                $("#editsavetd").addClass("hidefield");
+            }
+        })
+        function do_close() {
+            doCloseWin()
+        }
+        function get_tab_list() {
+            for (var i = 0; i < TabList.length; i++) {
+                $('#TabAccording').tabs('close', TabList[i].title);
+            }
+            TabList = [];
+            var options = { visit: 'loadyttables', ProjectID: ProjectID, sessionId: sessionId };
+            console.log('拿列表的参数');
+            console.log(options);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/ProjectPropertyHandler.ashx',
+                url: window.SERVERPATH + 'api/loadyttables',
+                data: options,
+                success: function (data) {
+                    /*conso/* le.log('返回 结果');
+                    console.log(data); */
+
+                    // TabList = data;
+                    // $.each(data, function (index, item) {
+                    //     add_tab(item.title, 'AddProjectProperty.html?t=' + index + '&ProjectID=' + ProjectID + '&PropertyID=' + item.ID, data.length);
+                    // })
+                    // $('#TabAccording').tabs({
+                    //     onSelect: function (title, index) {
+                    //         loadIframe();
+                    //     }
+                    // });
+                    
+                    if (data.status && data.values.length > 0) {
+                        TabList = data.values;
+                        $.each(data.values, function (index, item) {
+                            add_tab(item.title, 'AddProjectProperty.html?t=' + index + '&ProjectID=' + ProjectID + '&PropertyID=' + item.ID, data.values.length);
+                        })
+                        $('#TabAccording').tabs({
+                            onSelect: function (title, index) {
+                                loadIframe();
+                            }
+                        });
+                        $('#TabAccording').tabs('select', 0);
+                    }
+                }
+            });
+        }
+        function loadIframe() {
+            var curTab = $('#TabAccording').tabs('getSelected');
+            if (curTab.find("iframe:first").attr("src") == "") {
+                var iframesrc = curTab.find("input[type=hidden]:first").val();
+                curTab.find("iframe:first").attr("src", iframesrc);
+            }
+        }
+        function add_tab(title, url, count) {
+            var content = '';
+            content += '<input type="hidden" value="' + url + '" />';
+            if (count == 1) {
+                content += '<iframe name="TabFrame" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;border:0;"></iframe>';
+            } else {
+                content += '<iframe name="TabFrame" scrolling="auto" frameborder="0" src="" style="width:100%;height:99%;border:0;"></iframe>';
+            }
+            $('#TabAccording').tabs('add', {
+                title: title,
+                closable: false,
+                content: content
+            });
+        }
+        function openytwin() {
+            var iframe = "../InitialSetup/AddProperty.aspx?ProjectID=" + ProjectID;
+            doOpenWin({
+                title: '新增业态',
+                url: iframe,
+                winInline: true,
+                hideBg: true,
+                width: '100%',
+                height: "100%",
+                winid: 'win_pro',
+            }, function () {
+                get_tab_list();
+            });
+        }
+        function showytwin() {
+            if (ProjectID != 1 && ParentID != 1) {
+                return;
+            }
+            var iframe = "../InitialSetup/PropertySetup.aspx?ProjectID=" + ProjectID;
+            doOpenWin({
+                title: '业态设置',
+                url: iframe,
+                winInline: true,
+                hideBg: true,
+                width: '100%',
+                height: "100%",
+                winid: 'win_set'
+            }, function () {
+                get_tab_list();
+            });
+        }
+        function editName() {
+            $("#projectname").textbox({ disabled: false });
+            $("#divedit").addClass("hidefield");
+            $("#divsave").removeClass("hidefield");
+            var options = { visit: 'getprojectbyid', ID: ProjectID };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/ProjectHandler.ashx',
+                data: options,
+                success: function (message) {
+                    message.status = true
+                    message.Name = "保存成功"
+                    if (message.status) {
+                        $("#projectname").textbox('setValue', message.Name);
+                    }
+                }
+            });
+        }
+        function saveName() {
+            $("#projectname").textbox({ disabled: true });
+            $("#divedit").removeClass("hidefield");
+            $("#divsave").addClass("hidefield");
+            var ProjectName = $("#projectname").textbox('getValue');
+            if (ProjectName == "") {
+                show_message("项目名称不能为空", "warning");
+                return;
+            }
+            var options = { visit: 'saveprojectnamebyid', ProjectID: ProjectID, ProjectName: ProjectName };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/ProjectHandler.ashx',
+                data: options,
+                success: function (data) {
+                    if (data.status) {
+                        top.winUpdate = true;
+                        show_message("保存成功", "success", function () {
+                            $("#projectname").textbox('setValue', data.FullName);
+                        });
+                    }
+                    else if (data.error) {
+                        show_message(data.error, "warning");
+                        return;
+                    }
+                    else {
+                        show_message("保存失败", "error");
+                    }
+                }
+            });
+        }
+    </script>
+    <link href="../styles/main.css?v=1.1" rel="stylesheet" />
+    <style>
+        table.info {
+            margin: 0;
+            width: 100%;
+        }
+
+        table.info td {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./AddSubProject.aspx?ProjectID=1" id="myform">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTIwNDg5NDg4MDJkZPNpJJMA+SsK7yi1TFsDLNjtTgzb" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="454336AB" />
+                    </div>
+                    <div class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="searcharea">
+                            <table class="info">
+                                <tr>
+                                    <td style="width: 15%; padding-left: 20px;">项目名称:</td>
+                                    <td style="width: 50%;">
+                                        <input id="projectname" class="easyui-textbox inputbox" type="text" name="name"
+                                            style="width: 100%; min-width: 200px; height: 28px;" /></td>
+                                    <td id="editsavetd" style="width: 10%;">
+                                        <div id="divedit">
+                                            <a href="javascript:void(0)" onclick="editName()"
+                                                class="easyui-linkbutton btnlinkbar"
+                                                data-options="plain:true,iconCls:'icon-edit'">修改</a>
+                                        </div>
+                                        <div id="divsave" class="hidefield">
+                                            <a href="javascript:void(0)" onclick="saveName()"
+                                                class="easyui-linkbutton btnlinkbar"
+                                                data-options="plain:true,iconCls:'icon-save'">保存</a>
+                                        </div>
+                                    </td>
+                                    <td style="width: 30%; text-align: right;">
+
+                                        <a href="javascript:void(0)" onclick="do_close()"
+                                            class="easyui-linkbutton btnlinkbar"
+                                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <div id="TabAccording"
+                                data-options="fit:true,tabPosition:'left',headerWidth:100,tabHeight:35"
+                                class="easyui-tabs" style="width: 100%; height: 100%; margin: 0 auto;">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+document.write('<link href="../js/easyui/bootstrap/easyui.css" type="text/css" rel="stylesheet" />');
+document.write('<link href="../js/easyui/icon.css" type="text/css" rel="stylesheet" />');
+document.write('<script src="../js/jquery-1.8.3.min.js"></script>');
+document.write('<script src="../js/easyui/jquery.easyui.min.js" type="text/javascript"></script>');
+document.write('<script src="../js/easyui/easyui-lang-zh_CN.js" type="text/javascript"></script>');
+document.write('<script src="../js/Page/Comm/MaskUtil.js"></script>');
+document.write('<script src="../js/Page/Main/Comm.js"></script>');
+document.write('<script src="../js/Page/Comm/unit.js?v=10086"></script>');
+document.write('<link href="../styles/basic.css?v=10180" rel="stylesheet" />');
+document.write('<link href="../styles/buttons.css?v=10180" rel="stylesheet" />');
+document.write('<link href="../styles/window.css?v=10180" rel="stylesheet" />');

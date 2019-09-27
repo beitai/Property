@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10160" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10160" rel="stylesheet" />
+    <link href="../styles/window.css?v=10160" rel="stylesheet" />
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <link href="../js/ztree/zTreeStyle/zTreeStyle.css?9" rel="stylesheet" />
+    <link href="../styles/treecss.css" rel="stylesheet" />
+    <script src="../js/ztree/jquery.ztree.core.js"></script>
+    <script src="../js/ztree/jquery.ztree.excheck.js"></script>
+    <script src="../js/ztree/jquery.ztree.exedit.js"></script>
+    <script src="../js/Page/Main/zTreeLoad.js?t=2019-09061000"></script>
+    <script>
+        var tdBankChargeType, RoomID = 0, ID = 0;
+        $(function () {
+            treeType = 4;
+            loadZTree(true, false);
+            tdBankChargeType = $("#content_tdBankChargeType");
+            ID = "0";
+            RoomID = "0";
+            loadtagparams();
+            if (ID > 0) {
+                $("#main_form_layout").layout("remove", "west");
+                $("#main_form_layout").layout("resize");
+            }
+        });
+        function loadtagparams() {
+            var options = { visit: 'getbankchargeroomparams' };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/FeeCenterHandler.ashx',
+                data: options,
+                success: function (data) {
+                    if (data.status) {
+                        tdBankChargeType.combobox({
+                            editable: false,
+                            data: data.list,
+                            valueField: 'ID',
+                            textField: 'TypeName',
+
+                        });
+                        return;
+                    }
+                }
+            });
+        }
+        function do_save() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            var RoomIDs = [];
+            var ProjectIDs = [];
+            if (ID <= 0) {
+                RoomIDs = GetSelectedRooms();
+                ProjectIDs = GetSelectedProjects();
+            }
+            if (RoomIDs.length == 0 && ProjectIDs.length == 0 && ID <= 0) {
+                show_message('请选择一个资源', 'info');
+                return;
+            }
+            var BankAccountNo = $("#content_tdBankAccountNo").textbox("getValue");
+            var BankName = $("#content_tdBankName").textbox("getValue");
+            var BankAccountName = $("#content_tdBankAccountName").textbox("getValue");
+            var IDCardNumber = $("#content_tdIDCardNumber").textbox("getValue");
+            var PhoneNumber = $("#content_tdPhoneNumber").textbox("getValue");
+            var ChargeNo = $("#content_tdChargeNo").textbox("getValue");
+            var BankChargeTypeID = $("#content_tdBankChargeType").combobox("getValue");
+            var options = { visit: "savebankchargeroom", RoomID: JSON.stringify(RoomIDs), ProjectIDs: JSON.stringify(ProjectIDs), ID: ID, BankAccountNo: BankAccountNo, BankName: BankName, BankAccountName: BankAccountName, PhoneNumber: PhoneNumber, ChargeNo: ChargeNo, BankChargeTypeID: BankChargeTypeID, IDCardNumber: IDCardNumber };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/FeeCenterHandler.ashx',
+                data: options,
+                success: function (message) {
+                    if (message.status) {
+                        top.winUpdate = true;
+                        show_message('保存成功', 'success', function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    if (message.error) {
+                        show_message(message.error, 'warning');
+                        return;
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            })
+        }
+        function do_close() {
+            doCloseWin();
+        }
+    </script>
+    <style type="text/css">
+        .panel-body {
+            background: #f0f0f0;
+        }
+
+        table.add {
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+        table.add td {
+            padding: 10px;
+            width: 35%;
+        }
+
+        table.add td:nth-child(2n-1) {
+            width: 15%;
+        }
+
+        .fileInputContainer {
+            height: 60px;
+            background: url("../styles/images/addimage.jpg") no-repeat;
+            width: 60px;
+            position: relative;
+            margin-left: 130px;
+            margin-top: 20px;
+            background-size: cover;
+        }
+
+        .fileInput {
+            height: 60px;
+            width: 60px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./BankCharge_Room_Edit.aspx?RoomID=undefined" id="ff"
+                    enctype="multipart/form-data">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJNjc3NDg0MjI4ZGTWJbcBHGYBKzvYkaG4smrbyOdrIw==" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="97400013" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAhwy8/8CYgks/rpxh115y/VT8Ke0SA/348kDASVROJiitJx6jNIHKqIEvzdVKbyh7ovYfnwO9qIAUX1/21c6UfNExJPj+tQHbhGpvOJ6t0avr4VJPv53Y7S7YRwWidlOyS32efpDxiHJpUB8InbkWrOo0x4N7NqIUtmsBm0OK9xJBl+EVPgwALK7EGxCoM3nmg++0nC" />
+                    </div>
+                    <div class="easyui-layout" id="main_form_layout" fit="true">
+                        <div data-options="region:'north'" style="height: 51px;">
+                            <div class="operation_box">
+                                <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-save'">保存</a>
+                                <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                            </div>
+                        </div>
+                        <div class="westPanel" data-options="region:'west'" title="" style="width: 210px;">
+                            <div class="easyui-layout" fit="true">
+                                <div data-options="region:'north'" style="height: 50px; padding: 10px 0 0 10px;">
+                                    <input id="searchbox" class="easyui-searchbox"
+                                        data-options="prompt:'',searcher:doSearch"
+                                        style="height: 30px; width: 180px;" />
+                                </div>
+                                <div data-options="region:'center'" title="">
+                                    <ul id="tt_4" class="ztree"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <div class="table_title">
+                                主要信息
+                            </div>
+                            <table class="info">
+                                <tr>
+                                    <td>付方卡号</td>
+                                    <td>
+                                        <input name="ctl00$content$tdBankAccountNo" type="text"
+                                            id="content_tdBankAccountNo" data-options="required:true"
+                                            class="easyui-textbox" /></td>
+                                    <td>付方开户行名称</td>
+                                    <td>
+                                        <input name="ctl00$content$tdBankName" type="text" id="content_tdBankName"
+                                            data-options="required:true" class="easyui-textbox" /></td>
+                                </tr>
+                                <tr>
+                                    <td>付款户名</td>
+                                    <td>
+                                        <input name="ctl00$content$tdBankAccountName" type="text"
+                                            id="content_tdBankAccountName" data-options="required:true"
+                                            class="easyui-textbox" /></td>
+                                    <td>代扣人身份证号</td>
+                                    <td>
+                                        <input name="ctl00$content$tdIDCardNumber" type="text"
+                                            id="content_tdIDCardNumber" class="easyui-textbox" /></td>
+                                </tr>
+                                <tr>
+                                    <td>代扣收费项目类型</td>
+                                    <td>
+                                        <input name="ctl00$content$tdBankChargeType" type="text"
+                                            id="content_tdBankChargeType" class="easyui-combobox"
+                                            data-options="editable:false,required:true" />
+                                    </td>
+                                    <td>缴费编号</td>
+                                    <td>
+                                        <input name="ctl00$content$tdChargeNo" type="text" id="content_tdChargeNo"
+                                            data-options="required:true" class="easyui-textbox" /></td>
+                                </tr>
+                                <tr>
+                                    <td>银行短信通知手机号码</td>
+                                    <td>
+                                        <input name="ctl00$content$tdPhoneNumber" type="text" id="content_tdPhoneNumber"
+                                            class="easyui-textbox" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

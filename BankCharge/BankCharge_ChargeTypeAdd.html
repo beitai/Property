@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var ID, tdChargeIDsName, hdDeviceID;
+        $(function () {
+            ID = "0";
+            tdChargeIDsName = $('#content_tdChargeIDsName');
+            hdDeviceID = $('#content_hdDeviceID');
+        });
+        function choosedevice() {
+            var ChargeIDs = hdDeviceID.val();
+            var iframe = "../Contract/ChooseChargeSummary.aspx?source=GetChargeType&rowIndex=0&ChargeIDs=" + ChargeIDs;
+            doOpenWin({
+                title: '选择收费项目',
+                url: iframe,
+                winInline: true,
+                width: '100%',
+                height: "100%",
+            });
+        }
+        function doChoooseChargeDoneContractParty(rowIndex, nameList, idList) {
+            tdChargeIDsName.val(nameList.join(","));
+            hdDeviceID.val(idList.join(","));
+        }
+        function do_save() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            MaskUtil.mask('body', '提交中');
+            $('#ff').form('submit', {
+                url: '../Handler/FeeCenterHandler.ashx',
+                onSubmit: function (param) {
+                    param.visit = 'savebankchargetype';
+                    param.TypeName = $('#content_tdTypeName').val();
+                    param.hdDeviceID = hdDeviceID.val();
+                    param.BankCharge_MoneyType = $('#content_tdBankCharge_MoneyType').val();
+                    param.BankCharge_BankName = $('#content_tdBankCharge_BankName').val();
+                    param.BankCharge_Province = $('#content_tdBankCharge_Province').val();
+                    param.BankCharge_Area = $('#content_tdBankCharge_Area').val();
+                    param.BankCharge_AreaCode = $('#content_tdBankCharge_AreaCode').val();
+                    param.BankCharge_AgreementNumber = $('#content_tdBankCharge_AgreementNumber').val();
+                    param.BankCharge_CompanyName = $('#content_tdBankCharge_CompanyName').val();
+                    param.BankCharge_BankAccountNo = $('#content_tdBankCharge_BankAccountNo').val();
+                    param.ID = 0;
+                },
+                success: function (data) {
+                    top.winUpdate = true;
+                    MaskUtil.unmask();
+                    var dataObj = eval("(" + data + ")");
+                    if (dataObj.status) {
+                        show_message('保存成功', 'success', function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+        function do_close() {
+            doCloseWin();
+        }
+    </script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./BankCharge_ChargeTypeAdd.html" id="ff" enctype="multipart/form-data">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJNTM4MjI3MjY1ZGSSAZn2WdR4YcqlX6umAmPYAeqtkg==" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="D06E4B90" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAw/vYUGDo/yoRTUrAmMApCL9ubF/hmDLyKKnDLrlmxUoiaH7Zj7el5/xsfjp2cMIdqa6Te3L5hAAy3FUlLztaAAeJ1sHXoOgq9LyqKpF6+wz5fzqYzdr9B+R5B+XJsGCbd+TShK89tfz0/+HMDvKNJ5c3eXaY2kvVZS8KvihE5JjU3+4OvsujrT6b1Y8+Q7WuBElsN9taHjJoxCYkB7/QZ0OxJ5UkZstGfXQh3y4Mk3ZSyAacISSn5SwcD1BxXfFrizyDVTd1opw7eOmxTVPRoSYfTbBA==" />
+                    </div>
+                    <div class="operation_box">
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                        <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                    </div>
+                    <div class="table_container">
+                        <div class="table_title">规则信息</div>
+                        <table class="info">
+                            <tr>
+                                <td>代扣名称</td>
+                                <td>
+                                    <input name="ctl00$content$tdTypeName" type="text" id="content_tdTypeName"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>代扣规则</td>
+                                <td>
+                                    <textarea name="ctl00$content$tdChargeIDsName" id="content_tdChargeIDsName"
+                                        readonly="readonly" onclick="choosedevice()"
+                                        style="height: 40px; width: 80%; border-radius: 5px !important; border: solid 1px #ddd;"></textarea>
+                                    <input type="hidden" name="ctl00$content$hdDeviceID" id="content_hdDeviceID" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">银行代扣币种
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_MoneyType" type="text"
+                                        id="content_tdBankCharge_MoneyType" class="easyui-textbox"
+                                        data-options="required:true" />
+                                </td>
+                                <td style="width: 15%;">收款单位开户行名称
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_BankName" type="text"
+                                        id="content_tdBankCharge_BankName" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">省份
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_Province" type="text"
+                                        id="content_tdBankCharge_Province" class="easyui-textbox"
+                                        data-options="required:true" />
+                                </td>
+                                <td style="width: 15%;">收款方地区名
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_Area" type="text"
+                                        id="content_tdBankCharge_Area" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">收款方地区代码
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_AreaCode" type="text"
+                                        id="content_tdBankCharge_AreaCode" class="easyui-textbox"
+                                        data-options="required:true" />
+                                </td>
+                                <td style="width: 15%;">协议编号
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_AgreementNumber" type="text"
+                                        id="content_tdBankCharge_AgreementNumber" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">收款单位名称
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_CompanyName" type="text"
+                                        id="content_tdBankCharge_CompanyName" class="easyui-textbox"
+                                        data-options="required:true" />
+                                </td>
+                                <td style="width: 15%;">收款账户
+                                </td>
+                                <td style="width: 35%;">
+                                    <input name="ctl00$content$tdBankCharge_BankAccountNo" type="text"
+                                        id="content_tdBankCharge_BankAccountNo" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

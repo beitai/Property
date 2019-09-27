@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908_291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908_291000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908_291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908_291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var ID = 0;
+        $(function () {
+            ID = "0";
+        })
+        function do_save() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            var name = $("#content_tdName").textbox("getValue");
+            var sortorder = $("#content_tdSortOrder").textbox("getValue");
+            var options = { visit: 'savefeecategory', id: ID, name: name, sortorder: sortorder };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/CommHandler.ashx',
+                data: options,
+                success: function (message) {
+                    if (message.status) {
+                        top.winUpdate = true;
+                        show_message('保存成功', 'success', function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    show_message('系统错误', 'error');
+                }
+            });
+        }
+        function do_close() {
+            doCloseWin();
+        }
+    </script>
+    <style>
+        .panel-body {
+            background: #f0f0f0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./FeeCategoryEdit.aspx" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKLTkyOTUwMjg3OGRk1j6TfiLCQyfE+ZShzVwIaf8V9I0=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="83C2008E" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAMR6ZPJgyiGVXfHs16Td+3A+vjblq+u921rWhPakc4M9folOlwpfOUZTkTSa7F5xhWHLsFgiOWHACOa3rV2f+UBIcbmwQ==" />
+                    </div>
+                    <div class="operation_box inlinebox">
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                        <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                    </div>
+                    <div class="table_container">
+                        <table class="info">
+                            <tr>
+                                <td>名称
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdName" type="text" id="content_tdName"
+                                        class="easyui-textbox" data-options="required:true" />
+                                </td>
+                                <td>排序</td>
+                                <td>
+                                    <input name="ctl00$content$tdSortOrder" type="text" id="content_tdSortOrder"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

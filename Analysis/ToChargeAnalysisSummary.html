@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var CompanyID, tdStartTime, tdEndTime, tdChargeSummary, hdRoomIDs, hdProjectIDs, hdChargeSummary;
+        $(function () {
+            //$("#layout").layout("collapse", "north");
+            CompanyID = "1";
+            tdStartTime = $("#content_tdStartTime");
+            tdEndTime = $("#content_tdEndTime");
+            tdChargeSummary = $("#content_tdChargeSummary");
+            hdRoomIDs = $("#content_hdRoomIDs");
+            hdProjectIDs = $("#content_hdProjectIDs");
+            hdChargeSummary = $("#content_hdChargeSummary");
+        })
+    </script>
+    <script src="../js/Page/Analysis/ToChargeAnalysisSummary.js?t=2019-09061000"></script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./ToChargeAnalysisSummary.aspx" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJODQ2NTU4NjU1ZGRo05ow1946nKusgYUOvwA8Qny+Nw==" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="AB733ABE" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAd9pBg8ho+a5GAbcfgILhYOKaCDixSabOrBm/NZMGDitRZaznq9o2+K4RRVAwh23O1EpLLg9KfsUboH+7Xc4VCvTprEamBgm8LCSaWQ0hr76o5wwbvYzHQTwu8PINHY0luBeZQCeYvZlczDdEsneClan6JVZsHLEsj6P8lQGTMvSzbzQYU=" />
+                    </div>
+                    <div id="layout" class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth">
+                            <div class="tdsearch">
+                                <label>
+                                    时间:
+                                    <input name="ctl00$content$tdStartTime" type="text" id="content_tdStartTime"
+                                        class="easyui-datebox" />
+                                    -
+                                    <input name="ctl00$content$tdEndTime" type="text" id="content_tdEndTime"
+                                        class="easyui-datebox" />
+                                </label>
+                                <label>
+                                    收费项目:
+                                    <input name="ctl00$content$tdChargeSummary" type="text" id="content_tdChargeSummary"
+                                        class="easyui-combobox" style="width: 150px;" />
+                                </label>
+                                <label class="searchlabel" style="margin-left: 10px;">
+                                    <a href="javascript:void(0)" onclick="SearchFee()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <div class="easyui-panel" title="按收费项目汇总" style="width: 100%; height: 99%;">
+                                <table id="fee_table">
+                                </table>
+                                <div id="tbfee">
+                                    <a href="javascript:void(0)" onclick="do_export()"
+                                        class="easyui-linkbutton btnlinkbar"
+                                        data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                    <input type="hidden" name="ctl00$content$hdRoomIDs" id="content_hdRoomIDs" />
+                                    <input type="hidden" name="ctl00$content$hdProjectIDs" id="content_hdProjectIDs" />
+                                    <input type="hidden" name="ctl00$content$hdChargeSummary"
+                                        id="content_hdChargeSummary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

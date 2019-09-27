@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+        物业系统
+    </title>
+    <link href="js/easyui/bootstrap/easyui.css" type="text/css" rel="stylesheet" />
+    <link href="js/easyui/icon.css" type="text/css" rel="stylesheet" />
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script>
+        var socketserverurl, loginname, guid, url, disableEditRow = false;
+        $(function () {
+            socketserverurl = "120.77.144.50:3000";
+            url = "http://te-cool.com:99/";
+        })
+    </script>
+    <script src="js/socket/loginclient.js?t=201908-221000"></script>
+    <script src="js/easyui/jquery.easyui.min.js" type="text/javascript"></script>
+    <script src="js/easyui/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <link href="js/ztree/zTreeStyle/zTreeStyle.css?v1" rel="stylesheet" />
+    <script src="js/ztree/jquery.ztree.core.js"></script>
+    <script src="js/ztree/jquery.ztree.excheck.js"></script>
+    <script src="js/ztree/jquery.ztree.exedit.js"></script>
+    <script src="js/Page/Main/zTreeLoad.js?t=201908-221000"></script>
+    <script src="http://120.77.144.50:3000/socket.io/socket.io.js"></script>
+    <script src="js/Page/Comm/MaskUtil.js?t=201908-221000"></script>
+    <script src="js/Page/Main/Comm.js?t=201908-221000"></script>
+    <script src="js/Page/Main/Main.js?t=2_201908-221000"></script>
+    <script src="js/Page/Comm/unit.js?t=2_201908-221000"></script>
+    <link href="styles/treecss.css" rel="stylesheet" />
+    <link href="styles/buttons.css?v=1005" rel="stylesheet" />
+    <script>
+
+        var HasWechatServiceAuth = 0, LogoPath;
+
+
+
+
+
+        $(function () {
+            // getlogo();
+            HasWechatServiceAuth = Number("1");
+            LogoPath = "styles/images/newhomelogo.png";
+
+            // 判断是否登录
+            gerUserInfo();
+
+            // 退出登录的方法?
+            $('#ahover').click(function () {
+                var sessionId = getCookie('sessionId');
+                // console.log('登出测试');
+                // console.log(sessionId)
+                $.post(window.SERVERPATH + 'api/userLogout', {
+                    sessionId: sessionId
+                }, function (data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    if (data.status == '1') {
+                        clearCookie("sessionId");
+                        clearCookie("userName");
+                        window.location.href = "./login.html";
+                        // sessionStorage.removeItem('sessionId');
+                        // sessionStorage.removeItem('userName');
+                    } else {
+                        console.log(data.msg);
+                        show_message(data.msg, 'error');
+                    }
+                });
+            })
+
+        })
+
+        // 获得用户信息
+        function gerUserInfo() {
+            var userName = getCookie("userName");
+            var sessionId = getCookie("sessionId");
+            // console.log("测试");
+            // console.log(sessionId);
+            // console.log(userName);
+            // var userName = sessionStorage.getItem('userName');
+            // var sessionId = sessionStorage.getItem('sessionId');
+            if (sessionId == '' || sessionId == null) {
+                window.location.href = "./login.html";
+            } else {
+                $("#user_info").text('欢迎您 ,' + userName);
+            }
+        }
+
+
+        function getlogo() {
+            var options = {};
+            options.visit = "getcompanyinfo";
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'Handler/LoginHandler.ashx',
+                url: 'http://demo.saasyy.com/Handler/LoginHandler.ashx',
+                data: options,
+                success: function (message) {
+                    if (message.status) {
+                        if (message.IsHideHome_LogoImg) {
+                            $('.logo').hide()
+                            // $('.pageheader .headertitle .logo').hide();
+                        }
+                        else {
+                            if (message.Home_LogoImg != '') {
+                                // $('.pageheader .headertitle .logo').css('background-image', 'url("' + message.Home_LogoImg + '")')
+                            } else {
+                                // $('.pageheader .headertitle .logo').css('background-image', 'url("' + LogoPath + '")')
+                            }
+                        }
+                        if (message.ExpiringShow) {
+                            $('#servertime').show();
+                            $('#servermsg').html(message.ExpiringMsg);
+                            alertNotify(message.ExpiringMsg);
+                        } else {
+                            $('#servertime').hide();
+                        }
+                    }
+                    else {
+                        show_message('系统异常', 'error');
+                    }
+                }
+            });
+        }
+
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 5px;
+            /*高宽分别对应横竖滚动条的尺寸*/
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: #C0C0C0;
+        }
+
+        ::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background: #EDEDED;
+        }
+
+        .pageheader .headertitle {
+            width: 160px;
+            margin: 0;
+            float: left;
+        }
+
+        .pageheader a {
+            float: right;
+            line-height: 40px;
+            font-size: 25px;
+            color: #fff;
+            margin: 0 0 0 10px;
+        }
+
+        .pageheader .headertitle .logo {
+            background-size: auto auto;
+            background-repeat: no-repeat;
+            background-position: left center;
+            height: 40px;
+            width: 160px;
+            margin: 10px 0 0 20px;
+
+
+            background-image: url("styles/images/newhomelogo.png");
+        }
+
+        .timerBox {
+            float: right;
+            height: 60px;
+            overflow: visible;
+            position: relative;
+            margin-right: 10px;
+            width: 30px;
+        }
+
+        .time {
+            background-image: url("styles/buttons/head-time.png");
+        }
+
+        .time {
+            background-position: 0 10px;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            float: left;
+            height: 100%;
+            overflow: visible;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        a.customer_service {
+            background-position: 0 10px;
+            background-repeat: no-repeat;
+            background-size: 18px 18px;
+            float: left;
+            height: 40px;
+            overflow: visible;
+            cursor: pointer;
+            line-height: 40px;
+            color: #fff;
+        }
+
+        a.customer_service:hover {
+            color: #fff;
+        }
+
+        .notifymsg {
+            background-image: url("styles/images/homeicons/通知.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .viewmanual {
+            background-image: url("styles/images/homeicons/手册.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .warningbar {
+            background-image: url("styles/images/homeicons/消息.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .wechatservicecss {
+            background-image: url("styles/images/homeicons/客服.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .floatBox {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 3px 3px 18px #666;
+            display: none;
+            left: -92px;
+            padding: 10px 0px;
+            position: absolute;
+            top: 45px;
+            width: 205px;
+            z-index: 1009;
+        }
+
+        div.arrows {
+            border-bottom: 12px solid #fff;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            height: 0;
+            left: 50%;
+            margin-left: -6px;
+            position: absolute;
+            top: -12px;
+            width: 0;
+            z-index: 999;
+        }
+
+        .userCenter {
+            float: right;
+            height: 60px;
+            overflow: visible;
+            position: relative;
+            cursor: pointer;
+            line-height: 60px;
+            padding-left: 30px;
+            margin-right: 10px;
+            background-image: url("styles/images/homeicons/账户.png");
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: 28px auto;
+        }
+
+        .userCenter .dropdown-menu ul li a {
+            padding: 0 10px;
+        }
+
+        .userCenter span {
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .fatable {
+            font-size: 15px;
+        }
+
+        .dropdown-menu {
+            border: solid 1px #ddd;
+            border-radius: 5px !important;
+            min-width: 150px;
+            padding: 5px;
+            top: 50px;
+            display: none;
+            position: absolute;
+            background-color: #fff;
+        }
+
+        .dropdown-menu ul {
+            list-style: outside none none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .dropdown-menu ul li a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dropdown-menu ul li a {
+            text-decoration: none;
+            color: #000;
+            line-height: 25px;
+            height: 25px;
+            display: block;
+            padding: 0 5px;
+            font-size: 14px;
+        }
+
+
+
+        .notify_point {
+            min-width: 20px;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: #ff6a00;
+            color: #fff;
+            border-radius: 5px;
+            font-family: 'Microsoft YaHei';
+            padding-left: 0;
+            display: none;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .notify_point.warning_point {
+            right: 0px;
+            top: 0px;
+        }
+
+        .notify_point.expiring_point {
+            font-size: 10px;
+            right: 0px;
+            top: 0px;
+            display: block;
+        }
+
+        .pop_count {
+            color: #ff0000;
+            margin: 0 5px;
+            font-size: 14px;
+        }
+
+        .view_more {
+            color: #2f80d1;
+        }
+
+        .topHeader {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 61px;
+            background: #1d5a94;
+        }
+
+        .menubox {
+            border: solid 1px #ccc;
+            background-color: #808080;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-top: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .menubox.active {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .open {
+            position: relative;
+        }
+
+        .userCenter.open .dropdown-menu {
+            width: 100px;
+            display: block;
+            left: 25px;
+        }
+
+        .timerBox.open .dropdown-menu {
+            width: 260px;
+            display: block;
+            left: -114px;
+        }
+
+        .pageheader {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: 999;
+            border: none;
+            height: 61px;
+            width: 215px;
+            background-color: #1d5a94;
+        }
+
+        .treeLeft {
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            left: 5px;
+            width: 210px;
+            border-radius: 5px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        .ztree li {
+            padding: 5px 0 0 0;
+            /*background:url("../js/ztree/zTreeStyle/img/line_conn.gif") repeat-y scroll 0 0*/
+        }
+
+        .ztree li>input {
+            margin: 0;
+        }
+
+        .menutab .tabs-scroller-left {
+            background: url(styles/images/buttons/leftarrow.png) no-repeat center center;
+            background-size: 18px 18px;
+            border: 0;
+        }
+
+        .menutab .tabs-scroller-right {
+            background: url(styles/images/buttons/rightarrow.png) no-repeat center center;
+            background-size: 18px 18px;
+            border: 0;
+        }
+
+        .menutab .tabs-header {
+            background: #1d5a94;
+            border: 0;
+            height: 61px;
+            line-height: 61px;
+        }
+
+        .menutab .tabs li {
+            margin: 0 4px 0 0;
+        }
+
+        .menutab .tabs li a.tabs-inner {
+            color: #000;
+            font-weight: normal;
+        }
+
+        .menutab .tabs li a.tabs-inner:hover {
+            background: #3775a8;
+            color: #fff;
+            border: 0px;
+            border-radius: 10px;
+            border: solid 1px #3775a8;
+        }
+
+        .menutab .tabs li.tabs-selected a.tabs-inner {
+            background: #3775a8;
+            border: solid 1px #3775a8;
+            border-radius: 10px;
+        }
+
+        .menutab ul.tabs {
+            border: 0;
+        }
+
+        .menutab .tabs-title {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .btnlinkbar.l-btn {
+            padding: 0px;
+        }
+
+        .btnlinkbar.l-btn:hover {
+            padding: 0px;
+        }
+
+        .tree_tab .tabs-header {
+            border: 0px;
+        }
+    </style>
+    <script>
+        $(function () {
+            closeWest();
+            addTreeTab();
+            $('#tree_tab').tabs('hideHeader');
+            $('#tree_tab').tabs({
+                onSelect: function (title, index) {
+                    var target = this;
+                    top.treeType = $(target).tabs('getSelected').panel('options').id;
+                    loadZTree(false, true);
+                }
+            })
+        })
+        function addTreeTab() {
+            var id = top.treeType;
+            var title = 'Nav' + id;
+            var content = '<ul id="tt_' + id + '" class="ztree"></ul>'
+            if (!$('#tree_tab').tabs('exists', title)) {
+                $('#tree_tab').tabs('add', {
+                    id: id,
+                    title: title,
+                    content: content,
+                    closable: false,
+                });
+                loadZTree(true, true);
+            } else {
+                $('#tree_tab').tabs('select', title);
+                loadZTree(false, true);
+            }
+        }
+        function closeWest() {
+            $('#header_logo').show();
+            $(".menutab .tabs-header").css("margin-left", "215px");
+            $(".menutab .tabs-header").css("max-width", "60%");
+            $('#top_default_layout').layout('panel', 'west').panel("close");
+            $('#top_default_layout').layout('resize');
+        }
+        function openWest() {
+            $('#header_logo').hide();
+            $(".menutab .tabs-header").css("margin-left", "0px");
+            $(".menutab .tabs-header").css("max-width", "60%");
+            $('#top_default_layout').layout('panel', 'west').panel("open");
+            $('#top_default_layout').layout('resize');
+        }
+        function openTreeContent(cancelExChange) {
+            updateSubTab(top.treeType);
+            updateTopTab(top.treeType);
+        }
+        function updateTopTab(id) {
+            var tab = $('#tabs').tabs('getSelected');  // get selected panel
+            tab.panel('options').id = id;
+            if (id == 0) {
+                closeWest();
+            } else {
+                openWest();
+                addTreeTab();
+            }
+            var pageid = tab.panel('options').pageid;
+            if (pageid == 40) {
+                $('.treeLeft .textbox.searchbox').css('width', '150px');
+                $('#btnSearchMore').show();
+            } else {
+                $('#btnSearchMore').hide();
+                $('.treeLeft .textbox.searchbox').css('width', '180px');
+            }
+        }
+    </script>
+</head>
+
+<body class="easyui-layout" id="top_default_layout" data-options="fit:true,border:false">
+    <div data-options="region:'west',border:false" style="width: 215px; background-color: #f2f1f1;">
+        <div class="pageheader" style="">
+            <!-- <a class="headertitle" href="default.aspx?pagetype=1">
+                <div class="logo" style='width: 100%;'></div>
+            </a> -->
+        </div>
+        <div class="treeLeft">
+            <div class="easyui-panel"
+                style="height: 50px; width: 210px; padding: 10px 0 0 8px; border: 0px; background: #fff;">
+                <input id="searchbox" class="easyui-searchbox" data-options="prompt:'',searcher:doSearch"
+                    style="height: 30px; width: 180px;" />
+                <a id="btnSearchMore" href="javascript:void(0)" onclick="do_search_more()"
+                    class="easyui-linkbutton btnlinkbar" data-options="plain:true">搜索</a>
+            </div>
+            <div class="easyui-panel" style="height: 90%; width: 210px; border: 0px;">
+                <div id="tree_opt" style="display: none;">
+                    <a href="javascript:void(0)" onclick="addTree()" class="easyui-linkbutton btnlinkbar"
+                        data-options="plain:true,iconCls:'icon-add'">增加</a>
+                    <a href="javascript:void(0)" onclick="editTree()" class="easyui-linkbutton btnlinkbar"
+                        data-options="plain:true,iconCls:'icon-edit'">修改</a>
+                    <a href="javascript:void(0)" onclick="removeTree()" class="easyui-linkbutton btnlinkbar"
+                        data-options="plain:true,iconCls:'icon-remove'">删除</a>
+                </div>
+                <div id="tree_tab" class="easyui-tabs tree_tab" data-options="fit:true"
+                    style="width: 210px; border: 0px;" data-options="border:false">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div class="topHeader">
+            <div class="pageheader" id="header_logo">
+                <a class="headertitle" href="default.aspx?pagetype=1">
+                    <!-- <div class="logo"></div> -->
+                </a>
+            </div>
+            <div style="position: absolute; right: 20px; top: 0; z-index: 999;">
+                <div class="timerBox" id="servertime" style="display: none">
+                    <div id="time" class="time" style="margin-right: 10px;">
+                        <div class="floatBox" id="timeFloat" style="display: none;">
+                            <div class="arrows"></div>
+                            <div><span class="btn btn-white" id="servermsg" style="white-space: pre-wrap;"></span></div>
+                        </div>
+                    </div>
+                    <div class="notify_point expiring_point">1+</div>
+                </div>
+                <div class="timerBox">
+                    <a id="notifymsg" href="javascript:void(0)" title="系统通知" class="time notifymsg">
+                        <div id="notify_img" class="notify_point"></div>
+                    </a>
+                </div>
+                <div class="timerBox">
+                    <a title="使用手册" href="http://admin.saasyy.com/manual/viewsysmanual.aspx" target="_blank"
+                        class="time viewmanual"></a>
+                </div>
+                <div class="timerBox" id="btnwarning">
+                    <a href="javascript:void(0)" title="提醒事项" class="time warningbar">
+                        <div id="warning_point" class="notify_point warning_point">0</div>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="arrows"></div>
+                        <ul>
+                            <li><a href="javascript:void(0)" id="sub_shoufei" style="text-align: left;">租金收取提醒<span
+                                        class="pop_count" id="shoufei_count">0</span>条 <span
+                                        class="view_more">点击查看详情</span></a></li>
+                            <li><a href="javascript:void(0)" id="sub_daoqi" style="text-align: left;">合同到期提醒<span
+                                        class="pop_count" id="daoqi_count">0</span>条 <span
+                                        class="view_more">点击查看详情</span></a></li>
+                            <li><a href="javascript:void(0)" id="sub_baoxiu" style="text-align: left;">报事报修提醒<span
+                                        class="pop_count" id="service_count">0</span>条 <span
+                                        class="view_more">点击查看详情</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timerBox">
+                    <a href="https://mpkf.weixin.qq.com/" title="客服系统" target="_blank"
+                        class="time wechatservicecss"></a>
+                </div>
+
+                <div class="userCenter" id="user_center">
+                    <span id="user_info">欢迎您 , demo10</span>
+                    <div class="dropdown-menu">
+                        <div class="arrows"></div>
+                        <ul>
+                            <li><a onclick="viewPersonal()" style="text-align: left;">个人中心</a></li>
+                            <!-- <li><a href="Login.aspx?op=logout" id="ahover" target="_top" -->
+                            <!-- href="login.html" -->
+                            <li><a id="ahover" target="_top" style="text-align: left;">退出</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabs" class="easyui-tabs menutab" data-options="fit:true,border:false,tabHeight:26"
+            style="width: 100%; height: 100%;">
+        </div>
+
+        <!-- <audio style="display: none;" id="message_ring" controls="controls" src="newmessage.mp3"></audio> -->
+    </div>
+    <!-- 鼠标右键菜单 -->
+    <div id="mm" class="easyui-menu" style="width: 150px; display: none; margin-left: 5px;">
+        <div id="mm-tabclose">
+            关闭
+        </div>
+    </div>
+
+</body>
+
+</html>

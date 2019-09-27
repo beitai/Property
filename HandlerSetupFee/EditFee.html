@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script src="../js/Page/Comm/GetTypeList.js?v=2019-08291000"></script>
+    <script type="text/javascript">
+        var tdFeeType, tdCategory, tdCalculateAreaType, tdChargeType, tdChargeTypeCount, tdEndNumberType, tdIsReading, tdAllowImport, tdEndType, tdStartPriceRange, tdChargeFeeType, tdRelateCharges;
+        $(function () {
+            tdFeeType = $("#content_tdFeeType");
+            tdCategory = $("#content_tdCategory");
+            tdCalculateAreaType = $("#content_tdCalculateAreaType");
+            tdChargeType = $("#content_tdChargeType");
+            tdChargeTypeCount = $("#content_tdChargeTypeCount");
+            tdEndNumberType = $("#content_tdEndNumberType");
+            tdIsReading = $("#content_tdIsReading");
+            tdAllowImport = $("#content_tdAllowImport");
+            tdEndType = $("#content_tdEndType");
+            tdStartPriceRange = $("#content_StartPriceRange");
+            tdChargeFeeType = $("#content_tdChargeFeeType");
+            tdRelateCharges = $("#content_tdRelateCharges");
+            loadParams();
+            initPanel();
+            tdStartPriceRange.bind('click', function () {
+                initPriceRange();
+            })
+            initPriceRange();
+            tdIsReading.combobox({
+                onChange: function () {
+                    initChargeType();
+                }
+            });
+            initChargeType();
+            tdChargeTypeCount.textbox({
+                onChange: function () {
+                    var ChargeTypeCount = tdChargeTypeCount.textbox("getValue");
+                    if (ChargeTypeCount == 0) {
+                        tdEndNumberType.combobox("setValue", 1);
+                        $("#content_tdAutoNextMonth").prop("checked", true);
+                    }
+                }
+            })
+            var ChargeTypeCount = tdChargeTypeCount.textbox("getValue");
+            ChargeTypeCount = ChargeTypeCount < 0 ? 0 : ChargeTypeCount;
+            tdChargeTypeCount.textbox("setValue", ChargeTypeCount);
+        });
+        function initPriceRange() {
+            if (tdStartPriceRange.prop('checked')) {
+                $('.pricerange_css').show();
+                $("#content_tdUnitPrice").textbox("setValue", "0")
+                $("#content_tdUnitPrice").textbox({
+                    disabled: true
+                });
+            }
+            else {
+                $('.pricerange_css').hide();
+                $("#content_tdUnitPrice").textbox({
+                    disabled: false
+                });
+            }
+        }
+        function initChargeType() {
+            var selectedvalue = tdIsReading.combobox('getValue');
+            if (selectedvalue == "1") {
+                tdChargeType.combobox('setValue', 0);
+                tdChargeType.combobox({
+                    disabled: true
+                })
+            }
+            else {
+                tdChargeType.combobox({
+                    disabled: false
+                })
+            }
+        }
+
+        function initPanel() {
+            var feeType = tdFeeType.combobox("getValue");
+            if (feeType == 1) {
+                $("#panelZhouqi").panel({ closed: false });
+                $("#panelLinshi").panel({ closed: true });
+                $("#panelWeiyue").panel({ closed: true });
+            }
+            else if (feeType == 4) {
+                $("#panelZhouqi").panel({ closed: true });
+                $("#panelLinshi").panel({ closed: false });
+                $("#panelWeiyue").panel({ closed: true });
+            }
+            else if (feeType == 8) {
+                $("#panelZhouqi").panel({ closed: true });
+                $("#panelLinshi").panel({ closed: true });
+                $("#panelWeiyue").panel({ closed: false });
+            }
+        }
+        function loadParams() {
+            tdFeeType.combobox({
+                data: getFeeTypeList(),
+                valueField: 'ID',
+                textField: 'Name',
+                editable: false,
+                onSelect: function (ret) {
+                    if (ret.ID == 1) {
+                        $("#panelZhouqi").panel({ closed: false });
+                        $("#panelLinshi").panel({ closed: true });
+                        $("#panelWeiyue").panel({ closed: true });
+                    }
+                    else if (ret.ID == 4) {
+                        $("#panelZhouqi").panel({ closed: true });
+                        $("#panelLinshi").panel({ closed: false });
+                        $("#panelWeiyue").panel({ closed: true });
+                    }
+                    else if (ret.ID == 8) {
+                        $("#panelZhouqi").panel({ closed: true });
+                        $("#panelLinshi").panel({ closed: true });
+                        $("#panelWeiyue").panel({ closed: false });
+                    }
+                }
+            });
+
+            tdChargeType.combobox({
+                data: getChargeTypeList(),
+                editable: false,
+                valueField: 'ID',
+                textField: 'Name'
+            });
+
+            tdEndType.combobox({
+                data: getEndTypeList(),
+                valueField: 'ID',
+                textField: 'Name',
+                editable: false,
+                onSelect: function (ret) {
+                    if (ret.ID == 3) {
+                        $('#rulesetup').hide();
+                    }
+                    else {
+                        $('#rulesetup').show();
+                    }
+                }
+            });
+            var EndTypeValue = tdEndType.combobox('getValue');
+            if (EndTypeValue == 3) {
+                $('#rulesetup').hide();
+            }
+            else {
+                $('#rulesetup').show();
+            }
+            var options = { visit: 'getfeecategorylist' };
+            $.post("http://demo.saasyy.com/Handler/CommHandler.ashx", options, function (data) {
+                tdCategory.combobox({
+                    data: data,
+                    valueField: 'ID',
+                    textField: 'Name',
+                    editable: false
+                });
+            }, "json");
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/AnalysisHandler.ashx?visit=gettochargesearch',
+                success: function (data) {
+
+
+                    tdRelateCharges.combobox({
+                        editable: false,
+                        data: data.summarys,
+                        valueField: 'ID',
+                        textField: 'Name',
+                        multiple: true,
+                    });
+                }
+            });
+            var CalculateAreaTypeList = eval("(" + $('#content_hdCalculateAreaType').val() + ")");
+            tdCalculateAreaType.combobox({
+                data: CalculateAreaTypeList,
+                valueField: 'ID',
+                textField: 'Name',
+                editable: false
+            });
+
+            tdChargeFeeType.combobox({
+                data: getChargeFeeTypeList(),
+                editable: false,
+                valueField: 'ID',
+                textField: 'Name'
+            });
+        }
+        function do_save() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            var ChargeID = "";
+            var CompanyID = "1";
+            var Name = $("#content_tdName").textbox("getValue");
+            var FeeType = tdFeeType.combobox("getValue");
+            var Category = tdCategory.combobox("getValue");
+            //var StartTime = $("#content_tdStartTime").datebox("getValue");
+            var StartTime = "";
+            //var EndTime = $("#content_tdEndTime").datebox("getValue");
+            var EndTime = "";
+            var UnitPrice = $("#content_tdUnitPrice").textbox("getValue");
+            var ChargeType = tdChargeType.combobox("getValue");
+            var EndType = tdEndType.combobox("getValue");
+            var ChargeTypeCount = tdChargeTypeCount.textbox("getValue");
+            if (ChargeTypeCount == 0) {
+                tdEndNumberType.combobox("setValue", 1);
+                $("#content_tdAutoNextMonth").prop("checked", true);
+            }
+            var EndNumberCount = $("#content_tdEndNumberCount").combobox("getValue");
+            var AllowImport = tdAllowImport.combobox("getValue");
+            var Remark = $("#content_tbRemark").textbox("getValue");
+            var Unit = $("#content_tdUnit").textbox("getValue");
+            var IsReading = tdIsReading.combobox("getValue");
+            var EndNumberType = tdEndNumberType.combobox("getValue");
+            if (FeeType == 1 && parseFloat(ChargeTypeCount) < 0) {
+                var shunyan_day = EndNumberType == 2 ? "天数" : "月份";
+                show_message('周期费用顺延' + shunyan_day + '必须大于0', 'info');
+                return;
+            }
+            var tdAutoNextMonth = document.getElementsByName("ctl00$content$tdAutoNextMonth");
+            var AutoNextMonth = 0;
+            for (var i = 0; i < tdAutoNextMonth.length; i++) {
+                if (tdAutoNextMonth[i].checked) {
+                    AutoNextMonth = 1;
+                }
+            }
+            var BiaoCategory = $("#content_tdBiaoCategory").textbox("getValue");
+            var ChargeBiaoIDs = $("#hdChargeBiaoID").val();
+            if (BiaoCategory == "" && IsReading == 1) {
+                show_message('表种类不能为空', 'info');
+                return;
+            }
+            var TimeAuto = $("#content_tdTimeAuto").combobox("getValue");
+            var SortOrder = $("#content_tdSortOrder").textbox("getValue");
+            var IsOrderFeeOn = $("#content_tdIsOrderFeeOn").combobox("getValue");
+            var WeiYuePercent = $("#content_tdWeiYuePercent").textbox("getValue");
+            var RelateCharges = tdRelateCharges.combobox("getValues");
+            var ChargeWeiYueType = $("#content_tdChargeWeiYueType").combobox("getValue");
+            var DayGunLiCheck = document.getElementById('content_tdDayGunLi');
+            var DayGunLi = 0;
+            if (DayGunLiCheck.checked) {
+                DayGunLi = 1;
+            }
+            var WeiYueStartDate = $("#content_tdWeiYueStartDate").combobox("getValue");
+            var WeiYueBefore = $("#content_tdWeiYueBefore").combobox("getValue");
+            var WeiYueDays = $("#content_tdWeiYueDays").textbox("getValue");
+            var CalculateAreaType = tdCalculateAreaType.combobox("getValue");
+
+            var WeiYueActiveStartDate = $("#content_tdWeiYueActiveStartDate").combobox("getValue");
+            var WeiYueActiveBeforeAfter = $("#content_tdWeiYueActiveBeforeAfter").combobox("getValue");
+            var WeiYueActiveCount = $("#content_tdWeiYueActiveCount").textbox("getValue");
+            var WeiYueActiveDayMonth = $("#content_tdWeiYueActiveDayMonth").combobox("getValue");
+            var WeiYueEndDate = $("#content_tdWeiYueEndDate").combobox("getValue");
+            var StartPriceRange = 0;
+            if (tdStartPriceRange.prop('checked')) {
+                StartPriceRange = 1;
+            }
+            var PriceRangeStartTime = $("#content_tdPriceRangeStartTime").datebox("getValue");
+            var DisableDefaultImportFee = $("#content_tdDisableDefaultImportFee").combobox("getValue");
+            var ChargeFeeType = tdChargeFeeType.combobox('getValue');
+            var options = { visit: "addchargeprice", ChargeID: ChargeID, Name: Name, Category: Category, StartTime: StartTime, EndTime: EndTime, UnitPrice: UnitPrice, ChargeType: ChargeType, EndType: EndType, ChargeTypeCount: ChargeTypeCount, EndNumberCount: EndNumberCount, AllowImport: AllowImport, Remark: Remark, CompanyID: CompanyID, FeeType: FeeType, Unit: Unit, IsReading: IsReading, EndNumberType: EndNumberType, AutoNextMonth: AutoNextMonth, BiaoCategory: BiaoCategory, TimeAuto: TimeAuto, SortOrder: SortOrder, IsOrderFeeOn: IsOrderFeeOn, ChargeBiaoIDs: ChargeBiaoIDs, WeiYuePercent: WeiYuePercent, RelateCharges: JSON.stringify(RelateCharges), ChargeWeiYueType: ChargeWeiYueType, DayGunLi: DayGunLi, WeiYueStartDate: WeiYueStartDate, WeiYueBefore: WeiYueBefore, WeiYueDays: WeiYueDays, CalculateAreaType: CalculateAreaType, WeiYueActiveStartDate: WeiYueActiveStartDate, WeiYueActiveBeforeAfter: WeiYueActiveBeforeAfter, WeiYueActiveCount: WeiYueActiveCount, WeiYueActiveDayMonth: WeiYueActiveDayMonth, WeiYueEndDate: WeiYueEndDate, StartPriceRange: StartPriceRange, DisableDefaultImportFee: DisableDefaultImportFee, PriceRangeStartTime: PriceRangeStartTime, ChargeFeeType: ChargeFeeType };
+            MaskUtil.mask('body', '提交中');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: options,
+                url: 'http://demo.saasyy.com/Handler/FeeCenterHandler.ashx',
+                success: function (data) {
+                    MaskUtil.unmask();
+                    if (data.status) {
+                        top.winUpdate = true;
+                        show_message('保存成功', 'success', function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, "info");
+                        return;
+                    }
+                    show_message('系统错误', 'error');
+                }
+            });
+        }
+        function do_close() {
+            doCloseWin();
+        }
+        function editPriceRange() {
+            var ChargeID = "";
+            if (ChargeID == null || ChargeID == '') {
+                show_message('请先保存收费项目', 'info');
+                return;
+            }
+            doOpenWin({
+                title: '阶梯单价',
+                url: '../SetupFee/EditPriceRange.aspx?ChargeID=' + ChargeID,
+                width: '100%',
+                height: "100%",
+                winid: 'winprice',
+                winInline: true
+            });
+        }
+        var pChargeBiaoIDs, pBiaoCategoryNames, pBiaoNames;
+        function chooseBiao() {
+            pChargeBiaoID = pBiaoCategoryName = pBiaoName = pBiaoGuiGe = '';
+            var ChargeID = "";
+            if (ChargeID == null || ChargeID == '') {
+                ChargeID = 0;
+            }
+            doOpenWin({
+                title: '选择表种类',
+                url: '../SetupFee/ChooseBiao.aspx?ChargeID=' + ChargeID,
+                width: '100%',
+                height: "100%",
+                winid: 'winbiao',
+                winInline: true
+            }, function () {
+                if (pChargeBiaoIDs) {
+                    $("#hdChargeBiaoID").val(pChargeBiaoIDs);
+                    $("#content_tdBiaoCategory").textbox('setValue', pBiaoCategoryNames);
+                }
+            });
+        }
+    </script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./EditFee.aspx" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKMTg4NDc3NTIxM2QYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgMFHWN0bDAwJGNvbnRlbnQkU3RhcnRQcmljZVJhbmdlBR1jdGwwMCRjb250ZW50JHRkQXV0b05leHRNb250aAUYY3RsMDAkY29udGVudCR0ZERheUd1bkxp2WUpyvDYnMXrCGRS8FINCv5COFE=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="304D0822" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdACdLnT6myAeOLk3O17qHrmf6+iU6XCl85RlORNJrsXnGFfr425avrvdta1oT2pHODPXECr3MuaH2+nkopkQn7wLAB8WIV1G5s/WzUm9bEKTf5mePcWBjcbS/eVPpZ3mBJiZC0P6/h35DHw2LPEGCdf4apgGdn/d2Rk8LzGiiJ9sohghsOscN12nPDDvzVbfaULi/jSlQKhjIB/TYQ/O54yb5bFMuz7updLb36wq1c9ZcxZw8jhy+mIRIC41vpSemHkCPp6Yv0b5FLy7QLSKSzJTl5y15ZmZtN+XHgCU6Uyh1WdkST5HpfAf1OipUFmkJ49bD0Nz1JLripzhaKYR+T/PnKaCDixSabOrBm/NZMGDitRZaznq9o2+K4RRVAwh23O3ikFU3R9x7iVJ2QxuhH+ENo6amw9gDtm1lkMqwhqlJqPaacIszu+N3zfej+uXYXFj9jMPehR24zCuxcl+3dMRAIODFImSaFOMXYfbgUmLHQOldeh/trVb1LI50fw6/NImfI77/hxpEFe6MbantS32zctsntAtmzHtwfqebLKvUdW7El6o4dbP2EHqgeZRMBM/+kW7NsMKtkEbIpLWtkCgCe4y7YcRV2iKqONqnoQgGQgWUyMJoeIZnjW4UYhmNQ2lvt+tfvJHWIPCOziWmZGa60DG1oGREpxXvninUpv38Zx86Ir5U8JyyIQ3UTWhVvOH46phzQU0UuzCd763Z/HZChS3McSm22Y4xea0N3naTEnkAOsQ9kG2U7qUdvQwamFmPawOpwLRBVuZAvr/Umcfk19LQ8T7JvNIjTlsLP1ety702vqAPelxUT2A8SlZrCTCzXeIhD5DlHi9kZ547dPIrjaxIdQ==" />
+                    </div>
+                    <div class="operation_box">
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                        <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                    </div>
+                    <div class="table_container">
+                        <div class="easyui-panel" data-options="border:false,fit:false">
+                            <div class="table_title">主要信息</div>
+                            <table class="info">
+                                <tr>
+                                    <td>排序序号
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdSortOrder" type="text" id="content_tdSortOrder"
+                                            class="easyui-textbox" />
+                                    </td>
+                                    <td>收费项目
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdName" type="text" id="content_tdName"
+                                            class="easyui-textbox" data-options="required:true" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>收费性质
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdFeeType" type="text" id="content_tdFeeType"
+                                            class="easyui-combobox" data-options="required:true" />
+                                    </td>
+                                    <td>分类
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdCategory" type="text" id="content_tdCategory"
+                                            class="easyui-combobox" data-options="required:true" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>默认单价
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdUnitPrice" type="text" id="content_tdUnitPrice"
+                                            class="easyui-textbox" style="width: 100px;" />
+                                        阶梯单价
+                                        <input name="ctl00$content$StartPriceRange" type="checkbox"
+                                            id="content_StartPriceRange" />
+                                        <a href="javascript:void(0)" onclick="editPriceRange()"
+                                            class="easyui-linkbutton btnlinkbar"
+                                            data-options="plain:true,iconCls:'icon-add'"></a>
+                                    </td>
+                                    <td>金额尾数
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdEndNumberCount" id="content_tdEndNumberCount"
+                                            class="easyui-combobox" data-options="required:true,editable:false">
+                                            <option value="0">元</option>
+                                            <option value="1">角</option>
+                                            <option value="2">分</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计算面积
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdCalculateAreaType" type="text"
+                                            id="content_tdCalculateAreaType" class="easyui-combobox" />
+                                        <input type="hidden" name="ctl00$content$hdCalculateAreaType"
+                                            id="content_hdCalculateAreaType"
+                                            value="[{&quot;ID&quot;:&quot;&quot;,&quot;Name&quot;:&quot;无&quot;},{&quot;ID&quot;:&quot;jifei&quot;,&quot;Name&quot;:&quot;计费面积&quot;},{&quot;ID&quot;:&quot;jianzhu&quot;,&quot;Name&quot;:&quot;建筑面积&quot;},{&quot;ID&quot;:&quot;taonei&quot;,&quot;Name&quot;:&quot;套内面积&quot;},{&quot;ID&quot;:&quot;gongtan&quot;,&quot;Name&quot;:&quot;公摊面积&quot;},{&quot;ID&quot;:&quot;chanquan&quot;,&quot;Name&quot;:&quot;产权面积&quot;},{&quot;ID&quot;:&quot;shiyong&quot;,&quot;Name&quot;:&quot;使用面积&quot;},{&quot;ID&quot;:&quot;peitao&quot;,&quot;Name&quot;:&quot;配套面积&quot;}]" />
+                                    </td>
+                                    <td>计费方式
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdChargeType" type="text" id="content_tdChargeType"
+                                            class="easyui-combobox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>启用收费序时
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdTimeAuto" id="content_tdTimeAuto"
+                                            class="easyui-combobox" data-options="editable:false">
+                                            <option value="1">启用</option>
+                                            <option selected="selected" value="0">停用</option>
+                                        </select>
+                                    </td>
+                                    <td>启用交款审计
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdIsOrderFeeOn" id="content_tdIsOrderFeeOn"
+                                            class="easyui-combobox" data-options="editable:false">
+                                            <option selected="selected" value="1">启用</option>
+                                            <option value="0">停用</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>项目类型
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="ctl00$content$tdChargeFeeType" type="text"
+                                            id="content_tdChargeFeeType" class="easyui-combobox" />
+                                    </td>
+                                </tr>
+                                <tr class="pricerange_css">
+                                    <td>阶梯单价执行时间
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="ctl00$content$tdPriceRangeStartTime" type="text"
+                                            id="content_tdPriceRangeStartTime" class="easyui-datebox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>备注
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="ctl00$content$tbRemark" type="text" id="content_tbRemark"
+                                            class="easyui-textbox" data-options="multiline:true"
+                                            style="height: 50px; width: 80%;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="easyui-panel" id="panelZhouqi" data-options="border:false,fit:false,closed:true"
+                            title="">
+                            <div class="table_title">费项参数(周期)</div>
+                            <table class="info">
+                                <tr style="display: none;">
+                                    <td>计费开始日期
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdStartTime" type="text" id="content_tdStartTime"
+                                            class="easyui-datebox" />
+                                    </td>
+                                    <td>计费结束日期
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdEndTime" type="text" id="content_tdEndTime"
+                                            class="easyui-datebox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计费规则
+                                    </td>
+                                    <td colspan="3" style="width: 85%;">计费结束日期&nbsp;&nbsp;
+                                        <input name="ctl00$content$tdEndType" type="text" id="content_tdEndType"
+                                            class="easyui-combobox" />
+                                        <label id="rulesetup">
+                                            &nbsp;&nbsp;顺延&nbsp;&nbsp;
+                                            <input name="ctl00$content$tdChargeTypeCount" type="text"
+                                                id="content_tdChargeTypeCount" class="easyui-textbox"
+                                                style="width: 30px;" />
+                                            <select name="ctl00$content$tdEndNumberType" id="content_tdEndNumberType"
+                                                class="easyui-combobox" data-options="editable:false"
+                                                style="width: 60px;">
+                                                <option value="1">月</option>
+                                                <option value="2">日</option>
+                                            </select>
+                                            &nbsp;&nbsp;
+                                            <input id="content_tdAutoNextMonth" type="checkbox"
+                                                name="ctl00$content$tdAutoNextMonth" /><label
+                                                for="content_tdAutoNextMonth">自动取整至月末</label>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="easyui-panel" id="panelLinshi" data-options="border:false,fit:false,closed:true">
+                            <div class="table_title">费项参数(临时)</div>
+                            <table class="info">
+                                <tr>
+                                    <td>是否抄表
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdIsReading" id="content_tdIsReading"
+                                            class="easyui-combobox" data-options="editable:false">
+                                            <option value="1">是</option>
+                                            <option selected="selected" value="0">否</option>
+                                        </select>
+                                    </td>
+                                    <td>批量账单处理
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdAllowImport" id="content_tdAllowImport"
+                                            class="easyui-combobox" data-options="editable:false">
+                                            <option selected="selected" value="1">是</option>
+                                            <option value="0">否</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计量单位
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdUnit" type="text" id="content_tdUnit"
+                                            class="easyui-textbox" />
+                                    </td>
+                                    <td>表种类
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdBiaoCategory" type="text"
+                                            id="content_tdBiaoCategory" class="easyui-textbox"
+                                            data-options="readonly:true,multiline:true" style="height: 50px;" />
+                                        <input type="hidden" id="hdChargeBiaoID" />
+                                        <a href="javascript:void(0)" onclick="chooseBiao()"
+                                            class="easyui-linkbutton btnlinkbar"
+                                            data-options="plain:true,iconCls:'icon-choose'">选择</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>启用默认账单
+                                    </td>
+                                    <td colspan="3">
+                                        <select name="ctl00$content$tdDisableDefaultImportFee"
+                                            id="content_tdDisableDefaultImportFee" class="easyui-combobox"
+                                            data-options="editable:false">
+                                            <option value="0">启用</option>
+                                            <option value="1">停用</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="easyui-panel" id="panelWeiyue" data-options="border:false,fit:false,closed:true">
+                            <div class="table_title">费项参数(违约金)</div>
+                            <table class="info">
+                                <tr>
+                                    <td>违约金比例
+                                    </td>
+                                    <td>
+                                        <input name="ctl00$content$tdWeiYuePercent" type="text"
+                                            id="content_tdWeiYuePercent" class="easyui-textbox" />
+                                    </td>
+                                    <td>关联项目</td>
+                                    <td>
+                                        <input name="ctl00$content$tdRelateCharges" type="text"
+                                            id="content_tdRelateCharges" class="easyui-combobox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计费方式
+                                    </td>
+                                    <td>
+                                        <select name="ctl00$content$tdChargeWeiYueType" id="content_tdChargeWeiYueType"
+                                            class="easyui-combobox" data-options="editable:false">
+                                            <option value="1">费用金额*天*违约金比例</option>
+                                        </select>
+                                    </td>
+                                    <td>按天复利滚动</td>
+                                    <td>
+                                        <input name="ctl00$content$tdDayGunLi" type="checkbox"
+                                            id="content_tdDayGunLi" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>违约生效规则
+                                    </td>
+                                    <td colspan="3">
+                                        <select name="ctl00$content$tdWeiYueActiveStartDate"
+                                            id="content_tdWeiYueActiveStartDate" class="easyui-combobox" type="text"
+                                            data-options="editable:false">
+                                            <option value="starttime">计费开始日期</option>
+                                            <option value="endtime">计算结束日期</option>
+                                        </select>
+                                        &nbsp;&nbsp;
+                                        <select name="ctl00$content$tdWeiYueActiveBeforeAfter"
+                                            id="content_tdWeiYueActiveBeforeAfter" class="easyui-combobox" type="text"
+                                            style="width: 60px;" data-options="editable:false">
+                                            <option value="before">早于</option>
+                                            <option value="after">晚于</option>
+                                        </select>
+                                        &nbsp;&nbsp;
+                                        当前自然日期
+                                        &nbsp;&nbsp;
+                                        <input name="ctl00$content$tdWeiYueActiveCount" type="text"
+                                            id="content_tdWeiYueActiveCount" class="easyui-textbox"
+                                            style="width: 30px;" />
+                                        &nbsp;&nbsp;
+                                        <select name="ctl00$content$tdWeiYueActiveDayMonth"
+                                            id="content_tdWeiYueActiveDayMonth" class="easyui-combobox" type="text"
+                                            style="width: 60px;" data-options="editable:false">
+                                            <option value="day">天</option>
+                                            <option value="month">月</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>违约开始日期规则
+                                    </td>
+                                    <td colspan="3">默认为对应项目&nbsp;&nbsp;
+                                        <select name="ctl00$content$tdWeiYueStartDate" id="content_tdWeiYueStartDate"
+                                            class="easyui-combobox" type="text" data-options="editable:false">
+                                            <option value="starttime">计费开始日期</option>
+                                            <option value="endtime">计算结束日期</option>
+                                        </select>
+                                        &nbsp;&nbsp;
+                                        <select name="ctl00$content$tdWeiYueBefore" id="content_tdWeiYueBefore"
+                                            class="easyui-combobox" type="text" style="width: 60px;"
+                                            data-options="editable:false">
+                                            <option value="before">提前</option>
+                                            <option value="after">延后</option>
+                                        </select>&nbsp;&nbsp;<input name="ctl00$content$tdWeiYueDays" type="text"
+                                            id="content_tdWeiYueDays" class="easyui-textbox"
+                                            style="width: 30px;" />&nbsp;&nbsp;天
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>违约截止日期规则
+                                    </td>
+                                    <td colspan="3">
+                                        <select name="ctl00$content$tdWeiYueEndDate" id="content_tdWeiYueEndDate"
+                                            class="easyui-combobox" type="text" data-options="editable:false">
+                                            <option value="currentdate">当前自然日期</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

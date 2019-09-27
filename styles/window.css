@@ -1,0 +1,127 @@
+.operation_box {
+    text-align: right;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: #fff;
+    padding: 0 5px 0 0;
+    border-bottom: solid 1px #eee;
+}
+
+    .operation_box .win_title {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        line-height: 50px;
+        font-size: 15px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .operation_box .l-btn-plain {
+        display: inline-block;
+    }
+
+    .operation_box.linebox {
+        left: auto;
+        border-bottom: 0px;
+    }
+
+    .operation_box .btntoolbar.l-btn {
+        padding: 0px;
+    }
+
+        .operation_box .btntoolbar.l-btn:hover {
+            padding: 0px;
+        }
+
+    .operation_box .btntoolbar .l-btn-text {
+        line-height: 50px;
+    }
+
+    .operation_box .btnlinkbar.l-btn {
+        line-height: 50px;
+        padding: 0px;
+    }
+
+        .operation_box .btnlinkbar.l-btn:hover {
+            padding: 0px;
+            height: 50px;
+        }
+
+    .operation_box .btnlinkbar .l-btn-text {
+        line-height: 50px;
+    }
+
+
+.table_container {
+    padding: 55px 0 0 0;
+}
+
+    .table_container.nopadding {
+        padding: 0;
+    }
+
+.table_title {
+    padding: 10px;
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.icon-close {
+    background: url('../styles/images/newicons/close关闭.png') no-repeat center center;
+}
+
+.btntoolbar .l-btn-text {
+    font-size: 14px;
+    line-height: 30px;
+    color: #005b93;
+}
+
+.btntoolbar.l-btn {
+    padding: 6px 12px;
+    line-height: 30px;
+}
+
+    .btntoolbar.l-btn:hover {
+        border-radius: 0;
+        border: 0px;
+        padding: 6px 12px;
+    }
+
+.btnlinkbar .l-btn-text {
+    font-size: 14px;
+    line-height: 24px;
+    color: #005b93;
+}
+
+
+.btnlinkbar.l-btn {
+    padding: 3px;
+    line-height: 24px;
+}
+
+    .btnlinkbar.l-btn:hover {
+        border-radius: 0;
+        border: 0px;
+        padding: 3px;
+    }
+
+.linebar {
+    border: solid 1px #ccc;
+    border-radius: 0;
+}
+
+    .linebar.l-btn:hover {
+        border: solid 1px #ccc;
+    }
+
+.btntoolbar .l-btn-icon, .btnlinkbar .l-btn-icon {
+    background-size: 18px auto !important;
+    width: 18px;
+    height: 18px;
+    margin-top: -9px;
+}

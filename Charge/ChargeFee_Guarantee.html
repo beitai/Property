@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019_08_291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019_08_291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script src="../js/Page/Comm/GetTypeList.js?v=2019_08_291000"></script>
+    <script type="text/javascript">
+        var companyID, AddMan, hdPriceRangeList, hdChargeDiscount;
+        $(function () {
+            companyID = "1";
+            AddMan = "demo8";
+            hdPriceRangeList = $("#content_hdPriceRangeList");
+        })
+    </script>
+    <script src="../js/Page/Comm/ChargeFeeComm.js?v=2019_08_291000" type="text/javascript"></script>
+    <script src="../js/Page/Charge/ChargeFee_Guarantee.js?v=2019_08_291000" type="text/javascript"></script>
+    <style>
+        .operationtable {
+            width: 100%;
+        }
+
+        .operationtable td {
+            text-align: center;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <input name="ctl00$content$hdPriceRangeList" type="hidden" id="content_hdPriceRangeList"
+                    value="[{&quot;RoomFeeID&quot;:543714,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:1000.0,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:569962,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:1000.0,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574923,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574924,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574925,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574926,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574927,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574928,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574929,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:576044,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:577210,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575230,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574936,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575227,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575229,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574872,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:560494,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543295,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543297,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543297,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543295,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:560494,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574872,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575229,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575227,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574936,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575230,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:576044,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:577210,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574929,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574928,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574927,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574926,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574925,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574924,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574923,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:569962,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:1000.0,&quot;MaxValue&quot;:4555.0,&quot;BasePrice&quot;:4.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543714,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:1000.0,&quot;MaxValue&quot;:4555.0,&quot;BasePrice&quot;:4.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true}]" />
+                <div class="easyui-layout" fit="true">
+                    <div data-options="region:'center'" title="">
+                        <table id="gua_table">
+                        </table>
+                        <div id="tt_mm">
+                            <a href="javascript:void(0)" onclick="chargeBackGuaranteeFee()"
+                                class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-tuikuan'">退保证金</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

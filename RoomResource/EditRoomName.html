@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908271000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908271000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908271000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908271000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        // window.SERVERPATH = "http://106.14.19.236:8081";
+
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var ProjectID, tdAddressProvice, tdAddressCity, tdAddressDistrict, show_address;
+        $(function () {
+            // ProjectID = "2372549";
+            ProjectID = getQueryString("ID");
+            var node = top.getNodeByParam(ProjectID);
+            // console.log(ProjectID);
+            // console.log('修改测试：');
+            // console.log(node);
+            // console.log(node.IconID)
+            // console.log(node.name)
+            // console.log(node.OrderNumberID)
+            // $('#content_tdProjectName').val(node.name);
+            // $('#content_tdOrderBy').val(node.OrderNumberID);
+            // $('#content_tdOrderBy').val("123123");
+            // $('#content_tdProjectName').textbox('setValue', node.name);
+            // $('#content_tdOrderBy').textbox('setText', node.OrderNumberID);
+            // console.log("根据id拿到数据");
+            var name, OrderBy, provinceID, cityName, districtName;
+            $.ajax({
+                async: false,
+                type: 'get',
+                url: window.SERVERPATH + 'api/getNameById?ID=' + ProjectID + "&sessionId=" + sessionId,
+                success: function (res) {
+                    res = JSON.parse(res);
+                    // console.log("拿到数据");
+                    // console.log(res);
+                    ProjectName = res.ProjectName;
+                    OrderBy = res.OrderBy;
+                    $('#content_tdProjectName').textbox('setValue', ProjectName);
+                    $('#content_tdOrderBy').textbox('setValue', OrderBy);
+                    provinceID = res.provinceID;
+                    cityName = res.cityName;
+                    districtName = res.districtName;
+                }
+            });
+
+            tdAddressProvice = $('#content_tdAddressProvice');
+            tdAddressCity = $('#content_tdAddressCity');
+            tdAddressDistrict = $('#content_tdAddressDistrict');
+
+            // show_address = Number("0");
+            // if (show_address) {
+            show_address = node.IconID;
+            if (show_address == 1) {
+                $('.address').show();
+                // var provinceID = $('#content_hdAddressProvice').val();
+                // var cityName = $('#content_hdAddressCity').val();
+                // var districtName = $('#content_hdAddressDistrict').val();
+                // var provinceID = "河北省"; 
+                // var cityName = "阜阳市";
+                // var districtName = "太和县";
+                if (provinceID != '' && cityName != '' && districtName != '') {
+                    get_provice(provinceID, cityName, districtName);
+                }
+                else {
+                    get_provice();
+                }
+            }
+            else {
+                $('.address').hide();
+            }
+        })
+        function get_provice(provinceID, cityName, districtName) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                // url: window.SERVERPATH + '/js/json/province.txt',
+                url: '../js/json/province.txt',
+                success: function (data) {
+                    tdAddressProvice.combobox({
+                        editable: false,
+                        valueField: 'provinceID',
+                        textField: 'provinceName',
+                        data: data,
+                        onSelect: function (ret) {
+                            get_city(ret.provinceID);
+                        }
+                    })
+                    if (provinceID) {
+                        tdAddressProvice.combobox('setValue', provinceID);
+                        get_city(provinceID, cityName, districtName);
+                    }
+                }
+            });
+        }
+        function get_city(provinceID, cityName, districtName) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                // url: window.SERVERPATH + '/js/json/city.txt',
+                url: '../js/json/city.txt',
+                success: function (data) {
+                    var list = [];
+                    $.each(data, function (index, item) {
+                        if (item.provinceID == provinceID) {
+                            list.push(item);
+                        }
+                    })
+                    tdAddressCity.combobox({
+                        editable: false,
+                        valueField: 'cityName',
+                        textField: 'cityName',
+                        data: list,
+                        onSelect: function (ret) {
+                            get_district(ret.cityID)
+                        }
+                    })
+                    var cityID = 0;
+                    if (cityName && cityName != '') {
+                        tdAddressCity.combobox('setValue', cityName);
+                        $.each(data, function (index, item) {
+                            if (item.cityName == cityName) {
+                                cityID = item.cityID
+                            }
+                        })
+                        if (cityID > 0) {
+                            get_district(cityID, districtName);
+                        }
+                    }
+                }
+            });
+        }
+        function get_district(cityID, districtName) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                // url: window.SERVERPATH + '/js/json/district.txt',
+                url: '../js/json/district.txt',
+                success: function (data) {
+                    var list = [];
+                    $.each(data, function (index, item) {
+                        if (item.cityID == cityID) {
+                            list.push(item);
+                        }
+                    })
+                    tdAddressDistrict.combobox({
+                        editable: false,
+                        valueField: 'districtName',
+                        textField: 'districtName',
+                        data: list
+                    })
+                    if (districtName && districtName != '') {
+                        tdAddressDistrict.combobox('setValue', districtName);
+                    }
+                }
+            });
+        }
+        function do_save() {
+            var ProjectName = $("#content_tdProjectName").textbox("getValue");
+            if (ProjectName == "") {
+                show_message("资源名称不能为空");
+                return;
+            }
+            var OrderBy = $("#content_tdOrderBy").textbox("getValue");
+            var provinceID = tdAddressProvice.combobox('getValue');
+            var provinceName = tdAddressProvice.combobox('getText');
+            var cityName = tdAddressCity.combobox('getValue');
+            var districtName = tdAddressDistrict.combobox('getValue');
+
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            MaskUtil.mask('body', '提交中');
+            var param = {};
+            param.visit = 'saveprojectname';
+            param.ProjectID = ProjectID;
+            param.ProjectName = ProjectName;
+            param.OrderBy = OrderBy;
+            param.provinceID = provinceID;
+            param.provinceName = provinceName;
+            param.cityName = cityName;
+            param.districtName = districtName;
+            param.IsAPPEnable = 0;
+            param.sessionId = sessionId;
+            // console.log('执行修改的操作');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: window.SERVERPATH + "api/saveprojectname",
+                data: param,
+                success: function (data) {
+                    MaskUtil.unmask();
+                    // var data = eval('(' + message + ')');
+                    // var data = {};
+                    // data.status = true;
+                    // console.log(data.status)
+                    if (data.status) {
+                        top.winUpdate = true;
+                        show_message("保存成功", "success", function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, 'warning');
+                        return;
+                    }
+                    // show_message("保存失败", "error");
+                }
+            });
+            /* $('#ff').form('submit', {
+                url: '../Handler/ProjectHandler.ashx',
+                onSubmit: function (param) {
+                    param.visit = 'saveprojectname';
+                    param.ProjectID = ProjectID;
+                    param.ProjectName = ProjectName;
+                    param.OrderBy = OrderBy;
+                    param.provinceID = provinceID;
+                    param.provinceName = provinceName;
+                    param.cityName = cityName;
+                    param.districtName = districtName;
+                },
+                success: function (message) {
+                    MaskUtil.unmask();
+                    // var data = eval('(' + message + ')');
+                    var data = {};
+                    data.status = true;
+                    console.log(data.status)
+                    if (data.status) {
+                        top.winUpdate = true;
+                        show_message("保存成功", "success", function () {
+                            do_close();
+                        });
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, 'warning');
+                        return;
+                    }
+                    // show_message("保存失败", "error");
+                }
+            }); */
+        }
+        function do_close() {
+            do_close_dialog(null, false, { closeWin: true });
+        }
+        function doNewSort() {
+            var SortOrder = $("#content_tdOrderBy").textbox("getValue");
+            if (SortOrder == "") {
+                return;
+            }
+            MaskUtil.mask('body', '提交中...<br/>时间可能会比较长,请耐心等待');
+            $('.datagrid-mask-msg').css('height', '70px');
+            $('#ff').form('submit', {
+                url: '../Handler/ProjectHandler.ashx',
+                onSubmit: function (param) {
+                    param.visit = 'saveprojectneworder';
+                    param.ProjectID = ProjectID;
+                    param.SortOrder = SortOrder;
+                },
+                success: function (message) {
+                    MaskUtil.unmask();
+                    top.winUpdate = true;
+                    var data = eval("(" + message + ")");
+                    if (data.status) {
+                        show_message("保存成功", "success");
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, "warning");
+                        return;
+                    }
+                    show_message("保存失败", "error");
+                }
+            });
+        }
+    </script>
+    <style>
+        .panel-body {
+            background: #f0f0f0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <!-- <form method="post" action="./EditRoomName.aspx?ID=2372549" id="ff" enctype="multipart/form-data"> -->
+                <div class="aspNetHidden">
+                    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                        value="/wEPDwUJMjMwODkxMzIzZGQxkOFdogrADDa+jZyGQnrpi7w8MQ==" />
+                </div>
+
+                <div class="aspNetHidden">
+
+                    <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="6A5CC7BA" />
+                    <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                        value="/wEdAAk27m1hFUBwH368706Tpr5uLMxtfF4cFGi/FfwXnpMkx4YPD13nPaxYl+lu8AdzYqSJ4kt58hXHMgTlJCZPyBfjvWZOXax8WD7zJ027fM7bBncBfNpuTisAl7//CIaeA1D6IKOzyrj+AvMRo1gI27ZVb6OQOKPI3foiR4dtOXlGdgJV3nJ3/avuEcQ3K9P/flMqpsturLs+MPrWJx44MA9Y1DmeXQ==" />
+                </div>
+                <div class="operation_box inlinebox">
+                    <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                        data-options="plain:true,iconCls:'icon-save'">保存</a>
+                    <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                        data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                </div>
+                <div class="table_container">
+                    <table class="info">
+                        <tr>
+                            <td class="first">资源名称</td>
+                            <td class="second">
+                                <input name="ctl00$content$tdProjectName" type="text" id="content_tdProjectName"
+                                    class="easyui-textbox" value="" />
+                            </td>
+                            <td class="first">排序序号</td>
+                            <td class="second">
+                                <input name="ctl00$content$tdOrderBy" type="text" id="content_tdOrderBy"
+                                    class="easyui-textbox" style="width: 50%;" value="" />
+                                <a href="javascript:void(0)" onclick="doNewSort()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-paixu'">重新排序</a>
+                            </td>
+                        </tr>
+                        <tr class="address">
+                            <td class="first">所在省</td>
+                            <td class="second">
+                                <input name="ctl00$content$tdAddressProvice" type="text" id="content_tdAddressProvice"
+                                    class="easyui-combobox" />
+                                <input type="hidden" name="ctl00$content$hdAddressProvice"
+                                    id="content_hdAddressProvice" />
+                            </td>
+                            <td class="first">所在市</td>
+                            <td class="second">
+                                <input name="ctl00$content$tdAddressCity" type="text" id="content_tdAddressCity"
+                                    class="easyui-combobox" />
+                                <input type="hidden" name="ctl00$content$hdAddressCity" id="content_hdAddressCity" />
+                            </td>
+                        </tr>
+                        <tr class="address">
+                            <td class="first">所在区</td>
+                            <td class="second">
+                                <input name="ctl00$content$tdAddressDistrict" type="text" id="content_tdAddressDistrict"
+                                    class="easyui-combobox" data-options="editable:false,panelMaxHeight:200" />
+                                <input type="hidden" name="ctl00$content$hdAddressDistrict"
+                                    id="content_hdAddressDistrict" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- </form> -->
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

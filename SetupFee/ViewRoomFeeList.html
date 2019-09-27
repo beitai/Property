@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var KeywordsObj, CompanyID, ChargeIDObj;
+        $(function () {
+            KeywordsObj = $("#content_tdKeywords");
+            CompanyID = "1";
+            ChargeIDObj = $("#content_tdChargeName");
+        })
+        function DoExport() {
+            var options = getOptions();
+            if (options == null) {
+                return;
+            }
+            options.visit = 'exportroomfeelist';
+            MaskUtil.mask('body', '导出中');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/ExportHandler.ashx',
+                data: options,
+                success: function (data) {
+
+                    // data.status = true   
+                    
+                    MaskUtil.unmask();
+                    if (data.status) {
+                        window.location.href = data.downloadurl
+                        //window.open(data.downloadurl);
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, 'info');
+                        return;
+                    }
+                    show_message('系统异常', 'error');
+                }
+            });
+        }
+        function getRoomFeeRows() {
+            return $('#tt_table').datagrid("getSelections");
+        }
+    </script>
+    <script src="../js/Page/SetupFee/ViewRoomFeeList.js?t=2019-08291000"></script>
+    <style>
+        .searcharea label {
+            float: left;
+            margin: 5px 0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./ViewRoomFeeList.aspx" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTEwNTg2OTIxODhkZP30JXqlSKBUaz+WMIfrFaceGQiX" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1F764BB6" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAMRNZYr2bryZ+aWo8yDMOVx7/de/YSECpanXxO9I8/+l9cf+3vT8n5WhzZYjnVkR+9YEgjBGHwPYB/UV3lp39EI1q/a3g==" />
+                    </div>
+                    <div class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth" style="height: 80px;">
+                            <div class="tdsearch">
+
+                                <label>
+                                    收费项目：
+                                    <input name="ctl00$content$tdChargeName" type="text" id="content_tdChargeName"
+                                        style="width: 120px;" class="easyui-combobox" placeholder="收费项目" />
+                                </label>
+                                <label>
+                                    关键字：
+                                    <input name="ctl00$content$tdKeywords" type="text" id="content_tdKeywords"
+                                        class="easyui-searchbox" data-options="prompt:&#39;关键字搜索&#39;,searcher:SearchTT"
+                                        style="width: 200px" />
+                                </label>
+                                <label>
+                                    房源属性:
+                                    <input class="easyui-combobox" id="tdRoomProperty" style="width: 80px;"
+                                        data-options="editable:false" />
+                                </label>
+                                <label>
+                                    房间状态:
+                                    <input class="easyui-combobox" id="tdRoomState" style="width: 80px;"
+                                        data-options="editable:false" />
+                                </label>
+                                <label>
+                                    计费开始日期:
+                                    <select class="easyui-combobox" id="tdStartTimeState" style="width: 80px;"
+                                        data-options="editable:false">
+                                        <option value="">全部</option>
+                                        <option value="1">为空</option>
+                                        <option value="2">不为空</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    开始时间:
+                                    <input class="easyui-datebox" id="tdSearchBoxStart" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    结束时间:
+                                    <input class="easyui-datebox" id="tdSearchBoxEnd" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    <a href="javascript:void(0)" onclick="SearchTT()"
+                                        class="easyui-linkbutton btnlinkbar"
+                                        data-options="plain:true,iconCls:'icon-search'">查询</a>
+                                </label>
+
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <table id="tt_table">
+                                <thead>
+                                    <tr>
+                                        <th data-options="field:'ck',checkbox:true"></th>
+                                        <th data-options="field:'FullName'" width="200">资源位置</th>
+                                        <th data-options="field:'RoomName'" width="60">资源编号</th>
+                                        <th data-options="field:'DefaultChargeManName',formatter: formatDefaultChargeManName"
+                                            width="100">收费对象</th>
+                                        <th data-options="field:'Name'" width="80">收费项目</th>
+                                        <th data-options="field:'CalculateUnitPrice',formatter: formatUnitPrice"
+                                            width="100">单价(月度)</th>
+                                        <th data-options="field:'CalculateStartTime',formatter: formatTime" width="100">
+                                            计费开始日期</th>
+                                        <th data-options="field:'CalculateEndTime',formatter: formatTime" width="100">
+                                            计费结束日期</th>
+                                        <th data-options="field:'NewEndTime',formatter: formatTime" width="100">计费停用日期
+                                        </th>
+                                        <th data-options="field:'ChargeTypeDesc'" width="80">计费规则</th>
+                                        <th data-options="field:'Remark'" width="100">备注</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div id="tb">
+
+                                <a href="javascript:void(0)" onclick="EditFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-edit'">修改</a>
+
+                                <a href="javascript:void(0)" onclick="RemoveFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-remove'">删除</a>
+
+                                <a href="javascript:void(0)" onclick="DoExport()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                <a href="javascript:void(0)" onclick="ImportRoomFeeTime()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-import'">导入</a>
+
+                                <a href="javascript:void(0)" onclick="stopFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-tingyong'">停用</a>
+
+                                <a href="javascript:void(0)" onclick="batchEdit()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-chuli'">批处理</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

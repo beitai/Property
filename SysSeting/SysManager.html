@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08-291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08-291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08-291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08-291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var ProjectID, tdCouZheng, tdContractWarning, tdWeixinChargeMan, tdHideCuiShouCustomerName, tdWechatFeeNotify, tdWechatFeeNotifyTime, tdAllowChangeFeeEndTime;
+        $(function () {
+            tdCouZheng = $("#content_tdCouZheng");
+            tdContractWarning = $("#content_tdContractWarning");
+            tdWeixinChargeMan = $("#content_tdWeixinChargeMan");
+            tdHideCuiShouCustomerName = $("#content_tdHideCuiShouCustomerName");
+            tdWechatFeeNotify = $("#content_tdWechatFeeNotify");
+            tdWechatFeeNotifyTime = $("#content_tdWechatFeeNotifyTime");
+            tdAllowChangeFeeEndTime = $("#content_tdAllowChangeFeeEndTime");
+            $('#c_lodop').tooltip({
+                position: 'right',
+                hideEvent: 'none',
+                content: function () {
+                    return $('#c_lodop_toolbar');
+                },
+                onShow: function () {
+                    var t = $(this);
+                    t.tooltip('tip').focus().unbind().bind('blur', function () {
+                        t.tooltip('hide');
+                    });
+                }
+            })
+            $('#z_lodop').tooltip({
+                position: 'right',
+                hideEvent: 'none',
+                content: function () {
+                    return $('#z_lodop_toolbar');
+                },
+                onShow: function () {
+                    var t = $(this);
+                    t.tooltip('tip').focus().unbind().bind('blur', function () {
+                        t.tooltip('hide');
+                    });
+                }
+            })
+            $('#lodop_32').tooltip({
+                position: 'right',
+                hideEvent: 'none',
+                content: function () {
+                    return $('#lodop_toolbar_32');
+                },
+                onShow: function () {
+                    var t = $(this);
+                    t.tooltip('tip').focus().unbind().bind('blur', function () {
+                        t.tooltip('hide');
+                    });
+                }
+            })
+            $('#lodop_64').tooltip({
+                position: 'right',
+                hideEvent: 'none',
+                content: function () {
+                    return $('#lodop_toolbar_64');
+                },
+                onShow: function () {
+                    var t = $(this);
+                    t.tooltip('tip').focus().unbind().bind('blur', function () {
+                        t.tooltip('hide');
+                    });
+                }
+            })
+        })
+        function pageLoad(ID) {
+            ProjectID = ID;
+            MaskUtil.mask();
+            var options = { visit: 'getsysconfiglist', ProjectID: ProjectID };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/SysSettingHandler.ashx',
+                data: options,
+                success: function (data) {
+                    MaskUtil.unmask();
+                    if (data.status) {
+                        tdCouZheng.combobox("setValue", data.CouZheng);
+                        tdContractWarning.textbox("setValue", data.ContractWarning);
+                        tdWeixinChargeMan.textbox("setValue", data.WeixinChargeMan);
+                        tdHideCuiShouCustomerName.combobox("setValue", data.HideCuiShouCustomerName);
+                        tdWechatFeeNotify.textbox("setValue", data.WechatFeeNotify);
+                        tdWechatFeeNotifyTime.combobox("setValue", data.WechatFeeNotifyTime);
+                        tdAllowChangeFeeEndTime.combobox("setValue", data.AllowChangeFeeEndTime);
+                    }
+                }
+            });
+        }
+        function saveConfig() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+
+            var options = {};
+            options.visit = "savesysconfig";
+            options.ProjectID = ProjectID;
+            options.CouZheng = tdCouZheng.combobox("getValue");
+            options.ContractWarning = tdContractWarning.textbox("getValue");
+            options.WeixinChargeMan = tdWeixinChargeMan.textbox("getValue");
+            options.HideCuiShouCustomerName = tdHideCuiShouCustomerName.combobox("getValue");
+            options.WechatFeeNotify = tdWechatFeeNotify.textbox("getValue");
+            options.WechatFeeNotifyTime = tdWechatFeeNotifyTime.textbox("getValue");
+            options.AllowChangeFeeEndTime = tdAllowChangeFeeEndTime.combobox("getValue");
+            MaskUtil.mask('body', '提交中');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/SysSettingHandler.ashx',
+                data: options,
+                success: function (message) {
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        show_message('保存成功', 'success');
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+    </script>
+    <style type="text/css">
+        .panel-body {
+            background: #f0f0f0;
+        }
+
+        table.info {
+            width: 96%;
+            margin: 0 auto;
+            border-spacing: 0;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        table.info td {
+            padding: 10px;
+            text-align: left;
+            width: 70%;
+            vertical-align: middle;
+        }
+
+        table.info td:nth-child(2n-1) {
+            text-align: right;
+            width: 30%;
+        }
+
+        select {
+            width: 200px;
+        }
+
+        .operation_box {
+            position: relative;
+        }
+
+        .btnlinkbar .l-btn-text {
+            line-height: 30px;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./SysManager.aspx" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTIxMDk0NzQ3OTJkZEZh/GOvF+CFKI18kPabZF7PYk6y" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="D90DCD3F" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAiPjWhj8lK4kgLaVUu+WRscLtbWQYhyIIpK9LO3LAU2+GOwsDsU2SaXeG5fEFlc/2/FAIio2Nm3PXabrrwdnXC2AWC7UFL4G67oJ9ljPKa/14FYuA231VI4lCdwl3OIjFgO0yqIZOSNdvb/YpfdzFarBSsZPcZK7PxS14dRFme1bPRrqitfHRZgrvkqIGLDGXY79IVs" />
+                    </div>
+                    <div class="operation_box inlinebox">
+                        <a href="javascript:void(0)" onclick="saveConfig()" class="easyui-linkbutton btnlinkbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                    </div>
+                    <div class="table_container">
+                        <table class="info">
+                            <tr>
+                                <td>启用尾数凑整</td>
+                                <td>
+                                    <select name="ctl00$content$tdCouZheng" id="content_tdCouZheng"
+                                        class="easyui-combobox" data-options="editable:false">
+                                        <option value="1">启用</option>
+                                        <option value="0">停用</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>合同提前预警</td>
+                                <td>
+                                    <input name="ctl00$content$tdContractWarning" type="text"
+                                        id="content_tdContractWarning" class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>微信默认收款人</td>
+                                <td>
+                                    <input name="ctl00$content$tdWeixinChargeMan" type="text"
+                                        id="content_tdWeixinChargeMan" class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>催收通知单客户名称隐藏</td>
+                                <td>
+                                    <select name="ctl00$content$tdHideCuiShouCustomerName"
+                                        id="content_tdHideCuiShouCustomerName" class="easyui-combobox" type="text"
+                                        data-options="editable:false">
+                                        <option value="1">隐藏</option>
+                                        <option value="0">显示</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>允许修改缴费计费结束日期</td>
+                                <td>
+                                    <select name="ctl00$content$tdAllowChangeFeeEndTime"
+                                        id="content_tdAllowChangeFeeEndTime" class="easyui-combobox" type="text"
+                                        data-options="editable:false">
+                                        <option value="1">允许</option>
+                                        <option value="0">禁止</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>欠费提醒</td>
+                                <td>
+                                    <select name="ctl00$content$tdWechatFeeNotifyTime"
+                                        id="content_tdWechatFeeNotifyTime" style="width: 150px;" class="easyui-combobox"
+                                        type="text" data-options="editable:false">
+                                        <option value="1">计费开始时间前</option>
+                                        <option value="2">计费开始时间后</option>
+                                        <option value="3">计费结束时间前</option>
+                                        <option value="4">计费结束时间后</option>
+                                    </select>
+                                    <input name="ctl00$content$tdWechatFeeNotify" type="text"
+                                        id="content_tdWechatFeeNotify" style="width: 100px;" class="easyui-textbox" />
+                                    天进行欠费提醒
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>打印插件下载</td>
+                                <td>
+                                    <p>
+                                        <a style="font-weight: bold; color: #ff6a00;" id="c_lodop"
+                                            class="easyui-tooltip"
+                                            href="http://demo.saasyy.com/download/CLodop_Setup_for_Win32NT_https_3.028Extend.zip"
+                                            target="_blank" data-options="">云打印C-Lodop扩展版(推荐)</a>
+                                    </p>
+                                    <p>
+                                        <a id="z_lodop" class="easyui-tooltip"
+                                            href="http://demo.saasyy.com/download/CLodop_Setup_for_Win32NT.zip"
+                                            target="_blank" data-options="">Lodop综合版</a>
+                                    </p>
+                                    <p>
+                                        <a id="lodop_32" class="easyui-tooltip"
+                                            href="http://demo.saasyy.com/download/install_lodop32.zip"
+                                            target="_blank">下载（32位）</a>
+                                    </p>
+                                    <p>
+                                        <a id="lodop_64" class="easyui-tooltip"
+                                            href="http://demo.saasyy.com/download/install_lodop64.zip"
+                                            target="_blank">下载（64位）</a>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="display: none">
+                            <div id="c_lodop_toolbar">
+                                特点：<br />
+                                兼顾局域网和广域网打印<br />
+                                支持https协议
+                                <br />
+                                同时支持32位和64位系统
+                                <br />
+                                支持AO打印机
+                                <br />
+                                支持所有浏览器<br />
+                            </div>
+                            <div id="z_lodop_toolbar">
+                                特点：<br />
+                                支持所有浏览器
+                                <br />
+                                兼顾插件和云打印优势
+                                <br />
+                            </div>
+                            <div id="lodop_toolbar_32">
+                                32位浏览器使用<br />
+                                （注意：不是操作系统版本）
+                            </div>
+                            <div id="lodop_toolbar_64">
+                                64位浏览器使用<br />
+                                （注意：不是操作系统版本）
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

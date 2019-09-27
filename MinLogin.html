@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/easyui/jquery.easyui.min.js?t=2019-09111000"></script>
+    <script src="js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="js/easyui/icon.css" rel="stylesheet" />
+    <script src="js/Page/Comm/unit.js?t=2019-09111000"></script>
+    <script src="js/Page/Main/Content.js?t=2019-09111000"></script>
+    <script src="js/Page/Comm/MaskUtil.js?t=2019-09111000"></script>
+    <!-- <script src="../js/Page/Comm/unit.js?t=2019-09111000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09111000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09111000"></script> -->
+    <link href="styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <link href="styles/page/login.css?v12" rel="stylesheet" />
+    <style type="text/css">
+        .center {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .loginbox {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .inputbox {
+            border: 0px !important;
+            border-radius: 0px;
+            border-bottom: solid 1px #d4d4d4 !important;
+        }
+
+        .input_icon {
+            left: 0px;
+        }
+
+        .inputbox input {
+            margin-left: 30px;
+            width: 80%;
+            background-color: none !important;
+        }
+
+        .inputbox input:focus {
+            outline: none;
+            background-color: none !important;
+        }
+
+        .inputbox input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+        }
+
+        .login_btn .btnlogin {
+            background: #1d5a94;
+            border-radius: 0px;
+        }
+
+        .loginbox .title {
+            width: 100%;
+        }
+
+        .inputbox {
+            width: 100%;
+        }
+
+        .login_btn {
+            width: 100%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".login_input input").focus(function () {
+                $(".login_input .input_icon").css('background-image', 'url("styles/images/username_active_icon.png")');
+                $(".inputbox.login_input").css('border', 'solid 1px #0081D1');
+            });
+            $(".pwd_input input").focus(function () {
+                $(".pwd_input .input_icon").css('background-image', 'url("styles/images/pwd_active_icon.png")');
+                $(".inputbox.pwd_input").css('border', 'solid 1px #0081D1');
+            });
+            $(".login_input input").blur(function () {
+                $(".login_input .input_icon").css('background-image', 'url("styles/images/username_icon.png")');
+                $(".inputbox.login_input").css('border', 'solid 1px #D4D4D4');
+            });
+            $(".pwd_input input").blur(function () {
+                $(".pwd_input .input_icon").css('background-image', 'url("styles/images/pwd_icon.png")');
+                $(".inputbox.pwd_input").css('border', 'solid 1px #D4D4D4');
+            });
+        });
+
+    </script>
+
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+                <!-- <form method="post" action="./MinLogin.aspx" id="form1"> -->
+                <div class="aspNetHidden">
+                    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                        value="/wEPDwULLTEzMTA2MDUzOTYPZBYCZg9kFgICAw9kFgJmD2QWAgIJDw8WAh4EVGV4dAUb55So5oi35ZCN5oiW5a+G56CB6ZSZ6K+v77yBZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFF2N0bDAwJGNvbnRlbnQkYXV0b0xvZ2luZyWj2uPdx9JGTHSnudTaLPNSXLQ=" />
+                </div>
+                <div class="aspNetHidden">
+
+                    <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1F8EC506" />
+                    <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                        value="/wEdAAVKFUiNT0zRFtMECUuZ4d6g83rRw9Jkz9gdyk/YCBzNq0/S+5ZRQwLdHGUfY7N4RpCQTik6WlKwZTidgSFw+HepfDP3wdmE6x6CRdsYk4w0uDGqiq5ujWuj2sTQsEGEzwoWPSq+" />
+                </div>
+
+                <div class="center">
+                    <div class="loginbox">
+                        <div class="inputbox login_input">
+                            <div class="input_icon"></div>
+                            <input name="ctl00$content$tbLoginName" type="text" value="" id="userName"
+                                placeholder="支持邮箱手机号登录" style="border: none;" />
+                        </div>
+                        <div class="inputbox pwd_input">
+                            <div class="input_icon"></div>
+                            <input name="ctl00$content$tbPassword" type="password" id="psw" placeholder="密码"
+                                style="border: none;" />
+                        </div>
+                        <div class="auto_login" style="">
+                            <span style="font-size: 14px;"><input id="content_autoLogin" type="checkbox"
+                                    name="ctl00$content$autoLogin" /><label
+                                    for="content_autoLogin">下次自动登录</label></span>
+                        </div>
+                        <div class="login_btn">
+                            <input type="button" name="ctl00$content$btnLogin" value="登 录" id="btnLogin"
+                                class="btnlogin" />
+                        </div>
+                        <div style="text-align: left; padding: 10px 30px 0 30px;">
+                            <span id="lbMsg" class="err"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    document.getElementById('userName').focus();
+                    $('#btnLogin').click(function () {
+                        var userName = $('#userName').val();
+                        var psw = $('#psw').val();
+                        console.log('登录测试');
+                        console.log(userName);
+                        console.log(psw);
+                        $.ajax({
+                            type: 'post',
+                            url: window.SERVERPATH + 'api/userLogin',
+                            data: {
+                                userName: userName,
+                                psw: psw,
+                            },
+                            success: function (message) {
+                                message = JSON.parse(message);
+                                if (message.status == 1) {
+                                    console.log('登录成功');
+                                    // window.location.href = "./index.html"
+                                    parent.location.reload();
+                                    // top.document.location.href='xxx.aspx?id=xx'。
+                                    sessionStorage.setItem('sessionId', message.user.sessionId);
+                                    sessionStorage.setItem('userName', message.user.userName);
+                                } else if (message.status == -1 || message.status == -4) {
+                                    $('#lbMsg').text("用户名或者密码错误");
+                                    $('#psw').val('');
+                                    $('#psw').focus();
+                                } else {
+                                    $('#lbMsg').text(message.msg);
+                                }
+                            }
+                        });
+                    });
+
+                </script>
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

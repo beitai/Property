@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08-291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08-291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08-291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08-291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var ProjectID = 0;
+        $(function () {
+            $('#content_tdDefinePrintSizeYes').bind('click', function () {
+                checksizestatus();
+            })
+            $('#content_tdDefinePrintSizeNo').bind('click', function () {
+                checksizestatus();
+            })
+            try {
+                var ProjectIDList = GetSelectedProjects();
+                var RoomIDList = GetSelectedRooms();
+                if (ProjectIDList.length > 0) {
+                    pageLoad(ProjectIDList[0]);
+                }
+                else if (RoomIDList.length > 0) {
+                    pageLoad(RoomIDList[0]);
+                }
+            } catch (e) {
+            }
+        })
+        function pageLoad(ID) {
+            ProjectID = ID;
+            if (ProjectID == 1) {
+                return;
+            }
+            MaskUtil.mask();
+            var options = { visit: 'getprojectprintinfo', ProjectID: ProjectID };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/ProjectHandler.ashx',
+                data: options,
+                success: function (message) {
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        var data = message.item;
+                        $("#content_tdPrintNote").textbox("setValue", data.PrintNote);
+                        $("#content_tdCuiFeiNote").textbox("setValue", data.CuiFeiNote);
+                        $("#content_tdPrintCancelNote").textbox("setValue", data.PrintCancelNote);
+                        $("#content_tdPrintTitle").textbox("setValue", data.PrintTitle);
+                        $("#content_tdPrintFont").textbox("setValue", data.PrintFont);
+                        $("#content_tdPrintSubTitle").textbox("setValue", data.PrintSubTitle);
+                        $("#content_tdPayPrintTitle").textbox("setValue", data.PayPrintTitle);
+                        $("#content_tdPayPrintSubTitle").textbox("setValue", data.PayPrintSubTitle);
+                        $("#content_tdPrintWidth").textbox("setValue", data.PrintWidth);
+                        $("#content_tdPrintHeight").textbox("setValue", data.PrintHeight);
+                        $("#content_tdCuiShouPrintTitle").textbox("setValue", data.CuiShouPrintTitle);
+                        $("#content_tdCuiShouPrintSubTitle").textbox("setValue", data.CuiShouPrintSubTitle);
+                        $("#content_tdPrintType").combobox("setValue", data.PrintType);
+
+                        $("#content_tdPrintNoteNo").prop("checked", !data.IsPrintNote);
+                        $("#content_tdPrintNoteYes").prop("checked", data.IsPrintNote);
+
+                        $("#content_tdPrintCountNo").prop("checked", !data.IsPrintCount);
+                        $("#content_tdPrintCountYes").prop("checked", data.IsPrintCount);
+
+                        $("#content_tdPrintCostNo").prop("checked", !data.IsPrintCost);
+                        $("#content_tdPrintCostYes").prop("checked", data.IsPrintCost);
+
+                        $("#content_tdPrintDiscountNo").prop("checked", !data.IsPrintDiscount);
+                        $("#content_tdPrintDiscountYes").prop("checked", data.IsPrintDiscount);
+
+                        $("#content_tdPrintRoomNoNo").prop("checked", !data.IsPrintRoomNo);
+                        $("#content_tdPrintRoomNoYes").prop("checked", data.IsPrintRoomNo);
+
+                        $("#content_tdPrintTotalRealCostNo").prop("checked", !data.IsPrintTotalRealCost);
+                        $("#content_tdPrintTotalRealCostYes").prop("checked", data.IsPrintTotalRealCost);
+
+                        $("#content_tdPrintRealCostNo").prop("checked", !data.IsPrintRealCost);
+                        $("#content_tdPrintRealCostYes").prop("checked", data.IsPrintRealCost);
+
+                        $("#content_tdDefinePrintSizeNo").prop("checked", !data.IsDefinePrintSize);
+                        $("#content_tdDefinePrintSizeYes").prop("checked", data.IsDefinePrintSize);
+
+                        $("#content_tdPrintMonthCountNo").prop("checked", !data.IsPrintMonthCount);
+                        $("#content_tdPrintMonthCountYes").prop("checked", data.IsPrintMonthCount);
+
+                        $("#content_tdPrintUnitPriceNo").prop("checked", !data.IsPrintUnitPrice);
+                        $("#content_tdPrintUnitPriceYes").prop("checked", data.IsPrintUnitPrice);
+
+                        $("#content_tdPrintTopMargin").textbox("setValue", data.PrintTopMargin);
+                        $("#content_tdPrintBottomMargin").textbox("setValue", data.PrintBottomMargin);
+                        $("#content_tdPrintTotalLines").textbox("setValue", data.PrintTotalLines);
+                        $("#content_tdLogoWidth").textbox("setValue", data.LogoWidth);
+                        $("#content_tdLogoHeight").textbox("setValue", data.LogoHeight);
+                        $("#content_tdPrintChargeTypeCount").combobox("setValue", data.PrintChargeTypeCount);
+                        $("#content_tdPrintLineHeight").textbox("setValue", data.PrintLineHeight);
+
+                        if (data.LogoPath != '') {
+                            $('#labelLogo').show();
+                            $('#myLogoPath').attr('src', data.LogoPath);
+                        }
+                        else {
+                            $('#labelLogo').hide();
+                        }
+                        checksizestatus();
+                    }
+                }
+            });
+        }
+        function checksizestatus() {
+            if ($("#content_tdDefinePrintSizeYes").prop("checked")) {
+                $('.fixed_model').hide();
+                $('#define_size').show();
+            }
+            if ($("#content_tdDefinePrintSizeNo").prop("checked")) {
+                $('.fixed_model').show();
+                $('#define_size').hide();
+            }
+        }
+        function removeLogo() {
+            top.$.messager.confirm("提示", "是否删除Logo?", function (r) {
+                if (r) {
+                    var options = { visit: 'removeprojectlogo', ProjectID: ProjectID };
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: '../Handler/ProjectHandler.ashx',
+                        data: options,
+                        success: function (message) {
+                            if (message.status) {
+                                pageLoad(ProjectID)
+                                return;
+                            }
+                            show_message('系统错误', 'error');
+                        }
+                    });
+                }
+            })
+        }
+        function do_save() {
+            if (ProjectID <= 1 || !ProjectID) {
+                show_message('请选择项目', 'warning');
+                return;
+            }
+            var PrintNote = $("#content_tdPrintNote").textbox("getValue");
+            var CuiFeiNote = $("#content_tdCuiFeiNote").textbox("getValue");
+            var PrintCancelNote = $("#content_tdPrintCancelNote").textbox("getValue");
+            var PrintTitle = $("#content_tdPrintTitle").textbox("getValue");
+            var PrintFont = $("#content_tdPrintFont").textbox("getValue");
+            var PrintSubTitle = $("#content_tdPrintSubTitle").textbox("getValue");
+            var PayPrintTitle = $("#content_tdPayPrintTitle").textbox("getValue");
+            var PayPrintSubTitle = $("#content_tdPayPrintSubTitle").textbox("getValue");
+            var PrintWidth = $("#content_tdPrintWidth").textbox("getValue");
+            var PrintHeight = $("#content_tdPrintHeight").textbox("getValue");
+            var CuiShouPrintTitle = $("#content_tdCuiShouPrintTitle").textbox("getValue");
+            var CuiShouPrintSubTitle = $("#content_tdCuiShouPrintSubTitle").textbox("getValue");
+            var PrintType = $("#content_tdPrintType").combobox("getValue");
+            var IsPrintNote = 1;
+            if ($("#content_tdPrintNoteNo").prop("checked")) {
+                IsPrintNote = 0;
+            }
+            var IsPrintCount = 1;
+            if ($("#content_tdPrintCountNo").prop("checked")) {
+                IsPrintCount = 0;
+            }
+            var IsPrintCost = 1;
+            if ($("#content_tdPrintCostNo").prop("checked")) {
+                IsPrintCost = 0;
+            }
+            var IsPrintDiscount = 1;
+            if ($("#content_tdPrintDiscountNo").prop("checked")) {
+                IsPrintDiscount = 0;
+            }
+            var IsPrintRoomNo = 1;
+            if ($("#content_tdPrintRoomNoNo").prop("checked")) {
+                IsPrintRoomNo = 0;
+            }
+            var IsPrintTotalRealCost = 1;
+            if ($("#content_tdPrintTotalRealCostNo").prop("checked")) {
+                IsPrintTotalRealCost = 0;
+            }
+            var IsPrintRealCost = 1;
+            if ($("#content_tdPrintRealCostNo").prop("checked")) {
+                IsPrintRealCost = 0;
+            }
+            var IsPrintMonthCount = 1;
+            if ($("#content_tdPrintMonthCountNo").prop("checked")) {
+                IsPrintMonthCount = 0;
+            }
+            var IsDefinePrintSize = 1;
+            if ($("#content_tdDefinePrintSizeNo").prop("checked")) {
+                IsDefinePrintSize = 0;
+            }
+            var IsPrintUnitPrice = 1;
+            if ($("#content_tdPrintUnitPriceNo").prop("checked")) {
+                IsPrintUnitPrice = 0;
+            }
+            var PrintTopMargin = $("#content_tdPrintTopMargin").textbox("getValue");
+            var PrintBottomMargin = $("#content_tdPrintBottomMargin").textbox("getValue");
+            var PrintTotalLines = $("#content_tdPrintTotalLines").textbox("getValue");
+            var LogoWidth = $("#content_tdLogoWidth").textbox("getValue");
+            var LogoHeight = $("#content_tdLogoHeight").textbox("getValue");
+            var PrintChargeTypeCount = $("#content_tdPrintChargeTypeCount").combobox("getValue");
+            var PrintLineHeight = $("#content_tdPrintLineHeight").textbox("getValue");
+
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            MaskUtil.mask('body', '提交中');
+            $('#ff').form('submit', {
+                url: '../Handler/ProjectHandler.ashx',
+                onSubmit: function (param) {
+                    param.visit = 'saveprojectprintinfo';
+                    param.ProjectID = ProjectID;
+                    param.PrintNote = PrintNote;
+                    param.CuiFeiNote = CuiFeiNote;
+                    param.PrintCancelNote = PrintCancelNote;
+                    param.PrintTitle = PrintTitle;
+                    param.PrintFont = PrintFont;
+                    param.IsPrintNote = IsPrintNote;
+                    param.IsPrintCount = IsPrintCount;
+                    param.PrintWidth = PrintWidth;
+                    param.PrintHeight = PrintHeight;
+                    param.PrintSubTitle = PrintSubTitle;
+                    param.IsPrintCost = IsPrintCost;
+                    param.IsPrintDiscount = IsPrintDiscount;
+                    param.CuiShouPrintTitle = CuiShouPrintTitle;
+                    param.CuiShouPrintSubTitle = CuiShouPrintSubTitle;
+                    param.IsPrintRoomNo = IsPrintRoomNo;
+                    param.IsPrintTotalRealCost = IsPrintTotalRealCost;
+                    param.IsPrintRealCost = IsPrintRealCost;
+                    param.PrintType = PrintType;
+                    param.IsDefinePrintSize = IsDefinePrintSize;
+                    param.PrintTopMargin = PrintTopMargin;
+                    param.PrintBottomMargin = PrintBottomMargin;
+                    param.PrintTotalLines = PrintTotalLines;
+                    param.IsPrintMonthCount = IsPrintMonthCount;
+                    param.PayPrintTitle = PayPrintTitle;
+                    param.PayPrintSubTitle = PayPrintSubTitle;
+                    param.LogoWidth = LogoWidth;
+                    param.LogoHeight = LogoHeight;
+                    param.IsPrintUnitPrice = IsPrintUnitPrice;
+                    param.PrintChargeTypeCount = PrintChargeTypeCount;
+                    param.PrintLineHeight = PrintLineHeight;
+                },
+                success: function (message) {
+                    MaskUtil.unmask();
+                    var data = eval('(' + message + ')');
+                    if (data.status) {
+                        show_message("保存成功", "success", function () {
+                            pageLoad(ProjectID)
+                        });
+                        return;
+                    }
+                    show_message("保存失败", "error");
+                }
+            });
+        }
+        function closeWin() {
+            parent.$("#winadd").window("close");
+        }
+    </script>
+    <style>
+        .panel-body {
+            background: #f0f0f0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./PrintFormatMgr.aspx" id="ff" enctype="multipart/form-data">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJLTM0MzcyNjAzZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WKAUcY3RsMDAkY29udGVudCR0ZFByaW50Q29zdFllcwUcY3RsMDAkY29udGVudCR0ZFByaW50Q29zdFllcwUbY3RsMDAkY29udGVudCR0ZFByaW50Q29zdE5vBRtjdGwwMCRjb250ZW50JHRkUHJpbnRDb3N0Tm8FIGN0bDAwJGNvbnRlbnQkdGRQcmludERpc2NvdW50WWVzBSBjdGwwMCRjb250ZW50JHRkUHJpbnREaXNjb3VudFllcwUfY3RsMDAkY29udGVudCR0ZFByaW50RGlzY291bnRObwUfY3RsMDAkY29udGVudCR0ZFByaW50RGlzY291bnRObwUcY3RsMDAkY29udGVudCR0ZFByaW50Tm90ZVllcwUcY3RsMDAkY29udGVudCR0ZFByaW50Tm90ZVllcwUbY3RsMDAkY29udGVudCR0ZFByaW50Tm90ZU5vBRtjdGwwMCRjb250ZW50JHRkUHJpbnROb3RlTm8FHWN0bDAwJGNvbnRlbnQkdGRQcmludENvdW50WWVzBR1jdGwwMCRjb250ZW50JHRkUHJpbnRDb3VudFllcwUcY3RsMDAkY29udGVudCR0ZFByaW50Q291bnRObwUcY3RsMDAkY29udGVudCR0ZFByaW50Q291bnRObwUeY3RsMDAkY29udGVudCR0ZFByaW50Um9vbU5vWWVzBR5jdGwwMCRjb250ZW50JHRkUHJpbnRSb29tTm9ZZXMFHWN0bDAwJGNvbnRlbnQkdGRQcmludFJvb21Ob05vBR1jdGwwMCRjb250ZW50JHRkUHJpbnRSb29tTm9ObwUiY3RsMDAkY29udGVudCR0ZERlZmluZVByaW50U2l6ZVllcwUiY3RsMDAkY29udGVudCR0ZERlZmluZVByaW50U2l6ZVllcwUhY3RsMDAkY29udGVudCR0ZERlZmluZVByaW50U2l6ZU5vBSFjdGwwMCRjb250ZW50JHRkRGVmaW5lUHJpbnRTaXplTm8FJWN0bDAwJGNvbnRlbnQkdGRQcmludFRvdGFsUmVhbENvc3RZZXMFJWN0bDAwJGNvbnRlbnQkdGRQcmludFRvdGFsUmVhbENvc3RZZXMFJGN0bDAwJGNvbnRlbnQkdGRQcmludFRvdGFsUmVhbENvc3RObwUkY3RsMDAkY29udGVudCR0ZFByaW50VG90YWxSZWFsQ29zdE5vBSBjdGwwMCRjb250ZW50JHRkUHJpbnRSZWFsQ29zdFllcwUgY3RsMDAkY29udGVudCR0ZFByaW50UmVhbENvc3RZZXMFH2N0bDAwJGNvbnRlbnQkdGRQcmludFJlYWxDb3N0Tm8FH2N0bDAwJGNvbnRlbnQkdGRQcmludFJlYWxDb3N0Tm8FImN0bDAwJGNvbnRlbnQkdGRQcmludE1vbnRoQ291bnRZZXMFImN0bDAwJGNvbnRlbnQkdGRQcmludE1vbnRoQ291bnRZZXMFIWN0bDAwJGNvbnRlbnQkdGRQcmludE1vbnRoQ291bnRObwUhY3RsMDAkY29udGVudCR0ZFByaW50TW9udGhDb3VudE5vBSFjdGwwMCRjb250ZW50JHRkUHJpbnRVbml0UHJpY2VZZXMFIWN0bDAwJGNvbnRlbnQkdGRQcmludFVuaXRQcmljZVllcwUgY3RsMDAkY29udGVudCR0ZFByaW50VW5pdFByaWNlTm8FIGN0bDAwJGNvbnRlbnQkdGRQcmludFVuaXRQcmljZU5vUqqvXGUni3/cYJx2zQqL4BUQlWA=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="25E39601" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdACpDwQAI7jUEb/YfsK90UAw8LBiM21o0QKJz7u9OXpvtFijfCHh1Wlk6ONUGK8t9rQyVGEBMvQZR5oBdUU+a4cfh+QFQPAM/HT3B8sdS5SzZiG1TfnJEvWULv81feXFoq00rZ5QsGwENx1gZmKN8ckbRa7LOO69FtYqiLEPNf99ApmHCjR8GhJBEJ/y22QGqm5HQFQGrnlVEEa2+3Y1ZO2ncW92oY5AV35Y4nwqgtvRB1aYmt6TDSNOckQKHO7IhOtSmgXC+FID4TS77pDwzbMyE+7vXazABBpIGVNOuxsf6BaOA/HZm4R9a5QzZ4KJkXH2mmZNCzg52ywvakfbHtdwmBkI/PyVTmq1rk6sh3+DJWIf33g2bxVkwNBkvTkEaEGtBAK+vAe1sL5MUBsExGBf1x8t4SPch4M1TM/h04D3hYmddqicS80U8QlTw1NMXp20w4saJg3mgi63/SJMTcq0LMy+ccE525tXZUlUAs/o3qht9y+tYmZrRQVPX6zTgp7hpgIiL13Vwm5kGhrtJ2fRnoiTzg8rbIZwvyACfekpuKONsPDlaZ2DveyTW5YORtmjFYgb57NcPj5ufJekH6LfnhtcrC8SAPb+Jaiwf4f5zP4nCxV1uREvN7YhdIzDAwUMxWAiFW09sFnCsZy18Wl5hrJHzBATUUBx9bu0F7+1ha5BJfnSThE0smyo3UvLMH0TUwvs2sr1OM/dXEb5iVvJmVrVSBBVzXduPph1SxO8DUdFSywT310xKxACKupmi6wrEklonOlb5oJFX0JnA/xXVQmolTm5cpv4eXodGH0UCluquI+g4vZ7B+Nmd62b7aV6R7kmUl5cqBbl9IIyVYrLOEYhkYR8C9Kl2H0sX97owv5A6MPaFM2JBsR8EgTVHlpbsAECGhj23gK6OKysn/uitViEBeQ==" />
+                    </div>
+                    <div class="easyui-layout" data-options="fit:true,border:false">
+                        <div data-options="region:'north'">
+                            <div class="operation_box" style="position: relative;">
+                                <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-save'">保存</a>
+                            </div>
+                        </div>
+                        <div data-options="region:'center',border:false">
+                            <div style="margin-top: 15px;">
+                                <table class="info">
+                                    <tr>
+                                        <td class="first">收款单名称</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintTitle" type="text"
+                                                id="content_tdPrintTitle" class="easyui-textbox" />
+                                        </td>
+                                        <td class="first">收款单副标题</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintSubTitle" type="text"
+                                                id="content_tdPrintSubTitle" class="easyui-textbox" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">通知单名称</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdCuiShouPrintTitle" type="text"
+                                                id="content_tdCuiShouPrintTitle" class="easyui-textbox" />
+                                        </td>
+                                        <td class="first">通知单副标题</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdCuiShouPrintSubTitle" type="text"
+                                                id="content_tdCuiShouPrintSubTitle" class="easyui-textbox" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">付款单名称</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPayPrintTitle" type="text"
+                                                id="content_tdPayPrintTitle" class="easyui-textbox" />
+                                        </td>
+                                        <td class="first">付款单副标题</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPayPrintSubTitle" type="text"
+                                                id="content_tdPayPrintSubTitle" class="easyui-textbox" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">添加Logo</td>
+                                        <td class="second" colspan="3" style="width: 75%">
+                                            <label id="labelLogo" style="display: none;">
+                                                <img id="myLogoPath" src=""
+                                                    style="width: 100px; height: 100px;" /><br />
+                                                <a href="javascript:void(0)" onclick="removeLogo()"
+                                                    class="easyui-linkbutton btnlinkbar"
+                                                    data-options="plain:true,iconCls:'icon-remove'">删除</a>
+                                            </label>
+                                            <br />
+                                            <input name="ctl00$content$tdLogoPath" type="text" id="content_tdLogoPath"
+                                                class="easyui-filebox" style="width: 70%;"
+                                                data-options="prompt:&#39;请选择文件&#39;,buttonText: &#39;选择文件&#39;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">Logo宽度</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdLogoWidth" type="text" id="content_tdLogoWidth"
+                                                class="easyui-textbox" />
+                                        </td>
+                                        <td class="first">Logo高度</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdLogoHeight" type="text"
+                                                id="content_tdLogoHeight" class="easyui-textbox" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">是否打印应收</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintCostYes" type="radio"
+                                                name="ctl00$content$IsPrintCost" value="tdPrintCostYes" /><label
+                                                for="content_tdPrintCostYes">是</label>
+                                            <input id="content_tdPrintCostNo" type="radio"
+                                                name="ctl00$content$IsPrintCost" value="tdPrintCostNo" /><label
+                                                for="content_tdPrintCostNo">否</label>
+                                        </td>
+                                        <td class="first">是否打印减免</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintDiscountYes" type="radio"
+                                                name="ctl00$content$IsPrintDiscount" value="tdPrintDiscountYes" /><label
+                                                for="content_tdPrintDiscountYes">是</label>
+                                            <input id="content_tdPrintDiscountNo" type="radio"
+                                                name="ctl00$content$IsPrintDiscount" value="tdPrintDiscountNo" /><label
+                                                for="content_tdPrintDiscountNo">否</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">是否打印备注</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintNoteYes" type="radio"
+                                                name="ctl00$content$IsPrintNote" value="tdPrintNoteYes" /><label
+                                                for="content_tdPrintNoteYes">是</label>
+                                            <input id="content_tdPrintNoteNo" type="radio"
+                                                name="ctl00$content$IsPrintNote" value="tdPrintNoteNo" /><label
+                                                for="content_tdPrintNoteNo">否</label>
+                                        </td>
+                                        <td class="first">是否打印读数</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintCountYes" type="radio"
+                                                name="ctl00$content$IsPrintCount" value="tdPrintCountYes" /><label
+                                                for="content_tdPrintCountYes">是</label>
+                                            <input id="content_tdPrintCountNo" type="radio"
+                                                name="ctl00$content$IsPrintCount" value="tdPrintCountNo" /><label
+                                                for="content_tdPrintCountNo">否</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">是否打印资源编号</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintRoomNoYes" type="radio"
+                                                name="ctl00$content$IsPrintRoomNo" value="tdPrintRoomNoYes" /><label
+                                                for="content_tdPrintRoomNoYes">是</label>
+                                            <input id="content_tdPrintRoomNoNo" type="radio"
+                                                name="ctl00$content$IsPrintRoomNo" value="tdPrintRoomNoNo" /><label
+                                                for="content_tdPrintRoomNoNo">否</label>
+                                        </td>
+                                        <td class="first">单据字体</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintFont" type="text" id="content_tdPrintFont"
+                                                class="easyui-textbox" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">自定义尺寸</td>
+                                        <td class="second">
+                                            <input id="content_tdDefinePrintSizeYes" type="radio"
+                                                name="ctl00$content$IsDefinePrintSize"
+                                                value="tdDefinePrintSizeYes" /><label
+                                                for="content_tdDefinePrintSizeYes">是</label>
+                                            <input id="content_tdDefinePrintSizeNo" type="radio"
+                                                name="ctl00$content$IsDefinePrintSize"
+                                                value="tdDefinePrintSizeNo" /><label
+                                                for="content_tdDefinePrintSizeNo">否</label>
+                                        </td>
+                                        <td class="first fixed_model">纸张规格</td>
+                                        <td class="second fixed_model">
+                                            <select name="ctl00$content$tdPrintType" id="content_tdPrintType"
+                                                class="easyui-combobox" type="text" data-options="editable:false">
+                                                <option value="A4Three">A4三等分</option>
+                                                <option value="A4Two">A4二等分</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr id="define_size">
+                                        <td class="first">单据宽度</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintWidth" type="text"
+                                                id="content_tdPrintWidth" class="easyui-textbox" />(mm)
+                                        </td>
+                                        <td class="first">单据高度</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintHeight" type="text"
+                                                id="content_tdPrintHeight" class="easyui-textbox" />(mm)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">是否打印已收</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintTotalRealCostYes" type="radio"
+                                                name="ctl00$content$IsPrintTotalRealCost"
+                                                value="tdPrintTotalRealCostYes" /><label
+                                                for="content_tdPrintTotalRealCostYes">是</label>
+                                            <input id="content_tdPrintTotalRealCostNo" type="radio"
+                                                name="ctl00$content$IsPrintTotalRealCost"
+                                                value="tdPrintTotalRealCostNo" /><label
+                                                for="content_tdPrintTotalRealCostNo">否</label>
+                                        </td>
+                                        <td class="first">是否打印实收</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintRealCostYes" type="radio"
+                                                name="ctl00$content$IsPrintRealCost" value="tdPrintRealCostYes" /><label
+                                                for="content_tdPrintRealCostYes">是</label>
+                                            <input id="content_tdPrintRealCostNo" type="radio"
+                                                name="ctl00$content$IsPrintRealCost" value="tdPrintRealCostNo" /><label
+                                                for="content_tdPrintRealCostNo">否</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">是否打印月数</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintMonthCountYes" type="radio"
+                                                name="ctl00$content$IsPrintMonthCount"
+                                                value="tdPrintMonthCountYes" /><label
+                                                for="content_tdPrintMonthCountYes">是</label>
+                                            <input id="content_tdPrintMonthCountNo" type="radio"
+                                                name="ctl00$content$IsPrintMonthCount"
+                                                value="tdPrintMonthCountNo" /><label
+                                                for="content_tdPrintMonthCountNo">否</label>
+                                        </td>
+                                        <td class="first">是否打印单价</td>
+                                        <td class="second">
+                                            <input id="content_tdPrintUnitPriceYes" type="radio"
+                                                name="ctl00$content$IsPrintUnitPrice"
+                                                value="tdPrintUnitPriceYes" /><label
+                                                for="content_tdPrintUnitPriceYes">是</label>
+                                            <input id="content_tdPrintUnitPriceNo" type="radio"
+                                                name="ctl00$content$IsPrintUnitPrice"
+                                                value="tdPrintUnitPriceNo" /><label
+                                                for="content_tdPrintUnitPriceNo">否</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">打印下移</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintBottomMargin" type="text"
+                                                id="content_tdPrintBottomMargin" class="easyui-textbox" />(mm)
+                                        </td>
+                                        <td class="first">打印上移</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintTopMargin" type="text"
+                                                id="content_tdPrintTopMargin" class="easyui-textbox" />(mm)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">单据行数</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintTotalLines" type="text"
+                                                id="content_tdPrintTotalLines" class="easyui-textbox" />(行)
+                                        </td>
+                                        <td class="first">收款方式</td>
+                                        <td class="second">
+                                            <select name="ctl00$content$tdPrintChargeTypeCount"
+                                                id="content_tdPrintChargeTypeCount" class="easyui-combobox" type="text"
+                                                data-options="editable:false">
+                                                <option value="2">显示2个</option>
+                                                <option value="1">显示1个</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">单据行高</td>
+                                        <td class="second">
+                                            <input name="ctl00$content$tdPrintLineHeight" type="text"
+                                                id="content_tdPrintLineHeight" class="easyui-textbox" />(像素)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">收费打印说明</td>
+                                        <td class="second" colspan="3" style="width: 75%">
+                                            <input name="ctl00$content$tdPrintNote" type="text" id="content_tdPrintNote"
+                                                data-options="multiline:true" class="easyui-textbox"
+                                                style="width: 70%; height: 60px;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">催收打印说明</td>
+                                        <td class="second" colspan="3" style="width: 75%">
+                                            <input name="ctl00$content$tdCuiFeiNote" type="text"
+                                                id="content_tdCuiFeiNote" data-options="multiline:true"
+                                                class="easyui-textbox" style="width: 70%; height: 60px;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first">退款打印说明</td>
+                                        <td class="second" colspan="3" style="width: 75%">
+                                            <input name="ctl00$content$tdPrintCancelNote" type="text"
+                                                id="content_tdPrintCancelNote" data-options="multiline:true"
+                                                class="easyui-textbox" style="width: 70%; height: 60px;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

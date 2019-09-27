@@ -1,0 +1,136 @@
+html, body, form {
+    height: 100%;
+    font-family: "Helvetica Neue",Helvetica,sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+.err {
+    color: Red;
+    font-weight: normal;
+    font-size: 13px;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    min-height: 580px;
+    background: #fff;
+    background-size: 100% 100%;
+    float: left;
+}
+
+.links {
+    display: block;
+    height: 30px;
+    text-align: left;
+    line-height: 30px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 60%;
+    width: 40%;
+}
+
+    .links a {
+        color: #6BB7FA;
+    }
+
+    .links span {
+        color: #6BB7FA;
+    }
+
+.loginbox .title {
+    text-align: center;
+    width: 220px;
+}
+
+    .loginbox .title img {
+        height: 100%;
+    }
+
+.inputbox {
+    background-color: #fff;
+    height: 42px;
+    line-height: 42px;
+    width: 220px;
+    vertical-align: middle;
+    font-size: 14px;
+    border: solid 1px #D4D4D4;
+    border-radius: 30px;
+    position: relative;
+}
+
+    .inputbox.login_input {
+        margin-top: 30px;
+    }
+
+    .inputbox.pwd_input {
+        margin-top: 15px;
+    }
+
+    .inputbox label {
+        float: left;
+        font-family: "Helvetica Neue",Helvetica,sans-serif;
+        height: 42px;
+        width: 50px;
+    }
+
+    .inputbox input {
+        background-image: none;
+        float: left;
+        margin: 5px 0 0 45px;
+        padding: 0;
+        width: 152px;
+        height: 30px;
+    }
+
+.auto_login {
+    width: 206px;
+    margin-top: 15px;
+}
+
+.login_btn {
+    width: 220px;
+    margin-top: 15px;
+}
+
+    .login_btn .btnlogin {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        background: #2E7ECE;
+        border: none;
+        cursor: pointer;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 15px;
+    }
+
+.input_icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    bottom: 0;
+    width: 21px;
+    height: 26px;
+    margin-top: -13px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+}
+
+.login_input .input_icon {
+    background-image: url('../../styles/images/username_icon.png');
+}
+
+.pwd_input .input_icon {
+    background-image: url('../../styles/images/pwd_icon.png');
+}

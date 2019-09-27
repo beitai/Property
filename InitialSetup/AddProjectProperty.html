@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-08_281000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-08_281000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-08_281000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-08_281000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var firsttitle, ProjectID, CompanyID, AddMan, IsParent, CurrentGrade, ParentID, PropertyID, canCloseYT, FullName, PropertyID, canCloseYT, TotalRoomCount;
+        $(function () {
+            PropertyID = getQueryString("PropertyID");
+            ProjectID = getQueryString("ProjectID");
+            // console.log()
+            // if (PropertyID == undefined) {
+            //     PropertyID = 1;
+            // }
+            // firsttitle = "住宅";
+            // ProjectID = "1";
+            // PropertyID = "1";
+            // AddMan = "demo8";
+            // IsParent = "";
+            // CurrentGrade = "";
+            // ParentID = "0";
+            // canCloseYT = $("#content_hdCloseYT");
+            // TotalRoomCount = Number("5000");
+        })
+        // console.log('PropertyID测试');
+        // console.log(ProjectID);
+        // console.log(PropertyID);
+    </script>
+    <script src="../js/Page/InitialSetup/AddProjectProperty.js?token=2019-08_281000"></script>
+    <link href="../styles/main.css?v=1.1" rel="stylesheet" />
+    <style>
+        a.opt_a {
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .datagrid {
+            border-left: 0px;
+            border-bottom: 0px;
+        }
+
+        .window {
+            border-radius: 0;
+            border: 0px;
+            padding: 0px;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./AddProjectProperty.aspx?t=2&amp;ProjectID=1&amp;PropertyID=1" id="myform">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKLTI2MjczMjIzMWRk5eMuPFoLtQ8/3yFOAwvYyrHM97I=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1AC146F1" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAALWm3DHvbUz4HyrTR/j8eVv3W62IJe0/8w7T4dZxIiy04Jr95IntVDtKbGQY0FmrRgCaClx" />
+                    </div>
+                    <input type="hidden" name="ctl00$content$hdCloseYT" id="content_hdCloseYT" value="1" />
+                    <div class="easyui-panel" style="width: 100%; height: 80%; border: 0;">
+                        <table id="tt_table">
+                        </table>
+                    </div>
+                    <div class="easyui-panel" style="width: 100%; height: 20%; border: 0; text-align: center;">
+                        <a href="javascript:void(0)" onclick="viewyt()" class="easyui-linkbutton btnlinkbar"
+                            data-options="plain:true,iconCls:'icon-save'">预览保存</a>
+
+                    </div>
+                    <div id="win_property" class="easyui-window" title=""
+                        data-options="closed:true,modal:false,closable:true,maximizable: false,minimizable:false,collapsible:false"
+                        style="width: 100%; height: 100%; padding: 0px;">
+                        <div class="easyui-panel" style="width: 100%; height: 80%; border: 0;">
+                            <table id="tt_2_table">
+                            </table>
+                        </div>
+                        <div class="easyui-panel" style="width: 100%; height: 20%; border: 0; text-align: center;">
+                            <a href="javascript:void(0)" onclick="newsaveyt()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-save'">保存</a>
+                            <a href="javascript:void(0)" onclick="closewin()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

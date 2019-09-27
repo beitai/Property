@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908_291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908_291000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908_291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908_291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <title>住户编辑</title>
+    <script>
+        var can_edit_name, tdRelationProperty, tdRelatePhone, tdRelationProperty, tdCompanyName;
+        $(function () {
+            tdRelateName = $("#content_tdRelateName");
+            tdRelatePhone = $("#content_tdRelatePhone");
+            tdRelationProperty = $("#content_tdRelationProperty");
+            tdCompanyName = $("#content_tdCompanyName");
+            can_edit_name = Number('1');
+            if (can_edit_name == 0) {
+                tdRelateName.textbox("disable", true);
+                tdRelatePhone.textbox("disable", true);
+            }
+            else {
+                tdRelateName.textbox("enable", true);
+                tdRelatePhone.textbox("enable", true);
+            }
+            tdRelationProperty.combobox({
+                onChange: function () {
+                    reset_textbox();
+                }
+            })
+            reset_textbox();
+        })
+        function reset_textbox() {
+            var relation_property = tdRelationProperty.combobox('getValue');
+            if (relation_property == 'geren') {
+                tdCompanyName.textbox("disable", true);
+                $('.checkinfo').hide();
+            } else {
+                tdCompanyName.textbox("enable", true);
+                $('.checkinfo').show();
+            }
+        }
+        function do_save() {
+            var ID = "";
+            var RoomID = "2380707";
+            var name = $("#content_tdRelateName").textbox("getValue");
+            var phone = $("#content_tdRelatePhone").textbox("getValue");
+            var RelateIDCard = $("#content_tdRelateIDCard").textbox("getValue");
+            var IsDefaultCheck = document.getElementById("content_tdIsDefault");
+            var IsDefault = IsDefaultCheck.checked ? 1 : 0;
+            var IsChargeManCheck = document.getElementById("content_tdIsChargeMan");
+            var IsChargeMan = IsChargeManCheck.checked ? 1 : 0;
+            var IsChargeFeeCheck = document.getElementById("content_tdIsChargeFee");
+            var IsChargeFee = IsChargeFeeCheck.checked ? 1 : 0;
+            var RelationType = $("#content_tdRelationType").combobox("getValue");;
+            var RelationProperty = tdRelationProperty.combobox("getValue");
+            var IDCardType = $("#content_tdIDCardType").combobox("getValue");
+            var Birthday = $("#content_tdBirthday").datebox("getValue");
+            var EmailAddress = $("#content_tdEmailAddress").textbox("getValue");
+            var HomeAddress = $("#content_tdHomeAddress").textbox("getValue");
+            var OfficeAddress = $("#content_tdOfficeAddress").textbox("getValue");
+            var BankName = $("#content_tdBankName").textbox("getValue");
+            var BankAccountName = $("#content_tdBankAccountName").textbox("getValue");
+            var BankNo = $("#content_tdBankNo").textbox("getValue");
+            var CustomOne = $("#content_tdCustomOne").textbox("getValue");
+            var CustomTwo = $("#content_tdCustomTwo").textbox("getValue");
+            var CustomThree = $("#content_tdCustomThree").textbox("getValue");
+            var CustomFour = $("#content_tdCustomFour").textbox("getValue");
+            var Remark = $("#content_tdRemark").textbox("getValue");
+            var ContractStartTime = $("#content_tdContractStartTime").datebox("getValue");
+            var ContractEndTime = $("#content_tdContractEndTime").datebox("getValue");
+            var BrandInfo = $("#content_tdBrandNote").textbox("getValue");
+            var ContractNote = $("#content_tdContractNote").textbox("getValue");
+            var Interesting = $("#content_tdInteresting").textbox("getValue");
+            var ConsumeMore = $("#content_tdConsumeMore").textbox("getValue");
+            var BelongTeam = $("#content_tdBelongTeam").textbox("getValue");
+            var OneCardNumber = $("#content_tdOneCardNumber").textbox("getValue");
+            var ChargeForMan = $("#content_tdChargeForMan").textbox("getValue");
+            var CompanyName = tdCompanyName.textbox("getValue");
+            var TaxpayerNumber = $("#content_tdTaxpayerNumber").textbox("getValue");
+            var options = { visit: "savefamily", ID: ID, RoomID: RoomID, name: name, phone: phone, RelateIDCard: RelateIDCard, IsDefault: IsDefault, RelationType: RelationType, IDCardType: IDCardType, Birthday: Birthday, EmailAddress: EmailAddress, HomeAddress: HomeAddress, OfficeAddress: OfficeAddress, BankName: BankName, BankAccountName: BankAccountName, BankNo: BankNo, CustomOne: CustomOne, CustomTwo: CustomTwo, CustomThree: CustomThree, CustomFour: CustomFour, Remark: Remark, ContractStartTime: ContractStartTime, ContractEndTime: ContractEndTime, BrandInfo: BrandInfo, ContractNote: ContractNote, IsChargeFee: IsChargeFee, RelationProperty: RelationProperty, Interesting: Interesting, ConsumeMore: ConsumeMore, BelongTeam: BelongTeam, OneCardNumber: OneCardNumber, ChargeForMan: ChargeForMan, IsChargeMan: IsChargeMan, CompanyName: CompanyName, TaxpayerNumber: TaxpayerNumber };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/RoomResourceHandler.ashx',
+                data: options,
+                success: function (message) {
+                    if (message.status) {
+                        top.winUpdate = true;
+                        $('#ff').form('submit', {
+                            url: '../Handler/RoomResourceHandler.ashx',
+                            onSubmit: function (param) {
+                                param.visit = 'savefamilyphoto';
+                                param.ID = message.ID;
+                            },
+                            success: function (data) {
+                                show_message('保存成功', 'success', function () {
+                                    do_close();
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            })
+        }
+        function do_close() {
+            doCloseWin();
+        }
+        function showPreImg(file) {
+            var objUrl = getObjectURL(file.files[0]);
+            if (objUrl) {
+                $("#PreImg").attr("src", objUrl);
+                var imgPath = "../styles/images/edit.jpg";
+                $(".fileInputContainer").css("background-image", "url(" + imgPath + ")");
+            }
+        }
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) { // basic
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        $(function () {
+            var tdIsChargeManObj = $("#content_tdIsChargeMan");
+            var tdIsChargeFeeObj = $("#content_tdIsChargeFee");
+            tdIsChargeManObj.bind('click', function () {
+                if (!tdIsChargeManObj.prop('checked')) {
+                    tdIsChargeFeeObj.prop('checked', false);
+                }
+            })
+            tdIsChargeFeeObj.bind('click', function () {
+                if (!tdIsChargeManObj.prop('checked')) {
+                    tdIsChargeFeeObj.prop('checked', false);
+                }
+            })
+        })
+    </script>
+    <style type="text/css">
+        .panel-body {
+            background: #f0f0f0;
+        }
+
+        table.add {
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+        table.add td {
+            padding: 10px;
+            width: 35%;
+        }
+
+        table.add td:nth-child(2n-1) {
+            width: 15%;
+        }
+
+        .fileInputContainer {
+            height: 60px;
+            background: url("../styles/images/addimage.jpg") no-repeat;
+            width: 60px;
+            position: relative;
+            margin-left: 130px;
+            margin-top: 20px;
+            background-size: cover;
+        }
+
+        .fileInput {
+            height: 60px;
+            width: 60px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./EditRelateFamily.aspx?RoomID=2380707" id="ff"
+                    enctype="multipart/form-data">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTE2NzE3OTk5NTNkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYDBRljdGwwMCRjb250ZW50JHRkSXNEZWZhdWx0BRtjdGwwMCRjb250ZW50JHRkSXNDaGFyZ2VNYW4FG2N0bDAwJGNvbnRlbnQkdGRJc0NoYXJnZUZlZdN47uWcLc/vuIZ9/PNQ52t2Fk9H" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1B7E20F3" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdACFeihqsTsa/gm9tskoYv5nYadjlu/8FbhsusggheZ1KENY968SKbIpTMnjZIZKOKzKAibV+y5lcEtXreWyu574GSllxXVKZ+j9Xy2E9O1uf3ZUvcuRXAomVXFwvfGCIsTj0j2O7pOB1SXh4fWVfow/aK56fIHQjV5DqZ+wO6D5av5yn+kY9bmxKRILjtpxUDFY4f4Q1yYqT0/itwgSxw+46AxEDVscdHJTIPavQBQkZsXqKbIxamb+Rl7rLmdYfg8IrOptt9BxQ0xqAahqVOeVZ0nHqM0gcqogS/N1UpvKHui9h+fA72ogBRfX/bVzpR82eBNA4Xz9kzXyWuDT8B1EHLTxef0ERWCayf6o/bxrB0igVz0g2xl41wWq+lAS3hoCcs2gcP8dlCeOUZYn4esBehQjr98zrruttnbJfqPnIVxDDtd5F8WR6wFnfiaAn+mIsTpRSjP5rV+3yM7w06xjjUmp9HRMTwQCVgzFG09rKdu4cgFg0m5OLJJzDLb87SSaOfF2qEQsrCTOYzZX3/HnK69aqZY8dEf78EFTBYvYwJVyUUA84q2BtuTTlDKk5Wn23fVBAyH/d+VEnTtgqK/a/lkckhqyVBxCPxXRNZj4YkpE0ahCdCFqI+MRPwZvt6bt+s1pXp6BHcRSp7zJNikP7G865N30RwIl+Hxg1shqDCzhVKFllppMQJE409Scml+/dKn6b9AQXmYVlaowjfAUbGcMsWw==" />
+                    </div>
+                    <div class="operation_box inlinebox">
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                        <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                    </div>
+                    <div class="table_container nopadding">
+                        <div class="table_title">
+                            主要信息
+                        </div>
+                        <table class="info">
+                            <tr>
+                                <td>住户类别</td>
+                                <td>
+                                    <select name="ctl00$content$tdRelationProperty" id="content_tdRelationProperty"
+                                        type="text" class="easyui-combobox" data-options="editable:false">
+                                        <option value="geren">个人</option>
+                                        <option value="gongsi">公司</option>
+                                    </select></td>
+                                <td>住户标签</td>
+                                <td>
+                                    <select name="ctl00$content$tdRelationType" id="content_tdRelationType" type="text"
+                                        class="easyui-combobox" data-options="editable:false">
+                                        <option value="homefamily">业主</option>
+                                        <option value="rentfamily">租户</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>公司名称</td>
+                                <td>
+                                    <input name="ctl00$content$tdCompanyName" type="text" id="content_tdCompanyName"
+                                        class="easyui-textbox" /></td>
+                                <td>住户姓名</td>
+                                <td>
+                                    <input name="ctl00$content$tdRelateName" type="text" id="content_tdRelateName"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>联系方式</td>
+                                <td>
+                                    <input name="ctl00$content$tdRelatePhone" type="text" id="content_tdRelatePhone"
+                                        class="easyui-textbox" data-options="require:true" /></td>
+                                <td style="text-align: left" colspan="2">默认联系人
+                                    <input name="ctl00$content$tdIsDefault" type="checkbox" id="content_tdIsDefault" />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    缴费对象
+                                    <input name="ctl00$content$tdIsChargeMan" type="checkbox"
+                                        id="content_tdIsChargeMan" />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    缴费人员
+                                    <input name="ctl00$content$tdIsChargeFee" type="checkbox"
+                                        id="content_tdIsChargeFee" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>证件类别</td>
+                                <td>
+                                    <select name="ctl00$content$tdIDCardType" id="content_tdIDCardType"
+                                        class="easyui-combobox" data-options="editable:false">
+                                        <option value="1">身份证</option>
+                                        <option value="2">护照</option>
+                                        <option value="3">军人证</option>
+                                        <option value="4">驾驶证</option>
+                                        <option value="5">其他</option>
+                                    </select></td>
+                                <td>证件号码</td>
+                                <td>
+                                    <input name="ctl00$content$tdRelateIDCard" type="text" id="content_tdRelateIDCard"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                        </table>
+                        <div class="table_title checkinfo">开票信息</div>
+                        <table class="info checkinfo">
+                            <tr>
+                                <td>纳税人识别号</td>
+                                <td>
+                                    <input name="ctl00$content$tdTaxpayerNumber" type="text"
+                                        id="content_tdTaxpayerNumber" class="easyui-textbox" /></td>
+                                <td>银行账号</td>
+                                <td>
+                                    <input name="ctl00$content$tdBankNo" type="text" id="content_tdBankNo"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>开户银行</td>
+                                <td>
+                                    <input name="ctl00$content$tdBankName" type="text" id="content_tdBankName"
+                                        class="easyui-textbox" /></td>
+                                <td>开户名称</td>
+                                <td>
+                                    <input name="ctl00$content$tdBankAccountName" type="text"
+                                        id="content_tdBankAccountName" class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>电子信箱</td>
+                                <td>
+                                    <input name="ctl00$content$tdEmailAddress" type="text" id="content_tdEmailAddress"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                        </table>
+                        <div class="table_title">其他信息</div>
+                        <table class="info">
+                            <tr>
+                                <td>联系地址</td>
+                                <td>
+                                    <input name="ctl00$content$tdHomeAddress" type="text" id="content_tdHomeAddress"
+                                        class="easyui-textbox" /></td>
+                                <td>工作单位</td>
+                                <td>
+                                    <input name="ctl00$content$tdOfficeAddress" type="text" id="content_tdOfficeAddress"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>出生日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBirthday" type="text" id="content_tdBirthday"
+                                        class="easyui-datebox" />
+                                </td>
+                                <td>性别</td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomOne" type="text" id="content_tdCustomOne"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>年龄</td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomTwo" type="text" id="content_tdCustomTwo"
+                                        class="easyui-textbox" /></td>
+                                <td>城市</td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomThree" type="text" id="content_tdCustomThree"
+                                        class="easyui-textbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>自定义四-字段测试</td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomFour" type="text" id="content_tdCustomFour"
+                                        class="easyui-textbox" /></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>合同开始日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdContractStartTime" type="text"
+                                        id="content_tdContractStartTime" class="easyui-datebox" />
+                                </td>
+                                <td>合同结束日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdContractEndTime" type="text"
+                                        id="content_tdContractEndTime" class="easyui-datebox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>性格爱好
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdInteresting" type="text" id="content_tdInteresting"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>消费倾向
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdConsumeMore" type="text" id="content_tdConsumeMore"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>品牌信息
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBrandNote" type="text" id="content_tdBrandNote"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>所属部门
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBelongTeam" type="text" id="content_tdBelongTeam"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>银行卡
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdOneCardNumber" type="text" id="content_tdOneCardNumber"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>代扣对象
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdChargeForMan" type="text" id="content_tdChargeForMan"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>合同说明
+                                </td>
+                                <td colspan="3">
+                                    <input name="ctl00$content$tdContractNote" type="text" id="content_tdContractNote"
+                                        class="easyui-textbox" data-options="multiline:true"
+                                        style="width: 80%; height: 60px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>备注</td>
+                                <td colspan="3">
+                                    <input name="ctl00$content$tdRemark" type="text" id="content_tdRemark"
+                                        class="easyui-textbox" data-options="multiline:true"
+                                        style="height: 60px; width: 80%;" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

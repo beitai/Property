@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908261000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908261000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908261000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908261000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function addproject() {
+            var projectid = GetSelectRadio();
+            if (projectid == null || projectid == "") {
+                show_message("请选择一个项目", "warning");
+                return;
+            }
+            var can_add = "1";
+            if (projectid == 1 && can_add == 0) {
+                show_message("授权项目数已达上限", "warning");
+                return;
+            }
+            var id = Number(projectid);
+            var node = top.getNodeByParam(id);
+            if (node.TypeDesc == "" || node.TypeDesc == null) {
+                node.TypeDesc = "小区";
+            }
+            doOpenWin({
+                title: '新增业态',
+                // url: '../InitialSetup/AddSubProject.aspx?ProjectID=' + id
+                url: './InitialSetup/AddSubProject.html?ProjectID=' + id
+            }, function () {
+                top.doSearch();
+            });
+            return;
+        }
+        function deleteproject() {
+            var projectids = [];
+            var RoomIDs = [];
+            var rows = $("#tt_table").datagrid("getSelections");
+            if (rows.length > 0) {
+                $.each(rows, function (index, row) {
+                    RoomIDs.push(row.RoomID);
+                })
+            }
+            else {
+                RoomIDs = GetSelectedRooms();
+                projectids = [];
+                var projectid = GetSelectRadio();
+                if (RoomIDs.length == 0 && (projectid == null || projectid == "")) {
+                    show_message("请选择一个项目", "warning");
+                    return;
+                }
+                if (projectid != null && projectid != "") {
+                    projectids.push(projectid);
+                    if ($.inArray(1, projectids) > -1) {
+                        show_message("禁止删除选中资源", "warning");
+                        return;
+                    }
+                }
+            }
+            if (projectids.length == 0 && RoomIDs.length == 0) {
+                show_message("请选择一个项目", "warning");
+                return;
+            }
+            var options = { visit: "checkdeleteproject", ProjectIds: JSON.stringify(projectids), RoomIDs: JSON.stringify(RoomIDs) ,sessionId:sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/CheckStatusHandler.ashx',
+                url: window.SERVERPATH + 'api/checkdeleteproject',
+                data: options,
+                success: function (data) {
+
+                    data.status = true;
+
+                    if (data.status) {
+                        top.$.messager.confirm("提示", "确认删除选中的资源档案?", function (r) {
+                            if (r) {
+                                deleteprojectprocess(projectids, RoomIDs);
+                            }
+                        });
+                        return;
+                    }
+                    if (data.error) {
+                        show_message(data.error, "warning");
+                        return;
+                    }
+                    show_message("系统异常", "error");
+                }
+            });
+        }
+        function deleteprojectprocess(projectids, RoomIDs) {
+            MaskUtil.mask('body', '提交中');
+            var options = { visit: 'deletesubproject', RoomIDs: JSON.stringify(RoomIDs), ProjectIDs: JSON.stringify(projectids) ,sessionId:sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/ProjectHandler.ashx',
+                url: window.SERVERPATH + 'api/deletesubproject',
+                data: options,
+                success: function (message) {
+
+                    message.status = true;
+
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        show_message("删除成功", "success", function () {
+                            top.doSearch();
+                            SearchTT();
+                        });
+                        return;
+                    }
+                    if (message.error) {
+                        show_message(message.error, 'warning');
+                        return;
+                    }
+                    show_message("删除失败", "error");
+                }
+            });
+        }
+        var CompanyID, hdProjectID, hdRoomIDs, hdSearchAreas, tdKeyword;
+        $(function () {
+            CompanyID = "1";
+            hdProjectID = $("#content_hdProjectID");
+            hdRoomIDs = $("#content_hdRoomIDs");
+            hdSearchAreas = $("#content_hdSearchAreas");
+            tdKeyword = $("#content_tdKeyword");
+            SetSearchAreaInfo();
+        });
+        function openSearchbox() {
+            $('#searcharea').show();
+            $('#win_Search').window('open');
+        }
+        function closeSearchwin() {
+            $('#searcharea').hide();
+            $('#win_Search').window('close');
+            SetSearchAreaInfo();
+        };
+        function SetSearchAreaInfo() {
+            var searcharray = [];
+            var elems = document.getElementsByName("searchcheck");
+            $.each(elems, function () {
+                if (this.checked) {
+                    var elem = $(this);
+                    searcharray.push(elem.val());
+                }
+            });
+            hdSearchAreas.val(JSON.stringify(searcharray));
+        }
+        function addorgnization() {
+            var projectid = GetSelectRadio();
+            if (projectid == null || projectid == "") {
+                show_message("请选择一个项目", "warning");
+                return;
+            }
+            var can_add = "1";
+            if (projectid == 1 && can_add == 0) {
+                show_message("授权项目数已达上限", "warning");
+                return;
+            }
+            var id = Number(projectid);
+            var treeObj = $.fn.zTree.getZTreeObj("tt");
+            var node = top.getNodeByParam(id);
+            if (node.TypeDesc == "" || node.TypeDesc == null) {
+                node.TypeDesc = "小区";
+            }
+            do_open_dialog('新增公司', '../InitialSetup/AddSubProject.aspx?ProjectID=' + id);
+            return;
+        }
+    </script>
+
+    <script src="../js/Page/InitialSetup/InitialSetup.js?token=201908261000"></script>
+    <style type="text/css">
+        .radioBtn {
+            height: 16px;
+            vertical-align: middle;
+        }
+
+        .checkboxBtn {
+            vertical-align: middle;
+            margin-right: 2px;
+        }
+
+        .btntoolbar.l-btn {
+            padding: 6px 8px;
+        }
+
+        .btntoolbar.l-btn:hover {
+            padding: 6px 8px;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./Setup.aspx" id="form1">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKMTM4MzMzOTkzMGRkeomqse+3LA5DM3znqV7jrFvhk/k=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E23D6D15" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAUYoN4Gy3KZLCgBdOW3+J8cpmLynTdXh4E3kYJh8PU0A7RtpcSdnWGcigIZOqX/tdJOmsRqYGCbwsJJpZDSGvvqqVvXEUujsgS+nEB6+ipj6tOAUtJ8BTb/x73YGOehk+uXsp1q" />
+                    </div>
+                    <div class="easyui-layout" fit="true">
+                        <div class="op" data-options="region:'north'" style="height: 60px;">
+                            <div style="display: inline-table; width: 33%;">
+
+                                <div style="width: 100%; padding: 5px;">
+                                    <div id="win_Search" class="easyui-window" data-options="title:'选择筛选条件',closed:true"
+                                        style="width: 350px; height: 300px; padding: 10px">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td>资源位置</td>
+                                                <td>
+                                                    <input type="checkbox" checked="checked" value="FullName"
+                                                        name="searchcheck" /></td>
+                                                <td>房间编号</td>
+                                                <td>
+                                                    <input type="checkbox" checked="checked" value="Name"
+                                                        name="searchcheck" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>房间类型</td>
+                                                <td>
+                                                    <input type="checkbox" value="RoomType" name="searchcheck" /></td>
+                                                <td>户型</td>
+                                                <td>
+                                                    <input type="checkbox" value="RoomLayout" name="searchcheck" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>业主姓名</td>
+                                                <td>
+                                                    <input type="checkbox" value="RelationName" checked="checked"
+                                                        name="searchcheck" /></td>
+                                                <td>业主身份证</td>
+                                                <td>
+                                                    <input type="checkbox" value="OwnerIDCard" name="searchcheck" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>业主手机号码</td>
+                                                <td>
+                                                    <input type="checkbox" value="OwnerPhone" name="searchcheck" /></td>
+                                                <td>租户姓名</td>
+                                                <td>
+                                                    <input type="checkbox" value="RentName" name="searchcheck" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>租户手机号</td>
+                                                <td>
+                                                    <input type="checkbox" value="RentPhoneNumber" name="searchcheck" />
+                                                </td>
+                                                <td>租户身份证号</td>
+                                                <td>
+                                                    <input type="checkbox" value="RentIDCard" name="searchcheck" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>房源属性</td>
+                                                <td>
+                                                    <input type="checkbox" value="RoomProperty" name="searchcheck" />
+                                                </td>
+                                                <td>房间状态</td>
+                                                <td>
+                                                    <input type="checkbox" value="RoomState" checked="checked"
+                                                        name="searchcheck" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <input type="button" value="保存" onclick="closeSearchwin()" /></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <label>
+                                        关键字:
+                                        <input name="ctl00$content$tdKeyword" type="text" id="content_tdKeyword"
+                                            class="easyui-searchbox"
+                                            data-options="prompt:&#39;关键字搜索&#39;,searcher:SearchTT"
+                                            style="width: 150px" />
+                                    </label>
+                                    <label>
+                                        <a href="javascript:void(0)" onclick="SearchTT()"
+                                            class="easyui-linkbutton btntoolbar"
+                                            data-options="plain:true,iconCls:'icon-search'">查询</a>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div style="display: inline-table; width: 65%;">
+                                <div style="width: 100%; padding: 5px;">
+
+                                    <a href="javascript:void(0)" onclick="addproject()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-add'">新增业态</a>
+
+                                    <a href="javascript:void(0)" onclick="editProject()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-edit'">修改</a>
+
+                                    <a href="javascript:void(0)" onclick="deleteproject()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-remove'">删除</a>
+
+                                    <a href="javascript:void(0)" onclick="do_connection()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-guanlian'">关联</a>
+
+                                    <a href="javascript:void(0)" onclick="do_export()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-export'">导出</a>
+
+                                    <a href="javascript:void(0)" onclick="openImport()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-import'">导入</a>
+
+                                    <a href="javascript:void(0)" onclick="openTableSetUp()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-setting'">配置</a>
+
+                                    <a href="javascript:void(0)" onclick="openFieldSetUp()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-params'">参数</a>
+                                    <input type="hidden" name="ctl00$content$hdProjectID" id="content_hdProjectID" />
+                                    <input type="hidden" name="ctl00$content$hdRoomIDs" id="content_hdRoomIDs" />
+                                    <input type="hidden" name="ctl00$content$hdSearchAreas"
+                                        id="content_hdSearchAreas" />
+                                </div>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <table id="tt_table">
+                            </table>
+                            <div id="tb">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

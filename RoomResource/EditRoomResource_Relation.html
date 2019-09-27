@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908271000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908271000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908271000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908271000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script src="../js/Page/Comm/GetTypeList.js?v=201908271000"></script>
+    <script type="text/javascript">
+        var RoomTypeList = [];
+        var RoomLayoutList = [];
+        var RoomPropertyList = [];
+        var RoomID, tdRemark, hdRemark;
+        $(function () {
+            tdRemark = $('#content_tdRemark');
+            hdRemark = $('#content_hdRemark');
+            tdRemark.textbox('setValue', hdRemark.val());
+            RoomID = "2372517";
+            getRoomLayoutList();
+            var options = { visit: 'getroombasicparams' };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/RoomResourceHandler.ashx',
+                data: options,
+                success: function (result) {
+                    if (result.status) {
+                        $("#content_tbRoomState").combobox({
+                            data: result.roomstate_list,
+                            valueField: 'ID',
+                            textField: 'Name'
+                        });
+                        $("#content_tbRoomType").combobox({
+                            data: result.roomtype_list,
+                            valueField: 'ID',
+                            textField: 'Name'
+                        });
+                        $("#content_tbRoomProperty").combobox({
+                            data: result.roomproperty_list,
+                            valueField: 'ID',
+                            textField: 'Name'
+                        });
+                    }
+                }
+            });
+            $("#content_tdRoomLayout").combobox({
+                data: RoomLayoutList,
+                valueField: 'ID',
+                textField: 'Name'
+            });
+            getFieldContent();
+        })
+        function getRoomLayoutList() {
+            RoomLayoutList.push({ ID: "一居", Name: "一居" });
+            RoomLayoutList.push({ ID: "二居", Name: "二居" });
+            RoomLayoutList.push({ ID: "三居", Name: "三居" });
+            RoomLayoutList.push({ ID: "四居", Name: "四居" });
+        }
+        function do_save() {
+            var isValid = $("#ff").form('enableValidation').form('validate');
+            if (!isValid) {
+                return;
+            }
+            var RoomName = $("#content_tbRoomName").textbox("getValue");
+            var RoomStateID = $("#content_tbRoomState").combobox("getValue");
+            var RoomState = $("#content_tbRoomState").combobox("getText");
+            var BuildingArea = $("#content_tdBuildingArea").textbox("getValue");
+            var ContractArea = $("#content_tdContractArea").textbox("getValue");
+            var PaymentTime = $("#content_tbPaymentTime").datebox("getValue");
+            var MoveInTime = $("#content_tdMoveInTime").datebox("getValue");
+            var ZxStartTime = $("#content_tdZxStartTime").datebox("getValue");
+            var ZxEndTime = $("#content_tdZxEndTime").datebox("getValue");
+            var RoomTypeID = $("#content_tbRoomType").combobox("getValue");
+            var RoomType = $("#content_tbRoomType").combobox("getText");
+            var BuildingNumber = $("#content_tbBuildingNumber").textbox("getValue");
+            var BuildOutArea = $("#content_tdBuildOutArea").textbox("getValue");
+            var BuildInArea = $("#content_tdBuildInArea").textbox("getValue");
+            var GonTanArea = $("#content_tdGonTanArea").textbox("getValue");
+            var ChanQuanArea = $("#content_tdChanQuanArea").textbox("getValue");
+            var UseArea = $("#content_tdUseArea").textbox("getValue");
+            var PeiTaoArea = $("#content_tdPeiTaoArea").textbox("getValue");
+            var FunctionCoefficient = $("#content_tdFunctionCoefficient").textbox("getValue");
+            var FenTanCoefficient = $("#content_tdFenTanCoefficient").textbox("getValue");
+            var ChanQuanNo = $("#content_tdChanQuanNo").textbox("getValue");
+            var CertificateTime = $("#content_tdCertificateTime").datebox("getValue");
+            var RoomLayout = $("#content_tdRoomLayout").combobox("getValue");
+            var RoomPropertyID = $("#content_tbRoomProperty").combobox("getValue");
+            var RoomProperty = $("#content_tbRoomProperty").combobox("getText");
+            var CustomOne = $("#content_tdCustomOne").textbox("getValue");
+            var CustomTwo = $("#content_tdCustomTwo").textbox("getValue");
+            var CustomThree = $("#content_tdCustomThree").textbox("getValue");
+            var CustomFour = $("#content_tdCustomFour").textbox("getValue");
+            var Remark = $("#content_tdRemark").textbox("getValue");
+            var IsLocked = $("#content_tdIsLocked").combobox("getValue");
+            var SortOrder = $("#content_tdSortOrder").textbox("getValue");
+            var FieldList = [];
+            //自定义属性
+            $('.define').each(function () {
+                var FieldID = $(this).attr('data-id');
+                var data_value = $(this).textbox('getValue');
+                FieldList.push({ id: FieldID, value: data_value });
+            })
+            MaskUtil.mask('body', '提交中');
+            var options = { visit: 'saveroomresource', RoomID: RoomID, RoomName: RoomName, BuildingArea: BuildingArea, PaymentTime: PaymentTime, RoomState: RoomState, BuildingNumber: BuildingNumber, RoomType: RoomType, RoomLayout: RoomLayout, RoomProperty: RoomProperty, ContractArea: ContractArea, MoveInTime: MoveInTime, ZxStartTime: ZxStartTime, ZxEndTime: ZxEndTime, BuildOutArea: BuildOutArea, BuildInArea: BuildInArea, GonTanArea: GonTanArea, ChanQuanArea: ChanQuanArea, UseArea: UseArea, PeiTaoArea: PeiTaoArea, FunctionCoefficient: FunctionCoefficient, FenTanCoefficient: FenTanCoefficient, ChanQuanNo: ChanQuanNo, CertificateTime: CertificateTime, CustomOne: CustomOne, CustomTwo: CustomTwo, CustomThree: CustomThree, CustomFour: CustomFour, Remark: Remark, IsLocked: IsLocked, FieldList: JSON.stringify(FieldList), RoomStateID: RoomStateID, RoomTypeID: RoomTypeID, RoomPropertyID: RoomPropertyID, SortOrder: SortOrder };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/RoomResourceHandler.ashx',
+                data: options,
+                success: function (message) {
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        top.winUpdate = true;
+                        show_message("修改成功", "success");
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+        function do_close() {
+            parent.parent.do_close_dialog(function () {
+                parent.parent.$("#tt_table").datagrid("reload");
+            });
+        }
+        function getFieldContent() {
+            MaskUtil.mask('body', '加载中');
+            var options = { visit: 'getdefinecontent', TableName: "RoomBasic", RoomID: RoomID };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                data: options,
+                success: function (message) {
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        var html = '';
+                        var count = 0;
+                        var html = '';
+                        $.each(message.list, function (index, item) {
+                            if (index % 2 == 0) {
+                                html += '<tr>';
+                                html += '<td>';
+                                html += item.FieldName;
+                                html += '</td>';
+                                html += '<td>';
+                                html += '<input data-id="' + item.ID + '" class="easyui-textbox define" type="text" data-value="' + item.FieldContent + '" />';
+                                html += '</td>';
+                                count = 2;
+                            }
+                            else if (index % 2 == 1) {
+                                html += '<td>';
+                                html += item.FieldName;
+                                html += '</td>';
+                                html += '<td>';
+                                html += '<input data-id="' + item.ID + '" class="easyui-textbox define" type="text" data-value="' + item.FieldContent + '" />';
+                                html += '</td>';
+                                html += '</tr>';
+                                count = 4;
+                            }
+                            if ((index == message.list.length - 1) && count == 2) {
+                                html += '<td>';
+                                html += '</td>';
+                                html += '<td>';
+                                html += '</td>';
+                                html += '</tr>';
+                                count = 0;
+                            }
+                        })
+                        $(html).appendTo("#definefield");
+                        $.parser.parse('#definefield');
+                        $('.define').each(function () {
+                            var data_value = $(this).attr('data-value');
+                            $(this).textbox('setValue', data_value);
+                        })
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .panel-body {
+            background: #f0f0f0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./EditRoomResource_Basic.aspx?RoomID=2372517" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUJMTkzNjk4ODM5ZGTHi+iql4NL1IuTiP6Aebz+mcOVcQ==" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E0017C85" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdACOMYcKHFFfXoSPPdLHRYS2hPgIGX/2NV4vt5XQ49YJuwmmGwb7Y5kRG0kCO25UXzC+ZsnKqxvTB7hKcukd3378n1zFRCYB2ZRiI6BYhUDkM03Qq/1qlsUQRF7JFVjoKLf9oSIHDIAdnC7893IZloFzY+iU6XCl85RlORNJrsXnGFbxU9I1ugAKhYv8vpGWaiqQsFkP5pebRq+kyCreCdvvZkIApcFS07mo/s/qYMsV/BYg2CCF+v2nhVzQbmtulcGFRRBZYFeR0YA0D1LHumx8xK098tz1rRm6linYSg76s0g+274ttM0+G01Uiq2kMvUfTFqu8iIgsU4xPTTS9Lmus7ded+BeYpyLt3pzcb0XFKogft+v1gxTzVSNI6rHGg1gqQ8umdfaf2BgeAsqBsKy8zBfOOL1w3RX/0PtpDTh8wrtCczfAzTjL0S2EnGwEp0tTJZQhqr0/GldPO7sJQjHc+PMU3JfaKhx+bj5k9Z/mXg6txSwSXAHPjGIpGejxRxgrSXERfxrzWsZl0+tKAijFt0igy9iWvlkug+Fq1ZtQT7V+fqilOy0pXzDcFqjkoCbDyB/ndk1MkF18RryqWHqdu+h5WxebPmXGG2KQB0X2x4UI6/fM667rbZ2yX6j5yFcQw7XeRfFkesBZ34mgJ/piLE6UUoz+a1ft8jO8NOsY41JqfR0TE8EAlYMxRtPaynY4VShZZaaTECRONPUnJpfv5LlgLhwKka7wmHsiAO5n42m/S7U4oToVmTSB8aDKBMnHNO02" />
+                    </div>
+                    <div class="table_container nopadding">
+                        <div class="table_title">
+                            资源信息
+                        </div>
+                        <table class="info">
+                            <tr>
+                                <td>资源编号
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbRoomName" type="text" id="content_tbRoomName"
+                                        class="easyui-textbox" data-options="required:true" value="2写字楼" />
+                                </td>
+                                <td>房间状态
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbRoomState" type="text" id="content_tbRoomState"
+                                        class="easyui-combobox" />
+                                    <input type="hidden" name="ctl00$content$hdRoomState" id="content_hdRoomState" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>计费面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBuildingArea" type="text" id="content_tdBuildingArea"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>合同面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdContractArea" type="text" id="content_tdContractArea"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>建筑面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBuildOutArea" type="text" id="content_tdBuildOutArea"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>排序序号</td>
+                                <td>
+                                    <input name="ctl00$content$tdSortOrder" type="text" id="content_tdSortOrder"
+                                        class="easyui-textbox" value="2" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="table_title">
+                            辅助信息
+                        </div>
+                        <table class="info">
+                            <tr>
+                                <td>房间类型
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbRoomType" type="text" id="content_tbRoomType"
+                                        class="easyui-combobox" data-options="editable:false" />
+                                    <input type="hidden" name="ctl00$content$hdRoomType" id="content_hdRoomType" />
+                                </td>
+                                <td>房源属性
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbRoomProperty" type="text" id="content_tbRoomProperty"
+                                        class="easyui-combobox" data-options="editable:false" />
+                                    <input type="hidden" name="ctl00$content$hdRoomProperty"
+                                        id="content_hdRoomProperty" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>功能系数
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdFunctionCoefficient" type="text"
+                                        id="content_tdFunctionCoefficient" class="easyui-textbox" />
+                                </td>
+                                <td>公摊系数
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdFenTanCoefficient" type="text"
+                                        id="content_tdFenTanCoefficient" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>是否激活
+                                </td>
+                                <td>
+                                    <select name="ctl00$content$tdIsLocked" id="content_tdIsLocked"
+                                        class="easyui-combobox">
+                                        <option value="0">是</option>
+                                        <option value="1">否</option>
+                                    </select>
+                                </td>
+                                <td>户型
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdRoomLayout" type="text" id="content_tdRoomLayout"
+                                        class="easyui-combobox" data-options="editable:false" />
+                                    <input type="hidden" name="ctl00$content$hdRoomLayout" id="content_hdRoomLayout" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>套内面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdBuildInArea" type="text" id="content_tdBuildInArea"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>公摊面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdGonTanArea" type="text" id="content_tdGonTanArea"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>产权面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdChanQuanArea" type="text" id="content_tdChanQuanArea"
+                                        class="easyui-textbox" />
+                                </td>
+
+                                <td>使用面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdUseArea" type="text" id="content_tdUseArea"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>配套面积
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdPeiTaoArea" type="text" id="content_tdPeiTaoArea"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>期数
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbBuildingNumber" type="text"
+                                        id="content_tbBuildingNumber" class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>产权证号
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdChanQuanNo" type="text" id="content_tdChanQuanNo"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>发证日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdCertificateTime" type="text"
+                                        id="content_tdCertificateTime" class="easyui-datebox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>交房日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tbPaymentTime" type="text" id="content_tbPaymentTime"
+                                        class="easyui-datebox" />
+                                </td>
+                                <td>入住日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdMoveInTime" type="text" id="content_tdMoveInTime"
+                                        class="easyui-datebox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>装修开始日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdZxStartTime" type="text" id="content_tdZxStartTime"
+                                        class="easyui-datebox" />
+                                </td>
+                                <td>装修验收日期
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdZxEndTime" type="text" id="content_tdZxEndTime"
+                                        class="easyui-datebox" />
+                                </td>
+                            </tr>
+                            <tr style="display: none;">
+                                <td>自定义一
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomOne" type="text" id="content_tdCustomOne"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>自定义二
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomTwo" type="text" id="content_tdCustomTwo"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr style="display: none;">
+                                <td>自定义三
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomThree" type="text" id="content_tdCustomThree"
+                                        class="easyui-textbox" />
+                                </td>
+                                <td>自定义四
+                                </td>
+                                <td>
+                                    <input name="ctl00$content$tdCustomFour" type="text" id="content_tdCustomFour"
+                                        class="easyui-textbox" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>备注
+                                </td>
+                                <td colspan="3">
+                                    <input name="ctl00$content$tdRemark" type="text" id="content_tdRemark"
+                                        class="easyui-textbox" data-options="multiline:true"
+                                        style="width: 80%; height: 60px;" />
+                                    <input type="hidden" name="ctl00$content$hdRemark" id="content_hdRemark" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="table_title">
+                            自定义信息
+                        </div>
+                        <table class="info lasttable" id="definefield">
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

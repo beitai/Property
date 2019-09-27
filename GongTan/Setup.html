@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019_08_291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019_08_291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var FeeType, CompanyID, FeeStatus, StartWriteDate, EndWriteDate, ChargeSummaryList, hdProjectID, hdRoomIDs, tdKeyword, hdIDs, hdPriceRangeList;
+        $(function () {
+            FeeType = $("#content_tbFeeType");
+            FeeStatus = $("#content_tbFeeStatus");
+            StartWriteDate = $("#content_tdStartWriteDate");
+            EndWriteDate = $("#content_tdEndWriteDate");
+            CompanyID = "1";
+            hdProjectID = $("#content_hdProjectID");
+            hdRoomIDs = $("#content_hdRoomIDs");
+            tdKeyword = $("#content_tdKeyword");
+            hdIDs = $("#content_hdIDs");
+            hdPriceRangeList = $("#content_hdPriceRangeList");
+        });
+    </script>
+    <script src="../js/toast/jquery.toast.js"></script>
+    <link href="../js/toast/jquery.toast.css" rel="stylesheet" />
+    <script src="../js/Page/GongTan/GongTanSetup.js?v=2019_08_291000" type="text/javascript"></script>
+    <style>
+        .tdsearch label {
+            margin-right: 10px;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./Setup.aspx" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKLTk5OTE2MjI5MmRk1YmQglyeQqO8J72BZMi3xg6irGU=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="86105449" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdAAplcYlZLk+ZZEx5wNEWC/8U8I4aEcR2EWE0Uby5F2epQqZi8p03V4eBN5GCYfD1NAMkaOJrnlMG3gJ1nhWKijdp7Lbr+TUJkItmMLFbOCEY0wJeVlP7XkI+GOOHY3n5vNKc5OS+9qSWH41YcghDXyy1tG2lxJ2dYZyKAhk6pf+10k6axGpgYJvCwkmlkNIa++p/W8JrguZmInRDQbZb5NLTUTy53QVnavHNH83isemPcN1flzc=" />
+                    </div>
+                    <input name="ctl00$content$hdPriceRangeList" type="hidden" id="content_hdPriceRangeList"
+                        value="[{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;100&quot;,&quot;ID&quot;:146,&quot;SummaryID&quot;:540,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;100&quot;,&quot;BasePrice&quot;:0.360,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-13T15:42:18.737&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;5&quot;,&quot;ID&quot;:148,&quot;SummaryID&quot;:556,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;5&quot;,&quot;BasePrice&quot;:4.930,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-25T11:12:31.54&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;1000&quot;,&quot;ID&quot;:150,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;1000&quot;,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-25T16:15:09.74&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;50&quot;,&quot;ID&quot;:152,&quot;SummaryID&quot;:629,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;50&quot;,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-14T10:55:52.033&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;50&quot;,&quot;ID&quot;:160,&quot;SummaryID&quot;:564,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;50&quot;,&quot;BasePrice&quot;:1.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-25T08:43:23.933&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;10&quot;,&quot;ID&quot;:164,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;10&quot;,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-05-05T14:47:11.673&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;260&quot;,&quot;ID&quot;:166,&quot;SummaryID&quot;:701,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;260&quot;,&quot;BasePrice&quot;:3.650,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-05-14T09:11:24.87&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;200&quot;,&quot;ID&quot;:172,&quot;SummaryID&quot;:729,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;200&quot;,&quot;BasePrice&quot;:0.450,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-06-13T14:53:14.79&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;50&quot;,&quot;ID&quot;:174,&quot;SummaryID&quot;:802,&quot;MinValue&quot;:&quot;0&quot;,&quot;MaxValue&quot;:&quot;50&quot;,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-08-27T15:21:38.97&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;2&quot;,&quot;ID&quot;:158,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:&quot;1&quot;,&quot;MaxValue&quot;:&quot;2&quot;,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-23T11:10:16.487&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;3&quot;,&quot;ID&quot;:159,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:&quot;2&quot;,&quot;MaxValue&quot;:&quot;3&quot;,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-23T11:10:54.167&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;10&quot;,&quot;ID&quot;:149,&quot;SummaryID&quot;:556,&quot;MinValue&quot;:&quot;5&quot;,&quot;MaxValue&quot;:&quot;10&quot;,&quot;BasePrice&quot;:5.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-25T11:12:41.937&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;10&quot;,&quot;ID&quot;:171,&quot;SummaryID&quot;:644,&quot;MinValue&quot;:&quot;5&quot;,&quot;MaxValue&quot;:&quot;10&quot;,&quot;BasePrice&quot;:2.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-06-13T11:23:43.367&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;50&quot;,&quot;ID&quot;:169,&quot;SummaryID&quot;:644,&quot;MinValue&quot;:&quot;10&quot;,&quot;MaxValue&quot;:&quot;50&quot;,&quot;BasePrice&quot;:2.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-06-13T10:12:59.357&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;50&quot;,&quot;ID&quot;:165,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:&quot;10&quot;,&quot;MaxValue&quot;:&quot;50&quot;,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-05-05T14:47:21.92&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;100&quot;,&quot;ID&quot;:161,&quot;SummaryID&quot;:564,&quot;MinValue&quot;:&quot;50&quot;,&quot;MaxValue&quot;:&quot;100&quot;,&quot;BasePrice&quot;:1.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-25T08:43:32.943&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;100&quot;,&quot;ID&quot;:153,&quot;SummaryID&quot;:629,&quot;MinValue&quot;:&quot;50&quot;,&quot;MaxValue&quot;:&quot;100&quot;,&quot;BasePrice&quot;:3.500,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-03-14T10:56:10.307&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;100&quot;,&quot;ID&quot;:175,&quot;SummaryID&quot;:802,&quot;MinValue&quot;:&quot;50&quot;,&quot;MaxValue&quot;:&quot;100&quot;,&quot;BasePrice&quot;:5.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-08-27T15:21:51.673&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;200&quot;,&quot;ID&quot;:145,&quot;SummaryID&quot;:552,&quot;MinValue&quot;:&quot;100&quot;,&quot;MaxValue&quot;:&quot;200&quot;,&quot;BasePrice&quot;:2.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2018-12-28T11:01:56.653&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;无上限&quot;,&quot;ID&quot;:147,&quot;SummaryID&quot;:540,&quot;MinValue&quot;:&quot;100&quot;,&quot;MaxValue&quot;:&quot;79228162514264337593543950335&quot;,&quot;BasePrice&quot;:0.480,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-13T15:42:48.453&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;500&quot;,&quot;ID&quot;:173,&quot;SummaryID&quot;:729,&quot;MinValue&quot;:&quot;200&quot;,&quot;MaxValue&quot;:&quot;500&quot;,&quot;BasePrice&quot;:0.650,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-06-13T14:53:21.77&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;360&quot;,&quot;ID&quot;:167,&quot;SummaryID&quot;:701,&quot;MinValue&quot;:&quot;260&quot;,&quot;MaxValue&quot;:&quot;360&quot;,&quot;BasePrice&quot;:4.300,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-05-14T09:11:35.623&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按年&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;99999&quot;,&quot;ID&quot;:168,&quot;SummaryID&quot;:701,&quot;MinValue&quot;:&quot;360&quot;,&quot;MaxValue&quot;:&quot;99999&quot;,&quot;BasePrice&quot;:5.800,&quot;BaseType&quot;:&quot;qnyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-05-14T09:11:49.427&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;BaseTypeDesc&quot;:&quot;按次&quot;,&quot;IsActiveDesc&quot;:&quot;生效&quot;,&quot;MaxValueDesc&quot;:&quot;4555&quot;,&quot;ID&quot;:151,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:&quot;1000&quot;,&quot;MaxValue&quot;:&quot;4555&quot;,&quot;BasePrice&quot;:4.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true,&quot;AddTime&quot;:&quot;2019-02-25T16:15:14.25&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false}]" />
+                    <div class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth">
+                            <div class="tdsearch">
+                                <label>
+                                    关键字:
+                                    <input name="ctl00$content$tdKeyword" type="text" id="content_tdKeyword"
+                                        class="easyui-searchbox" data-options="prompt:&#39;关键字搜索&#39;,searcher:SearchTT"
+                                        style="width: 200px" />
+                                </label>
+                                <label>
+                                    收费项目:
+                                    <input name="ctl00$content$tbFeeType" type="text" id="content_tbFeeType"
+                                        class="easyui-combobox" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    收费状态:
+                                    <select name="ctl00$content$tbFeeStatus" id="content_tbFeeStatus"
+                                        class="easyui-combobox" data-options="editable:false" style="width: 100px;">
+                                        <option value="">全部</option>
+                                        <option value="2">草稿</option>
+                                        <option value="0">未收</option>
+                                        <option value="1">已收</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    账单日期:
+                                    <input name="ctl00$content$tdStartWriteDate" type="text"
+                                        id="content_tdStartWriteDate" class="easyui-datebox" style="width: 120px;" />
+                                    -
+                                    <input name="ctl00$content$tdEndWriteDate" type="text" id="content_tdEndWriteDate"
+                                        class="easyui-datebox" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    <a href="javascript:void(0)" onclick="SearchTT()"
+                                        class="easyui-linkbutton btnlinkbar"
+                                        data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div data-options="region:'center',border:false" title="">
+                            <table id="tt_table">
+                            </table>
+                            <div id="tb">
+
+                                <a href="javascript:void(0)" onclick="createFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-add'">账单生成</a>
+
+                                <a href="javascript:void(0)" onclick="editFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-edit'">修改</a>
+
+                                <a href="javascript:void(0)" onclick="removeFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-remove'">删除</a>
+
+                                <a href="javascript:void(0)" onclick="doCancelRoomFee()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-zuofei'">作废</a>
+
+                                <a href="javascript:void(0)" onclick="do_export()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                <input type="hidden" name="ctl00$content$hdProjectID" id="content_hdProjectID" />
+                                <input type="hidden" name="ctl00$content$hdRoomIDs" id="content_hdRoomIDs" />
+                                <input type="hidden" name="ctl00$content$hdIDs" id="content_hdIDs" />
+
+                                <a href="javascript:void(0)" onclick="openImport()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-import'">导入</a>
+
+                                <a href="javascript:void(0)" onclick="openTableSetUp()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-setting'">配置</a>
+
+                                <a href="javascript:void(0)" onclick="activeFee()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-qiyong'">账单生效</a>
+
+                                <a href="javascript:void(0)" onclick="batchEditTime()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-chuli'">批处理</a>
+
+                                <a href="javascript:void(0)" onclick="addTool()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-gongtan'">公摊工具</a>
+
+                                <a href="javascript:void(0)" onclick="batchEditPoint()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-chaobiao'">抄表登记</a>
+
+                                <a href="javascript:void(0)" onclick="transferQiChu()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-shoufei'">收款登记</a>
+
+                                <!-- <a href="javascript:void(0)" onclick="viewTaiZhang()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-sanbiao'">三表台帐</a> -->
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=201908281000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=201908281000"></script>
+    <script src="../js/Page/Main/Content.js?t=201908281000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=201908281000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        // window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var PageCode, TableName, PropertyID;
+        $(function () {
+            PageCode = getQueryString().PageCode || '';
+            TableName = getQueryString().TableName || '';
+            // PropertyID = getQueryString().PropertyID || '';
+            getTableFields();
+            $('#btnAll').bind('click', function () {
+                if ($('#btnAll').prop('checked')) {
+                    $('input[name="FieldCheck"]').prop('checked', true);
+                }
+                else {
+                    $('input[name="FieldCheck"]').prop('checked', false);
+                }
+            })
+        });
+        function getTableFields() {
+            MaskUtil.mask();
+            // var options = { visit: 'gettablefield', PageCode: PageCode, TableName: TableName, PropertyID: PropertyID, sessionId: sessionId };
+            var options = { visit: 'gettablefield', PageCode: PageCode, TableName: TableName, sessionId: sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                url: window.SERVERPATH + 'api/gettablefield',
+                data: options,
+                success: function (data) {
+                    console.log('配置信息的数据')
+                    console.log(data);
+                    console.log(options);
+                    console.log(options.PageCode == 'roomfeesource');
+
+                    /*      if (options.PageCode == 'roomfeesource') {
+                             data = { "status": true, "list": [{ "Title": "", "list": [{ "ID": 37, "PageCode": "roomfeesource", "ColumnField": "field: 'ck', checkbox: true", "SortOrder": 1, "IsShown": true, "ColumnName": "选择按钮", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 38, "PageCode": "roomfeesource", "ColumnField": "field: 'FullName', title: '房源信息', width: 260", "SortOrder": 2, "IsShown": true, "ColumnName": "房源信息", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 51, "PageCode": "roomfeesource", "ColumnField": "field: 'ImportBiaoCategory', editor:{type:'textbox'},title: '表种类', width: 80", "SortOrder": 2, "IsShown": true, "ColumnName": "表种类", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 39, "PageCode": "roomfeesource", "ColumnField": "field: 'Name', title: '房间号', width: 80", "SortOrder": 3, "IsShown": true, "ColumnName": "房间号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 52, "PageCode": "roomfeesource", "ColumnField": "field: 'ImportBiaoName', editor:{type:'textbox'},title: '表名称', width: 80", "SortOrder": 3, "IsShown": true, "ColumnName": "表名称", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 40, "PageCode": "roomfeesource", "ColumnField": "field: 'ChargeID',formatter:function(value,row){                            \r\n\t\t\t\t\t\t\treturn row.ChargeName;\r\n\t\t\t\t\t\t},editor:{\r\n\t\t\t\t\t\t\ttype:'combobox',\r\n\t\t\t\t\t\t\toptions:{\r\n\t\t\t\t\t\t\t\tvalueField:'ID',\r\n\t\t\t\t\t\t\t\ttextField:'Name',\r\n                            data:ChargeSummaryList\r\n                    },onSelect: function(record){\r\n                           var value = $(this).combobox('getValue');\r\n                    }},title: '收费项目', width: 100", "SortOrder": 4, "IsShown": true, "ColumnName": "收费项目", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 41, "PageCode": "roomfeesource", "ColumnField": "field: 'StartPoint',editor:{type:'numberbox',options:{precision:2}}, title: '上次读数', width: 80", "SortOrder": 5, "IsShown": true, "ColumnName": "上次读数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 42, "PageCode": "roomfeesource", "ColumnField": "field: 'EndPoint',editor:{type:'numberbox',options:{precision:2}}, title: '本次读数', width: 80", "SortOrder": 6, "IsShown": true, "ColumnName": "本次读数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 43, "PageCode": "roomfeesource", "ColumnField": "field: 'RealTotalPoint',editor:{type:'numberbox',options:{precision:2}}, title: '用量', width: 80", "SortOrder": 7, "IsShown": true, "ColumnName": "用量", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 206, "PageCode": "roomfeesource", "ColumnField": "field: 'ImportRate', title: '倍率', formatter: formatImportRate, editor:{type:'textbox'}, width: 100", "SortOrder": 7, "IsShown": true, "ColumnName": "倍率", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 207, "PageCode": "roomfeesource", "ColumnField": "field: 'FinalReducePoint', title: '扣减量', formatter: formatDecimal, editor:{type:'textbox'}, width: 100", "SortOrder": 7, "IsShown": false, "ColumnName": "扣减量", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 44, "PageCode": "roomfeesource", "ColumnField": "field: 'FinalUnitPrice',formatter: formatUnitPrice,editor:{type:'numberbox',options:{precision:4}}, title: '单价', width: 80", "SortOrder": 8, "IsShown": true, "ColumnName": "单价", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 45, "PageCode": "roomfeesource", "ColumnField": "field: 'FinalImportCoefficient',editor:{type:'numberbox',options:{precision:4}}, title: '系数', width: 80", "SortOrder": 9, "IsShown": true, "ColumnName": "系数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 46, "PageCode": "roomfeesource", "ColumnField": "field: 'FinalTotalPrice',editor:{type:'numberbox',options:{precision:2}}, title: '金额', width: 80", "SortOrder": 10, "IsShown": true, "ColumnName": "金额", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 47, "PageCode": "roomfeesource", "ColumnField": "field: 'StatusDesc', title: '收费状态', width: 80", "SortOrder": 11, "IsShown": true, "ColumnName": "收费状态", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 48, "PageCode": "roomfeesource", "ColumnField": "field: 'WriteDate',formatter: formatTime,editor:{type:'datebox'}, title: '账单日期', width: 100", "SortOrder": 12, "IsShown": true, "ColumnName": "账单日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 49, "PageCode": "roomfeesource", "ColumnField": "field: 'StartTime',formatter: formatTime,editor:{type:'datebox'}, title: '计费开始日期', width: 100", "SortOrder": 13, "IsShown": true, "ColumnName": "计费开始日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 50, "PageCode": "roomfeesource", "ColumnField": "field: 'EndTime',formatter: formatTime,editor:{type:'datebox'}, title: '计费结束日期', width: 100", "SortOrder": 14, "IsShown": true, "ColumnName": "计费结束日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 120, "PageCode": "roomfeesource", "ColumnField": "field: 'ChargeMan', title: '收款人', width: 100", "SortOrder": 15, "IsShown": true, "ColumnName": "收款人", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 121, "PageCode": "roomfeesource", "ColumnField": "field: 'ChargeTime', formatter: formatDateTime, title: '收款日期', width: 120", "SortOrder": 16, "IsShown": true, "ColumnName": "收款日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 122, "PageCode": "roomfeesource", "ColumnField": "field: 'Remark', title: '备注', width: 100", "SortOrder": 17, "IsShown": true, "ColumnName": "备注", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 123, "PageCode": "roomfeesource", "ColumnField": "field: 'PrintNumber', title: '收款单号', width: 150", "SortOrder": 18, "IsShown": true, "ColumnName": "收款单号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 134, "PageCode": "roomfeesource", "ColumnField": "field: 'RelationName', title: '默认联系人', width: 100", "SortOrder": 19, "IsShown": true, "ColumnName": "默认联系人", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 414, "PageCode": "roomfeesource", "ColumnField": "field: 'AddTime', formatter: formatDateTime, title: '添加时间', width: 120", "SortOrder": 19, "IsShown": true, "ColumnName": "添加时间", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 415, "PageCode": "roomfeesource", "ColumnField": "field: 'ImportChargeRoomNo', title: '缴费户号', width: 100", "SortOrder": 20, "IsShown": true, "ColumnName": "缴费户号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }] }, { "Title": "自定义信息", "list": [] }] }
+     
+                         } else {
+     
+                             data = { "status": true, "list": [{ "Title": "基本信息", "list": [{ "ID": 1, "PageCode": "roomsource", "ColumnField": "field: 'ck', checkbox: true", "SortOrder": 0, "IsShown": true, "ColumnName": "选择按钮", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 119, "PageCode": "roomsource", "ColumnField": "field: 'RelateCustomFour', title: '业主自定义四-字段测试', width: 100", "SortOrder": 1, "IsShown": false, "ColumnName": "自定义四-字段测试", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 22 }, { "ID": 2, "PageCode": "roomsource", "ColumnField": "field: 'FullName', title: '资源位置', width: 260", "SortOrder": 2, "IsShown": true, "ColumnName": "资源位置", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 54, "PageCode": "roomsource", "ColumnField": "field: 'RelationName', title: '住户姓名', width: 80", "SortOrder": 2, "IsShown": true, "ColumnName": "住户姓名", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 3, "PageCode": "roomsource", "ColumnField": "field: 'Name', title: '资源编号', width: 80", "SortOrder": 3, "IsShown": false, "ColumnName": "房间编号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 8, "PageCode": "roomsource", "ColumnField": "field: 'RoomTypeName', title: '房间类型', width: 80", "SortOrder": 3, "IsShown": false, "ColumnName": "房间类型", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 106, "PageCode": "roomsource", "ColumnField": "field: 'RelationIDCard', title: '证件号码', width: 200", "SortOrder": 3, "IsShown": true, "ColumnName": "证件号码", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 55, "PageCode": "roomsource", "ColumnField": "field: 'RelatePhoneNumber', title: '联系方式', width: 80", "SortOrder": 4, "IsShown": true, "ColumnName": "联系方式", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 16, "PageCode": "roomsource", "ColumnField": "field: 'RoomPropertyName', title: '房源属性', width: 100", "SortOrder": 5, "IsShown": true, "ColumnName": "房源属性", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 105, "PageCode": "roomsource", "ColumnField": "field: 'IDCardTypeDesc', title: '证件类型', width: 100", "SortOrder": 5, "IsShown": true, "ColumnName": "证件类型", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 4, "PageCode": "roomsource", "ColumnField": "field: 'BuildingArea', formatter: formatNumber, title: '计费面积', width: 80", "SortOrder": 6, "IsShown": true, "ColumnName": "计费面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 1 }, { "ID": 18, "PageCode": "roomsource", "ColumnField": "field: 'ContractArea', formatter: formatNumber, title: '合同面积', width: 80", "SortOrder": 6, "IsShown": false, "ColumnName": "合同面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 2 }, { "ID": 5, "PageCode": "roomsource", "ColumnField": "field: 'PaymentTime', formatter: formatTime, title: '交房日期', width: 80", "SortOrder": 7, "IsShown": false, "ColumnName": "交房日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 6, "PageCode": "roomsource", "ColumnField": "field: 'RoomStateName', title: '房间状态', width: 80", "SortOrder": 7, "IsShown": false, "ColumnName": "房间状态", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 19, "PageCode": "roomsource", "ColumnField": "field: 'MoveInTime', formatter: formatTime, title: '入住日期', width: 80", "SortOrder": 8, "IsShown": true, "ColumnName": "入住日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 20, "PageCode": "roomsource", "ColumnField": "field: 'ZxStartTime', formatter: formatTime, title: '装修开始时间', width: 100", "SortOrder": 9, "IsShown": true, "ColumnName": "装修开始时间", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 21, "PageCode": "roomsource", "ColumnField": "field: 'ZxEndTime', formatter: formatTime, title: '装修验收时间', width: 100", "SortOrder": 10, "IsShown": true, "ColumnName": "装修验收时间", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 111, "PageCode": "roomsource", "ColumnField": "field: 'BankName', title: '开户银行', width: 100", "SortOrder": 10, "IsShown": false, "ColumnName": "开户银行", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 9, "PageCode": "roomsource", "ColumnField": "field: 'RoomLayout', title: '户型', width: 80", "SortOrder": 11, "IsShown": false, "ColumnName": "户型", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 7, "PageCode": "roomsource", "ColumnField": "field: 'BuildingNumber', title: '期数', width: 80", "SortOrder": 12, "IsShown": false, "ColumnName": "期数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 23, "PageCode": "roomsource", "ColumnField": "field: 'BuildOutArea', formatter: formatNumber, title: '建筑面积', width: 80", "SortOrder": 12, "IsShown": true, "ColumnName": "建筑面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 3 }, { "ID": 53, "PageCode": "roomsource", "ColumnField": "field: 'RelationTypeDesc', title: '住户标签', width: 80", "SortOrder": 13, "IsShown": false, "ColumnName": "住户标签", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 24, "PageCode": "roomsource", "ColumnField": "field: 'BuildInArea', formatter: formatNumber, title: '套内面积', width: 80", "SortOrder": 14, "IsShown": false, "ColumnName": "套内面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 4 }, { "ID": 25, "PageCode": "roomsource", "ColumnField": "field: 'GonTanArea', formatter: formatNumber, title: '公摊面积', width: 80", "SortOrder": 15, "IsShown": false, "ColumnName": "公摊面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 5 }, { "ID": 36, "PageCode": "roomsource", "ColumnField": "field: 'ChanQuanArea', formatter: formatNumber, title: '产权面积', width: 80", "SortOrder": 16, "IsShown": false, "ColumnName": "产权面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 6 }, { "ID": 26, "PageCode": "roomsource", "ColumnField": "field: 'UseArea', formatter: formatNumber, title: '使用面积', width: 80", "SortOrder": 17, "IsShown": false, "ColumnName": "使用面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 7 }, { "ID": 27, "PageCode": "roomsource", "ColumnField": "field: 'PeiTaoArea', formatter: formatNumber, title: '配套面积', width: 80", "SortOrder": 18, "IsShown": false, "ColumnName": "配套面积", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 8 }, { "ID": 28, "PageCode": "roomsource", "ColumnField": "field: 'FunctionCoefficient', formatter: formatNumber, title: '功能系数', width: 80", "SortOrder": 19, "IsShown": false, "ColumnName": "功能系数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 29, "PageCode": "roomsource", "ColumnField": "field: 'FenTanCoefficient', formatter: formatNumber, title: '分摊系数', width: 80", "SortOrder": 20, "IsShown": false, "ColumnName": "分摊系数", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 430, "PageCode": "roomsource", "ColumnField": "field: 'RelateProjectNames', title: '关联资源', width: 100", "SortOrder": 20, "IsShown": false, "ColumnName": "关联资源", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 30, "PageCode": "roomsource", "ColumnField": "field: 'ChanQuanNo', title: '产权证号', width: 80", "SortOrder": 21, "IsShown": false, "ColumnName": "产权证号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 31, "PageCode": "roomsource", "ColumnField": "field: 'CertificateTime', formatter: formatTime, title: '发证日期', width: 100", "SortOrder": 22, "IsShown": false, "ColumnName": "发证日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 57, "PageCode": "roomsource", "ColumnField": "field: 'IsLockedDesc', title: '是否激活', width: 80", "SortOrder": 32, "IsShown": false, "ColumnName": "是否激活", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 107, "PageCode": "roomsource", "ColumnField": "field: 'Birthday', formatter: formatTime, title: '出生日期', width: 100", "SortOrder": 35, "IsShown": false, "ColumnName": "出生日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 108, "PageCode": "roomsource", "ColumnField": "field: 'EmailAddress', title: '电子信箱', width: 100", "SortOrder": 36, "IsShown": false, "ColumnName": "电子信箱", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 109, "PageCode": "roomsource", "ColumnField": "field: 'HomeAddress', title: '联系地址', width: 100", "SortOrder": 37, "IsShown": false, "ColumnName": "联系地址", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 110, "PageCode": "roomsource", "ColumnField": "field: 'OfficeAddress', title: '工作单位', width: 100", "SortOrder": 38, "IsShown": false, "ColumnName": "工作单位", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 112, "PageCode": "roomsource", "ColumnField": "field: 'BankAccountName', title: '开户名称', width: 100", "SortOrder": 40, "IsShown": false, "ColumnName": "开户名称", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 113, "PageCode": "roomsource", "ColumnField": "field: 'BankAccountNo', title: '银行账号', width: 100", "SortOrder": 41, "IsShown": false, "ColumnName": "银行账号", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 114, "PageCode": "roomsource", "ColumnField": "field: 'ContractStartTime', formatter: formatTime, title: '合同开始日期', width: 150", "SortOrder": 42, "IsShown": false, "ColumnName": "合同开始日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 115, "PageCode": "roomsource", "ColumnField": "field: 'ContractEndTime', formatter: formatTime, title: '合同结束日期', width: 150", "SortOrder": 43, "IsShown": false, "ColumnName": "合同结束日期", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 116, "PageCode": "roomsource", "ColumnField": "field: 'RelateCustomOne', title: '业主性别', width: 100", "SortOrder": 44, "IsShown": false, "ColumnName": "性别", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 19 }, { "ID": 117, "PageCode": "roomsource", "ColumnField": "field: 'RelateCustomTwo', title: '业主年龄', width: 100", "SortOrder": 45, "IsShown": false, "ColumnName": "年龄", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 20 }, { "ID": 118, "PageCode": "roomsource", "ColumnField": "field: 'RelateCustomThree', title: '业主城市', width: 100", "SortOrder": 46, "IsShown": false, "ColumnName": "城市", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 21 }, { "ID": 124, "PageCode": "roomsource", "ColumnField": "field: 'Interesting', title: '性格爱好', width: 100", "SortOrder": 48, "IsShown": false, "ColumnName": "性格爱好", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 23 }, { "ID": 125, "PageCode": "roomsource", "ColumnField": "field: 'ConsumeMore', title: '消费倾向', width: 100", "SortOrder": 49, "IsShown": false, "ColumnName": "消费倾向", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 24 }, { "ID": 126, "PageCode": "roomsource", "ColumnField": "field: 'BelongTeam', title: '所属部门', width: 100", "SortOrder": 50, "IsShown": false, "ColumnName": "所属部门", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 127, "PageCode": "roomsource", "ColumnField": "field: 'OneCardNumber', title: '银行卡', width: 100", "SortOrder": 51, "IsShown": false, "ColumnName": "银行卡", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 25 }, { "ID": 128, "PageCode": "roomsource", "ColumnField": "field: 'ChargeForMan', title: '代扣对象', width: 100", "SortOrder": 51, "IsShown": false, "ColumnName": "代扣对象", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 26 }, { "ID": 129, "PageCode": "roomsource", "ColumnField": "field: 'IsDefaultDesc', title: '默认联系人', width: 150", "SortOrder": 53, "IsShown": false, "ColumnName": "默认联系人", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 130, "PageCode": "roomsource", "ColumnField": "field: 'IsChargeFeeDesc', title: '缴费人员', width: 150", "SortOrder": 53, "IsShown": true, "ColumnName": "缴费人员", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 209, "PageCode": "roomsource", "ColumnField": "field:'RelationPropertyDesc', title: '住户类别', width: 100", "SortOrder": 55, "IsShown": false, "ColumnName": "住户类别", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 210, "PageCode": "roomsource", "ColumnField": "field:'CompanyName', title: '公司名称', width: 100", "SortOrder": 56, "IsShown": false, "ColumnName": "公司名称", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 365, "PageCode": "roomsource", "ColumnField": "field: 'IsChargeManDesc', title: '缴费对象', width: 150", "SortOrder": 60, "IsShown": false, "ColumnName": "缴费对象", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 383, "PageCode": "roomsource", "ColumnField": "field: 'RoomBasicRemark', title: '资源备注', width: 150", "SortOrder": 61, "IsShown": true, "ColumnName": "资源备注", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }, { "ID": 384, "PageCode": "roomsource", "ColumnField": "field: 'RoomPhoneRelationRemark', title: '客户备注', width: 150", "SortOrder": 62, "IsShown": true, "ColumnName": "客户备注", "IsDeleted": false, "GroupName": "", "IsNecessary": false, "FieldID": 0 }] }, { "Title": "自定义信息", "list": [{ "ID": 0, "FieldID": 47, "PageCode": "roomsource", "ColumnField": "field: '有效面积', title: '有效面积', width: 150", "SortOrder": 0, "IsShown": false, "ColumnName": "有效面积", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 49, "PageCode": "roomsource", "ColumnField": "field: '是否常驻', title: '是否常驻', width: 150", "SortOrder": 0, "IsShown": false, "ColumnName": "是否常驻", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 51, "PageCode": "roomsource", "ColumnField": "field: '经营品牌', title: '经营品牌', width: 150", "SortOrder": 0, "IsShown": false, "ColumnName": "经营品牌", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 52, "PageCode": "roomsource", "ColumnField": "field: '国籍', title: '国籍', width: 150", "SortOrder": 0, "IsShown": false, "ColumnName": "国籍", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 53, "PageCode": "roomsource", "ColumnField": "field: '测试字段', title: '测试字段', width: 150", "SortOrder": 0, "IsShown": false, "ColumnName": "测试字段", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 50, "PageCode": "roomsource", "ColumnField": "field: '车牌号', title: '车牌号', width: 150", "SortOrder": 4, "IsShown": false, "ColumnName": "车牌号", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 11, "PageCode": "roomsource", "ColumnField": "field: '购买产权比例', title: '购买产权比例', width: 150", "SortOrder": 6, "IsShown": false, "ColumnName": "购买产权比例", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 45, "PageCode": "roomsource", "ColumnField": "field: '入职日期', title: '入职日期', width: 150", "SortOrder": 6, "IsShown": false, "ColumnName": "入职日期", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 42, "PageCode": "roomsource", "ColumnField": "field: '所属管理公司', title: '所属管理公司', width: 150", "SortOrder": 7, "IsShown": false, "ColumnName": "所属管理公司", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 48, "PageCode": "roomsource", "ColumnField": "field: '车位号', title: '车位号', width: 150", "SortOrder": 9, "IsShown": false, "ColumnName": "车位号", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 9, "PageCode": "roomsource", "ColumnField": "field: '合同签订日期', title: '合同签订日期', width: 150", "SortOrder": 111, "IsShown": false, "ColumnName": "合同签订日期", "GroupName": "自定义信息", "IsNecessary": false }, { "ID": 0, "FieldID": 10, "PageCode": "roomsource", "ColumnField": "field: '清华园大溪地', title: '清华园大溪地', width: 150", "SortOrder": 112, "IsShown": false, "ColumnName": "清华园大溪地", "GroupName": "自定义信息", "IsNecessary": false }] }] }
+                        
+                         } */
+
+                    MaskUtil.unmask();
+                    if (data.status) {
+                        var html = '';
+                        $.each(data.list, function (first_index, first_item) {
+                            if (first_item.list.length == 0) {
+                                return true;
+                            }
+                            if (first_item.Title != '') {
+                                html += '<div class="header_title">';
+                                html += first_item.Title;
+                                html += '</div>';
+                            }
+                            html += '<table class="add" id="tablefiled">';
+                            html += '<tr class="firsttr">';
+                            html += '<td style="width: 15%">排序';
+                            html += ' </td>';
+                            html += '<td style="width: 20%">名称';
+                            html += '</td>';
+                            html += '<td class="second" style="width: 15%">是否显示';
+                            html += '</td>';
+                            html += '<td style="width: 15%">排序';
+                            html += '</td>';
+                            html += '<td style="width: 20%">名称';
+                            html += '</td>';
+                            html += '<td style="width: 15%">是否显示';
+                            html += '</td>';
+                            html += '</tr>';
+                            $.each(first_item.list, function (index, item) {
+                                if (index % 2 == 0) {
+                                    html += '<tr>';
+                                    html += '<td>';
+                                    html += '<input type="text" style="width:80px" id="SortOrder_' + item.FieldID + '_' + item.ID + '" value="' + item.SortOrder + '">';
+                                    html += '</td>';
+                                    html += '</td>';
+                                    html += '<td>';
+                                    html += item.ColumnName;
+                                    html += '</td>';
+                                    html += '<td class="second">';
+                                    if (item.IsShown) {
+                                        html += '<input checked="checked" name="FieldCheck" type="checkbox" id="RoomResource_' + item.FieldID + '_' + item.ID + '" value="' + item.ID + '" data-fieldid="' + item.FieldID + '" />';
+                                    }
+                                    else {
+                                        html += '<input type="checkbox" name="FieldCheck" id="RoomResource_' + item.FieldID + '_' + item.ID + '" value="' + item.ID + '" data-fieldid="' + item.FieldID + '" />';
+                                    }
+                                }
+                                else if (index % 2 == 1) {
+                                    html += '<td>';
+                                    html += '<input type="text" style="width:80px" id="SortOrder_' + item.FieldID + '_' + item.ID + '" value="' + item.SortOrder + '">';
+                                    html += '</td>';
+                                    html += '</td>';
+                                    html += '<td>';
+                                    html += item.ColumnName;
+                                    html += '</td>';
+                                    html += '<td>';
+                                    if (item.IsShown) {
+                                        html += '<input checked="checked" name="FieldCheck" type="checkbox" id="RoomResource_' + item.FieldID + '_' + item.ID + '" value="' + item.ID + '" data-fieldid="' + item.FieldID + '" />';
+                                    }
+                                    else {
+                                        html += '<input type="checkbox" name="FieldCheck" id="RoomResource_' + item.FieldID + '_' + item.ID + '" value="' + item.ID + '" data-fieldid="' + item.FieldID + '" />';
+                                    }
+                                    html += '</tr>';
+                                }
+                                if ((index == first_item.list.length - 1) && first_item.list.length % 2 == 1) {
+                                    html += '</tr>';
+                                }
+                            })
+                            html += '</table>';
+                        });
+                        $("#table_content").append(html);
+                    }
+                    else {
+                        show_message("获取列表失败", "info");
+                    }
+                }
+            });
+        }
+
+        function do_save() {
+            var IDList = [];
+            var SortOrderList = [];
+            var FieldIDList = [];
+            $("[name='FieldCheck']").each(function () {
+                if (this.checked) {
+                    var ID = $(this).val();
+                    var data_fieldid = $(this).attr('data-fieldid')
+                    IDList.push(ID);
+                    var sortorder = $("#SortOrder_" + data_fieldid + "_" + ID).val();
+                    if (sortorder == "" || sortorder == null) {
+                        sortorder = 0;
+                    }
+                    SortOrderList.push(sortorder);
+                    FieldIDList.push(data_fieldid);
+                }
+            });
+            MaskUtil.mask('body', '提交中');
+            var options = { visit: 'savetablefield', IDs: JSON.stringify(IDList), PageCode: PageCode, SortOrders: JSON.stringify(SortOrderList), FieldIDs: JSON.stringify(FieldIDList), TableName: TableName, sessionId: sessionId };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                url: window.SERVERPATH + 'api/savetablefield',
+                data: options,
+                success: function (message) {
+
+                    // message.status = true;
+
+                    MaskUtil.unmask();
+                    if (message.status) {
+                        top.winUpdate = true;
+                        show_message('保存成功', 'success', function () {
+                            do_close();
+                        });
+                    }
+                    else {
+                        show_message('系统错误', 'error');
+                    }
+                }
+            });
+        }
+        function do_close() {
+            try {
+                doCloseWin();
+            } catch (e) {
+            }
+            try {
+                parent.$("#winadd").window("close");
+            } catch (e) {
+            }
+            try {
+                parent.do_close_dialog(function () {
+                    parent.loadTT(true);
+                });
+            } catch (e) {
+            }
+            try {
+                parent.do_close_dialog(function () {
+                    parent.loadtt();
+                });
+            } catch (e) {
+            }
+            try {
+                parent.do_close_dialog(function () {
+                    parent.document.getElementById('SubTabFrame').contentWindow.loadTT();
+                }, true);
+            } catch (e) {
+            }
+        }
+    </script>
+    <style type="text/css">
+        .panel-body {
+            background: #f0f0f0;
+        }
+
+        table.add {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            border-spacing: 0px;
+            background: #fff;
+        }
+
+        table.add tr.firsttr td {
+            background: #f3f8fe;
+            padding: 15px 10px;
+            font-weight: bold;
+        }
+
+        table.add td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        table.add td.second {
+            border-right: solid 1px #ddd;
+        }
+
+        input[type=text] {
+            width: 50px;
+            height: 28px;
+            line-height: 28px;
+            border: solid 1px #ddd;
+            border-radius: 5px !important;
+        }
+
+        .header_title {
+            padding: 10px 5px;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./TableSetUp.aspx?PageCode=roomsource&amp;&amp;TableName=RoomBasic" id="ff">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwUKMTY1NDIxNTc3N2RkF+LSNSktpcjCyL1riqYbLq6rNz4=" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="74BE65B8" />
+                    </div>
+                    <div class="operation_box">
+                        <input type="checkbox" id="btnAll"
+                            style="height: 15px; vertical-align: middle; margin: 0;" /><label
+                            style="vertical-align: middle; margin: 0;">全选</label>
+                        <a href="javascript:void(0)" onclick="do_save()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-save'">保存</a>
+                        <a href="javascript:void(0)" onclick="do_close()" class="easyui-linkbutton btntoolbar"
+                            data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                    </div>
+                    <div class="table_container" id="table_content">
+                    </div>
+                </form>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

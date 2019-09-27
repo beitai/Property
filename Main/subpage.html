@@ -1,0 +1,251 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../Main/All.js"></script>
+<script>
+    $(function () {
+        $(".tabs-header").css("max-width", "90%");
+        windowResizeEvent(function () {
+            dynsiteFramesize();
+        });
+        $('.refreshCss').bind('click', function () {
+            var subIframe = top.getSubIframe(false);
+            subIframe.window.location.reload();
+        })
+        // 获取通知个数的接口
+        get_data();
+    })
+    function get_data() {
+        var options = {};
+        options.visit = "getsubpagesource";
+        options.pageurl = getQueryString("pageurl");
+        options.title = getQueryString("title");
+        options.expired = getQueryString("expired");
+        options.ID = getQueryString("ID");
+        options.RoomID = getQueryString("RoomID");
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            // url: '../Handler/CommHandler.ashx',
+            url: 'http://demo.saasyy.com/Handler/CommHandler.ashx',
+            data: options,
+            success: function (data) {
+                // addEasyUITabs(data.menuList);
+                // if (data.status) {
+                //     addEasyUITabs(data.menuList);
+                // }
+                /* console.log('测试');
+                console.log(options);
+                console.log(options.ID);
+                console.log(options.ID == "1"); */
+                var data = {}
+                if (options.ID == "1") {
+                    // if (options.ID == "7") {
+                    data = { "status": true, "menuList": [{ "ID": 532, "Title": "资源管理", "Url": "../InitialSetup/Setup.html", "NavType": 1 }, { "ID": 533, "Title": "客户管理", "Url": "../InitialSetup/ProjectUserMgr.html", "NavType": 4 }] }
+                    // } else if (options.ID == '9') {
+                } else if (options.ID == '2') {
+                    data = { "status": true, "iframeUrl": "../SetupFee/ViewRoomFeeList.html", "menuList": [{ "ID": 42, "Title": "收费标准", "Url": "../SetupFee/ViewRoomFeeList.html", "NavType": 1 }, { "ID": 43, "Title": "收费项目", "Url": "../SetupFee/SetupFeeSummary.html", "NavType": 1 }, { "ID": 120, "Title": "参数设置", "Url": "../Main/MainSetup.html?ParentID=120", "NavType": 0 }] }
+                } else if (options.ID == '3') {
+                    // } else if (options.ID == '19') {
+                    data = { "status": true, "iframeUrl": "../GongTan/Setup.html", "menuList": [{ "ID": 19, "Title": "账单处理", "Url": "../GongTan/Setup.html", "NavType": 4 }] }
+                } else if (options.ID == '4') {
+                    // } else if (options.ID == '260') {
+                    data = { "status": true, "iframeUrl": "../Charge/ChargeFee.html", "menuList": [{ "ID": 11, "Title": "收费中心", "Url": "../Charge/ChargeFee.html", "NavType": 2 }, { "ID": 240, "Title": "批量冲抵", "Url": "../Charge/ChargeFeePreChargeAll.html", "NavType": 4 }] }
+                }
+                else if (options.ID == '29') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/ChargeMoneyTypeMgr.html", "menuList": [{ "ID": 29, "Title": "收款设置", "Url": "../SysSeting/ChargeMoneyTypeMgr.html", "NavType": 0 }] }
+                } else if (options.ID == '30') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/OrderNumberMgr.html", "menuList": [{ "ID": 30, "Title": "单据设置", "Url": "../SysSeting/OrderNumberMgr.html", "NavType": 0 }] }
+                } else if (options.ID == '56') {
+                    data = { "status": true, "iframeUrl": "../SetupFee/FeeCategoryMgr.html", "menuList": [{ "ID": 56, "Title": "费项类别", "Url": "../SetupFee/FeeCategoryMgr.html", "NavType": 0 }] }
+                } else if (options.ID == '64') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/SysManager.html", "menuList": [{ "ID": 64, "Title": "参数设置", "Url": "../SysSeting/SysManager.html", "NavType": 6 }] }
+                } else if (options.ID == '129') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/OwnFeeCategoryMgr.html", "menuList": [{ "ID": 129, "Title": "欠费类别", "Url": "../SysSeting/OwnFeeCategoryMgr.html", "NavType": 0 }] }
+                } else if (options.ID == '130') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/ChargeDiscountMgr.html", "menuList": [{ "ID": 130, "Title": "减免方案", "Url": "../SysSeting/ChargeDiscountMgr.html", "NavType": 0 }] }
+                } else if (options.ID == '179') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/SendNotifyMsg.html", "menuList": [{ "ID": 179, "Title": "催收通知", "Url": "../SysSeting/SendNotifyMsg.html", "NavType": 0 }] }
+                } else if (options.ID == '196') {
+                    data = { "status": true, "iframeUrl": "../SysSeting/PrintFormatMgr.html", "menuList": [{ "ID": 196, "Title": "单据格式", "Url": "../SysSeting/PrintFormatMgr.html", "NavType": 6 }] }
+                } else if (options.ID == '5') {
+                    // } else if (options.ID == '40') {
+                    data = { "status": true, "iframeUrl": "../Analysis/TotalAnalysis.html?navtype=3", "menuList": [{ "ID": 69, "Title": "管理看板", "Url": "../Analysis/TotalAnalysis.html?navtype=3", "NavType": 4 }, { "ID": 70, "Title": "看板配置", "Url": "../UserInfo/UserAnalysisMgr.html", "NavType": 4 }] }
+                } else if (options.ID == '6') {
+                    // } else if (options.ID == '12') {
+                    data = { "status": true, "iframeUrl": "../Analysis/ToChargeAnalysisMgr.html", "menuList": [{ "ID": 124, "Title": "欠费查询", "Url": "../Analysis/ToChargeAnalysisMgr.html", "NavType": 4 }, { "ID": 123, "Title": "催收处理", "Url": "../Analysis/ToCuiShouMgr.html", "NavType": 4 }, { "ID": 543, "Title": "银行代扣", "Url": "../BankCharge/BankChargeMgr.html", "NavType": 4 }, { "ID": 544, "Title": "代扣设置", "Url": "../BankCharge/BankChargeSetup.html", "NavType": 4 }] }
+                }
+                else {
+                    data = { "status": true, "iframeUrl": "../tip/tip.html", "menuList": [{ "ID": 196, "Title": "页面", "Url": "../tip/tip.html", "NavType": 0 }] }
+                }
+
+                console.log('菜单数据');
+                console.log(data);
+
+                addEasyUITabs(data.menuList);
+
+            }
+        });
+    }
+    function addEasyUITabs(menuList) {
+        $.each(menuList, function (index, item) {
+            addSubTab(item.Title, item.NavType, item.Url, item.ID);
+        })
+        $('#sub_tabs').tabs({
+            onSelect: function (title, index) {
+                loadIframe(title);
+            }
+        });
+        loadIframe();
+    }
+    var curTab;
+    function loadIframe() {
+        curTab = $('#sub_tabs').tabs('getSelected');
+        if (!curTab.find("iframe:first").attr("src")) {
+            var iframesrc = curTab.find("input[type=hidden]:first").val();
+            curTab.find("iframe:first").attr("src", iframesrc);
+        }
+        dynsiteFramesize();
+        var id = curTab.panel('options').id;
+        var title = curTab.panel('options').title;
+        var pageid = curTab.panel('options').pageid;
+        top.treeType = id;
+        top.openTreeContent();
+    }
+    function windowResizeEvent(callback) {
+        var firstFire = null;
+        window.onresize = function () {
+            if (firstFire === null) {
+                firstFire = setTimeout(function () {
+                    firstFire = null;
+                    callback();
+                }, 100);
+            }
+        }
+    }
+    function dynsiteFramesize() {
+        var $width = $('.tabBox .tabs-panels').width();
+        var $height = $('.tabBox .tabs-panels').height() - 5;
+        // curTab.find("iframe:first").css("width", $width + "px");
+        // curTab.find("iframe:first").css("height", $height + "px");
+    }
+    function addSubTab(title, navid, url, pageid) {
+        var content = '<input type="hidden" value="' + url + '" />';
+        var id = 'sub_main_frame_' + pageid;
+        content += '<iframe id="' + id + '" name="sub_main_frame" src="" style="width: 100%; height: 99%; position: relative; top: 5px; left: 0px; right: 0px; bottom: 0px; border: 0px;"></iframe>';
+        if (!$('#sub_tabs').tabs('exists', title)) {
+            $('#sub_tabs').tabs('add', {
+                pageid: pageid,
+                id: navid,
+                title: title,
+                content: content,
+                closable: false,
+            });
+        } else {
+            $('#sub_tabs').tabs('select', title);
+        }
+    }
+    function getSubTabPageID() {
+        return $("#sub_tabs").tabs("getSelected").panel("options").pageid;
+    }
+    function updateSubTab(id) {
+        var tab = $('#sub_tabs').tabs('getSelected');  // get selected panel
+        tab.panel('options').id = id;
+    }
+</script>
+<style>
+    .tabs-header {
+        width: 200px;
+    }
+
+    .refreshCss {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        background-size: 20px auto !important;
+        width: 20px;
+        background: url('../styles/images/newicons/刷新.png') no-repeat center center;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .tabs-panels .panel-body {
+        background: #fff;
+    }
+
+    #sub_layout_content .panel-body {
+        background: #f0f0f0;
+    }
+
+    .tabs-header {
+        background: #f2f1f1;
+        border: 0px;
+        padding: 0px;
+    }
+
+    .tabs-title {
+        font-size: 14px;
+    }
+
+    .tabs li.tabs-selected {
+        background-color: transparent;
+    }
+
+    .tabs li {
+        margin: 0px;
+        border-right: solid 0px #ddd;
+        margin: 0px 30px 0px 0px;
+    }
+
+    .tabs li:last-child {
+        border-right: 0px;
+    }
+
+    .tabs li a.tabs-inner {
+        color: #000;
+        background: #f0f0f0;
+        border-radius: 0px;
+        border: 0px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .tabs li.tabs-selected a.tabs-inner {
+        border: 0px !important;
+        border-bottom: solid 2px #1d5a94 !important;
+        background: none;
+        color: #1d5a94;
+        border-radius: 0px !important;
+    }
+
+    .tabs li a.tabs-inner:hover {
+        border: 0px !important;
+        background: none;
+        border-bottom: solid 2px #1d5a94 !important;
+        color: #1d5a94;
+        border-radius: 0px !important;
+        font-weight: bold;
+    }
+
+    .tabs li.tabs-selected a.tabs-inner:hover {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+
+    .tabs li.tabs-selected a.tabs-inner span.tabs-title {
+        border-bottom: 0px;
+        padding-bottom: 0px;
+    }
+</style>
+<div class="easyui-layout" data-options="fit:true" id="sub_layout_content">
+    <div data-options="region:'center',border:false"
+        style="padding-left: 8px; padding-right: 8px; background: #f0f0f0;">
+        <div class="easyui-tabs tabBox" id="sub_tabs" style="width: 100%; height: 99%; border: none;"
+            data-options="tabHeight:35,border:0,fit:true">
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="refreshCss">
+        <label></label>
+    </div>
+</div>

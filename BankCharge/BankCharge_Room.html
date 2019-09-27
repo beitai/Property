@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var RoomID;
+        $(function () {
+            loadtdChargeType();
+            $('#searchBTN').tooltip({
+                position: 'bottom',
+                content: '<span style="color:#fff">银行信息:卡号,开户行,开户名,身份证,手机号</span>',
+                onShow: function () {
+                    $(this).tooltip('tip').css({
+                        backgroundColor: '#666',
+                        borderColor: '#666'
+                    });
+                }
+            });
+        });
+        function loadtdChargeType() {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/FeeCenterHandler.ashx?visit=loadtdchargetype',
+                success: function (data) {
+                    var list = [];
+                    list.push({ ID: 0, Name: "全部" });
+                    $.each(data, function (index, item) {
+                        list.push({ ID: item.ID, Name: item.TypeName });
+                    })
+                    $('#tdChargeType').combobox({
+                        editable: false,
+                        data: list,
+                        valueField: 'ID',
+                        textField: 'Name',
+                    });
+                }
+            });
+        }
+    </script>
+    <script src="../js/Page/BankCharge/BankCharge_Room.js?t=2019-09061000" type="text/javascript"></script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <div class="easyui-layout" fit="true">
+                    <div data-options="region:'north'" class="hidenorth">
+                        <div class="tdsearch">
+                            <label>
+                                模糊搜索：
+                                <input type="text" class="easyui-searchbox" id="tdKeywords" style="width: 200px;"
+                                    data-options="prompt:'银行信息/缴费编号',searcher:SearchTT" />
+                            </label>
+                            <label>
+                                项目类型：
+                                <input type="text" class="easyui-combobox" id="tdChargeType" style="width: 100px;"
+                                    data-options="editable:false" />
+                            </label>
+                            <label>
+                                <a href="javascript:void(0)" id="searchBTN" onclick="SearchTT()"
+                                    class="easyui-linkbutton btntoolbar"
+                                    data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="home_tb" data-options="region:'center'">
+                        <table id="tt_table"></table>
+                        <div id="tb">
+                            <a href="javascript:void(0)" onclick="addcharge()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-add'">增加</a>
+                            <a href="javascript:void(0)" onclick="editcharge()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-edit'">修改</a>
+                            <a href="javascript:void(0)" onclick="deletecharge()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-remove'">删除</a>
+                            <a href="javascript:void(0)" onclick="do_export()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-export'">导出</a>
+                            <a href="javascript:void(0)" onclick="do_import()" class="easyui-linkbutton btnlinkbar"
+                                data-options="plain:true,iconCls:'icon-import'">导入</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

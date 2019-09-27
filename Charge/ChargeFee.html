@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019_08_291000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019_08_291000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019_08_291000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script src="../js/Page/Comm/GetTypeList.js?v=2019_08_291000"></script>
+    <script type="text/javascript">
+        var companyID, AddMan, RoomID, hdPriceRangeList, hdChargeDiscount;
+        $(function () {
+            companyID = "1";
+            AddMan = "demo8";
+            RoomID = "" || 0;
+            hdPriceRangeList = $("#content_hdPriceRangeList");
+            hdChargeDiscount = $("#content_hdChargeDiscount");
+        })
+        function clickRadioBtn() {
+            setTimeout(function () {
+                $("#opbtn").click();
+            }, 100);
+        }
+    </script>
+    <script src="../js/Page/Charge/ChargeFee.js?v=2019_08_291000" type="text/javascript"></script>
+    <style>
+        .roomtable {
+            width: 100%;
+        }
+
+        .roomtable td {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .inputbox {
+            width: 100px;
+        }
+
+        .tdfield .l-btn.btn-white {
+            border: 1px solid #cccccc !important;
+        }
+
+        .l-btn.btn-blue {
+            background-color: #ccc !important;
+            border: solid 1px #cccccc;
+            color: #0088cc !important;
+            text-shadow: none !important;
+            padding: 6px 12px !important;
+            line-height: 30px !important;
+        }
+
+        btn.clickBtn {
+            background-color: #ccc;
+            color: red;
+        }
+
+        .noteTitle {
+            background: #cccccc;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            line-height: 30px;
+            padding: 0px 10px;
+        }
+
+        .noteDesc {
+            padding: 10px;
+            border: solid 1px #ccc;
+            border-top: 0px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        $(function () {
+            $(".opbtn").click(function () {
+                var $this = $(this);
+                var r = $(".opbtn");
+                for (var i = 0; i < r.length; i++) {
+                    if (!$(r[i]).hasClass("btn-white")) {
+                        $(r[i]).addClass("btn-white");
+                    }
+                    $(r[i]).removeClass("btn-blue");
+                }
+                $this.removeClass("btn-white");
+                $this.addClass("btn-blue");
+            })
+        })
+    </script>
+    <style>
+        table.noteitem {
+            width: 96%;
+            margin-top: 10px;
+        }
+
+        table.notecontent td {
+            text-align: left;
+            padding: 10px 0;
+        }
+    </style>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <div class="easyui-layout" fit="true">
+                    <div data-options="region:'north'" class="hidenorth">
+                        <table class="roomtable">
+                            <tr>
+                                <td>编号:
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox inputbox" type="text" id="tbRoomName" />
+                                </td>
+                                <td>
+                                    <label id="tdOwnerTitle">住户：</label>
+                                </td>
+                                <td>
+                                    <input class="easyui-combobox inputbox" type="text" id="tbRoomOwner" />
+                                </td>
+                                <td>电话:</td>
+                                <td>
+                                    <input class="easyui-textbox inputbox" type="text" id="tbOwnerPhone" />
+                                </td>
+                                <td>计费面积:</td>
+                                <td>
+                                    <input class="easyui-textbox inputbox" type="text" id="tbBuildingArea" />
+                                </td>
+                                <td>房间状态:</td>
+                                <td>
+                                    <input class="easyui-combobox inputbox" type="text" id="tbRoomStateDesc" />
+                                </td>
+                                <td>
+
+                                    <a href="javascript:void(0)" onclick="EditSource()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-edit'">修改</a>
+
+                                    <a href="javascript:void(0)" onclick="saveRoomSource()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-save'">保存</a>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="11" style="text-align: left;" class="tdfield">
+
+                                    <a id="opbtn" href="javascript:void(0)" onclick="viewRoomFeeList()"
+                                        class="opbtn easyui-linkbutton btntoolbar linebar"
+                                        data-options="plain:true,iconCls:'icon-mingxi'">账单明细</a>
+
+                                    <span id="contractfeelable"></span>
+
+                                    <a href="javascript:void(0)" onclick="viewRoomFeeHistoryList()"
+                                        class="opbtn easyui-linkbutton btntoolbar linebar"
+                                        data-options="plain:true,iconCls:'icon-lishi'">历史账单</a>
+
+                                    <a style="display: none;" href="javascript:void(0)" onclick="viewshaobiaoFeeList()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-import'">导入记录</a>
+
+                                    <span id="prefeelable"></span>
+
+                                    <a href="javascript:void(0)" onclick="viewGuaranteeFeeList()"
+                                        class="opbtn easyui-linkbutton btntoolbar linebar"
+                                        data-options="plain:true,iconCls:'icon-baozhengjin'">保证金</a>
+
+                                    <span style="position: relative;">
+                                        <a href="javascript:void(0)" onclick="viewRoomFeeNote()"
+                                            class="opbtn easyui-linkbutton btntoolbar linebar"
+                                            data-options="plain:true,iconCls:'icon-beiwanglu'">备忘录</a>
+                                        <img id="note_img" src="../styles/images/point.png"
+                                            style="width: 10px; position: absolute; top: -5px; right: 0px; display: none;" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div data-options="region:'center'" title="">
+                        <div class="easyui-panel" style="border: none;" data-options="fit:true">
+                            <input type="hidden" value="../Charge/ChargeFee_Bill.aspx" />
+                            <iframe id="ChargeFrame" name="ChargeFrame"
+                                style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; border: none;"
+                                src=""></iframe>
+                        </div>
+                    </div>
+                    <form method="post" action="./ChargeFee.aspx" id="ctl00">
+                        <div class="aspNetHidden">
+                            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                                value="/wEPDwUKLTU2NDY4NDAxMWRkTycsMwlGHYPjZYJ+LBP6YIGS1sM=" />
+                        </div>
+
+                        <div class="aspNetHidden">
+
+                            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR"
+                                value="4C422570" />
+                            <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                                value="/wEdAAP5ufdEwFP1h5cTQScoHq3L8I4aEcR2EWE0Uby5F2epQpsBnxpwFnKitvvEIMHdohCZN3O5VmVmlvTAOor1G3s6wvBnyA==" />
+                        </div>
+                        <input name="ctl00$content$hdPriceRangeList" type="hidden" id="content_hdPriceRangeList"
+                            value="[{&quot;RoomFeeID&quot;:543714,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:1000.0,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:569962,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:1000.0,&quot;BasePrice&quot;:3.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574923,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574924,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574925,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574926,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574927,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574928,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574929,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:576044,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:577210,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:0.0,&quot;MaxValue&quot;:10.0,&quot;BasePrice&quot;:0.500,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575230,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574936,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575227,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575229,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574872,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:560494,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543295,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543297,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:1.0,&quot;MaxValue&quot;:2.0,&quot;BasePrice&quot;:6.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543297,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543295,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:560494,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574872,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575229,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575227,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574936,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:575230,&quot;SummaryID&quot;:534,&quot;MinValue&quot;:2.0,&quot;MaxValue&quot;:3.0,&quot;BasePrice&quot;:8.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:576044,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:577210,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574929,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574928,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574927,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574926,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574925,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574924,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:574923,&quot;SummaryID&quot;:536,&quot;MinValue&quot;:10.0,&quot;MaxValue&quot;:50.0,&quot;BasePrice&quot;:0.800,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:569962,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:1000.0,&quot;MaxValue&quot;:4555.0,&quot;BasePrice&quot;:4.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true},{&quot;RoomFeeID&quot;:543714,&quot;SummaryID&quot;:599,&quot;MinValue&quot;:1000.0,&quot;MaxValue&quot;:4555.0,&quot;BasePrice&quot;:4.000,&quot;BaseType&quot;:&quot;bcyl&quot;,&quot;IsActive&quot;:true}]" />
+                        <input name="ctl00$content$hdChargeDiscount" type="hidden" id="content_hdChargeDiscount"
+                            value="[{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:29,&quot;DiscountName&quot;:&quot;交一年送一年&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:1.00,&quot;StartTime&quot;:&quot;2019-08-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;2100-12-31T00:00:00&quot;,&quot;SortOrder&quot;:0,&quot;ChargeSummaryIDs&quot;:&quot;769&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按折扣&quot;,&quot;ID&quot;:9,&quot;DiscountName&quot;:&quot;装修前半价收费&quot;,&quot;DiscountType&quot;:&quot;percent&quot;,&quot;DiscountValue&quot;:88.00,&quot;StartTime&quot;:&quot;2019-05-07T00:00:00&quot;,&quot;EndTime&quot;:&quot;2026-05-26T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;741&quot;,&quot;Remark&quot;:&quot;三通之前半价收取物业费&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:12,&quot;DiscountName&quot;:&quot;3月免一月&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:1.00,&quot;StartTime&quot;:&quot;2018-10-10T00:00:00&quot;,&quot;EndTime&quot;:&quot;2024-10-31T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;472&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:19,&quot;DiscountName&quot;:&quot;按月减免&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:2.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;524&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;临时输入&quot;,&quot;ID&quot;:20,&quot;DiscountName&quot;:&quot;手动输入&quot;,&quot;DiscountType&quot;:&quot;writeamount&quot;,&quot;DiscountValue&quot;:0.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;0&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按折扣&quot;,&quot;ID&quot;:22,&quot;DiscountName&quot;:&quot;优惠22&quot;,&quot;DiscountType&quot;:&quot;percent&quot;,&quot;DiscountValue&quot;:30.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;551&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按折扣&quot;,&quot;ID&quot;:25,&quot;DiscountName&quot;:&quot;优惠&quot;,&quot;DiscountType&quot;:&quot;percent&quot;,&quot;DiscountValue&quot;:10.00,&quot;StartTime&quot;:&quot;2019-01-04T00:00:00&quot;,&quot;EndTime&quot;:&quot;2022-07-22T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;530&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:26,&quot;DiscountName&quot;:&quot;老荐新免半年&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:6.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;741,534&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;临时输入&quot;,&quot;ID&quot;:27,&quot;DiscountName&quot;:&quot;手动减免&quot;,&quot;DiscountType&quot;:&quot;writeamount&quot;,&quot;DiscountValue&quot;:1.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;536&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;临时输入&quot;,&quot;ID&quot;:28,&quot;DiscountName&quot;:&quot;合同租金方案&quot;,&quot;DiscountType&quot;:&quot;writeamount&quot;,&quot;DiscountValue&quot;:1.00,&quot;StartTime&quot;:&quot;2019-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;2020-08-31T00:00:00&quot;,&quot;SortOrder&quot;:1,&quot;ChargeSummaryIDs&quot;:&quot;739&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;固定金额&quot;,&quot;ID&quot;:2,&quot;DiscountName&quot;:&quot;8元优惠&quot;,&quot;DiscountType&quot;:&quot;fixedamount&quot;,&quot;DiscountValue&quot;:8.00,&quot;StartTime&quot;:&quot;2017-03-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;2022-03-09T00:00:00&quot;,&quot;SortOrder&quot;:2,&quot;ChargeSummaryIDs&quot;:&quot;0&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;临时输入&quot;,&quot;ID&quot;:3,&quot;DiscountName&quot;:&quot;临时输入&quot;,&quot;DiscountType&quot;:&quot;writeamount&quot;,&quot;DiscountValue&quot;:0.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:3,&quot;ChargeSummaryIDs&quot;:&quot;206&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;全额减免&quot;,&quot;ID&quot;:4,&quot;DiscountName&quot;:&quot;全额&quot;,&quot;DiscountType&quot;:&quot;allfree&quot;,&quot;DiscountValue&quot;:0.00,&quot;StartTime&quot;:&quot;2017-07-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:3,&quot;ChargeSummaryIDs&quot;:&quot;0&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:10,&quot;DiscountName&quot;:&quot;一年减免一个月&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:1.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:10,&quot;ChargeSummaryIDs&quot;:&quot;212,206&quot;,&quot;Remark&quot;:&quot;k物业费&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按折扣&quot;,&quot;ID&quot;:15,&quot;DiscountName&quot;:&quot;一次缴纳2年免3个月&quot;,&quot;DiscountType&quot;:&quot;percent&quot;,&quot;DiscountValue&quot;:2000.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:13,&quot;ChargeSummaryIDs&quot;:&quot;381&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;固定金额&quot;,&quot;ID&quot;:16,&quot;DiscountName&quot;:&quot;一次缴纳2年免3个月&quot;,&quot;DiscountType&quot;:&quot;fixedamount&quot;,&quot;DiscountValue&quot;:2000.00,&quot;StartTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;0001-01-01T00:00:00&quot;,&quot;SortOrder&quot;:13,&quot;ChargeSummaryIDs&quot;:&quot;381&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按月减免&quot;,&quot;ID&quot;:18,&quot;DiscountName&quot;:&quot;减免水电费2个月&quot;,&quot;DiscountType&quot;:&quot;permonth&quot;,&quot;DiscountValue&quot;:2.00,&quot;StartTime&quot;:&quot;2019-01-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;2019-09-30T00:00:00&quot;,&quot;SortOrder&quot;:13,&quot;ChargeSummaryIDs&quot;:&quot;529,556&quot;,&quot;Remark&quot;:&quot;&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false},{&quot;DicountTypeDesc&quot;:&quot;按折扣&quot;,&quot;ID&quot;:21,&quot;DiscountName&quot;:&quot;每月房租减免百分五&quot;,&quot;DiscountType&quot;:&quot;percent&quot;,&quot;DiscountValue&quot;:5.00,&quot;StartTime&quot;:&quot;2019-04-01T00:00:00&quot;,&quot;EndTime&quot;:&quot;2019-10-31T00:00:00&quot;,&quot;SortOrder&quot;:26,&quot;ChargeSummaryIDs&quot;:&quot;546&quot;,&quot;Remark&quot;:&quot;每个月房租减免百分五&quot;,&quot;IsNew&quot;:false,&quot;IsDirty&quot;:false,&quot;IsDeleted&quot;:false,&quot;IsValid&quot;:true,&quot;ValidationErrors&quot;:[],&quot;JsonIgnoreFields&quot;:null,&quot;IsSaveRequired&quot;:false}]" />
+                    </form>
+                </div>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

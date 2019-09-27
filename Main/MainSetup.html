@@ -1,0 +1,327 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../Main/All.js"></script>
+<script src="../js/vue.js"></script>
+<link href="../styles/page/initialdefault.css?t=<%=base.getToken() %>" rel="stylesheet" />
+<style>
+    .panel-body {
+        background: #fff;
+    }
+
+    .tabs-header {
+        background-color: #2f80d1;
+    }
+
+    .tabs li.tabs-selected a.tabs-inner {
+        color: #2f80d1;
+    }
+
+    .tabs li a.tabs-inner:hover {
+        color: #2f80d1;
+    }
+</style>
+<script>
+    var GetContextPath;
+    $(function () {
+        $('body').bind('click', function () {
+            try {
+                top.hide_popup();
+            } catch (e) {
+            }
+        })
+    })
+</script>
+<script>
+    // show_message("系统内置分类，禁止删除", "info");
+    // top.$.messager.confirm("提示", "覆盖已有房源信息");
+
+    var content, ID, GroupName, GetContextPath = '';
+    $(function () {
+        ID = getQueryString("ParentID");
+        GroupName = getQueryString("groupname");
+        content = new Vue({
+            el: '#fieldcontent',
+            data: {
+                list: [],
+                list: [{ "ID": 7, "ParentID": 0, "Name": "资源管理", "Title": "资源管理", "ModuleCode": "1191007", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "fyda", "SortOrder": 1, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "wynk", "NavType": 0 }, { "ID": 9, "ParentID": 0, "Name": "收费设置", "Title": "收费设置", "ModuleCode": "1191009", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "sfsz", "SortOrder": 2, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 19, "ParentID": 0, "Name": "账单处理", "Title": "账单处理", "ModuleCode": "1191019", "IsAuthority": false, "Disabled": false, "Url": "../GongTan/Setup.aspx", "Icon": "", "CssClass": "gtcl", "SortOrder": 3, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 4 }, { "ID": 260, "ParentID": 0, "Name": "收费中心", "Title": "收费中心", "ModuleCode": "1101260", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "sfzx", "SortOrder": 4, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 12, "ParentID": 0, "Name": "催收中心", "Title": "催收中心", "ModuleCode": "1191012", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "cszx", "SortOrder": 5, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 40, "ParentID": 0, "Name": "管理看板", "Title": "管理看板", "ModuleCode": "1191040", "IsAuthority": false, "Disabled": false, "Url": "../Analysis/TotalAnalysis.aspx?navtype=3", "Icon": "", "CssClass": "glkb", "SortOrder": 5, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 4 }, { "ID": 13, "ParentID": 0, "Name": "财务审计", "Title": "财务审计", "ModuleCode": "1191013", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "cwsj", "SortOrder": 6, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 118, "ParentID": 0, "Name": "统计报表", "Title": "统计报表", "ModuleCode": "1191118", "IsAuthority": false, "Disabled": false, "Url": "../Main/MainSetup.html?ParentID=118", "Icon": "", "CssClass": "tjtz", "SortOrder": 7, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 4 }, { "ID": 104, "ParentID": 0, "Name": "微信平台", "Title": "微信平台", "ModuleCode": "1191104", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "weixin", "SortOrder": 23, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }],
+                // , { "ID": 114, "ParentID": 0, "Name": "租赁管理", "Title": "租赁管理", "ModuleCode": "1191114", "IsAuthority": false, "Disabled": false, "Url": "", "Icon": "", "CssClass": "htgl", "SortOrder": 26, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }
+                pageindex: 0,//当前页码
+                pagesize: 0, //每页列数
+                itemwidth: 176,//每列宽度
+                menuWidth: 0,//整体宽度
+                totalPage: 5,//总页数
+                linecount: 2, //行数
+                startScroll: false
+            },
+            methods: {
+                getdata: function () {
+                    // console.log('-----sessionId');
+                    // console.log(sessionId);
+                    var that = this;
+                    var options = { visit: 'getmymenus', ID: ID, GroupName: GroupName };
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        // url: '../Handler/SysSettingHandler.ashx',
+                        // url: 'http://demo.saasyy.com/Handler/SysSettingHandler.ashx',
+                        url: 'http://106.14.19.236:8081/admin/api/menuList',
+                        data: {
+                            sessionId: sessionId
+                        },
+                        success: function (data) {
+
+                            console.log('项目后台菜单输出');
+                            console.log(data.list);
+
+                            if (options.ID == '120') {
+                                data = { "status": true, "list": [{ "ID": 29, "ParentID": 120, "Name": "收款设置", "Title": "收款设置", "ModuleCode": "1101029", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/ChargeMoneyTypeMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 3, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 30, "ParentID": 120, "Name": "单据设置", "Title": "单据设置", "ModuleCode": "1101030", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/OrderNumberMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 4, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 56, "ParentID": 120, "Name": "费项类别", "Title": "费项类别", "ModuleCode": "1101056", "IsAuthority": true, "Disabled": false, "Url": "../SetupFee/FeeCategoryMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 5, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 64, "ParentID": 120, "Name": "参数设置", "Title": "参数设置", "ModuleCode": "1101064", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/SysManager.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 6, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 6 }, { "ID": 129, "ParentID": 120, "Name": "欠费类别", "Title": "欠费类别", "ModuleCode": "1101129", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/OwnFeeCategoryMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 7, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 130, "ParentID": 120, "Name": "减免方案", "Title": "减免方案", "ModuleCode": "1101130", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/ChargeDiscountMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 8, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 179, "ParentID": 120, "Name": "催收通知", "Title": "催收通知", "ModuleCode": "11011179", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/SendNotifyMsg.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 9, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 0 }, { "ID": 196, "ParentID": 120, "Name": "单据格式", "Title": "单据格式", "ModuleCode": "1101196", "IsAuthority": true, "Disabled": false, "Url": "../SysSeting/PrintFormatMgr.aspx", "Icon": "", "CssClass": "sfsz", "SortOrder": 10, "Description": "", "ImgUrl": "", "IconPath": "", "UsingImgURL": false, "GroupName": "", "NavType": 6 }], "context_path": "" }
+                            }
+
+
+                            if (data.status) {
+                                that.list = data.list;
+                                // GetContextPath = data.context_path;
+                            }
+
+                            that.initialMenuBox();
+                        }
+                    });
+                },
+                open_menu: function (item) {
+                    var that = this;
+                    if (item.ID == 33) {
+                        top.window.open(item.Url);
+                        return;
+                    }
+                    // top.addTab(item.Title, GetContextPath + './InitialSetup/subpage.html?ID=' + item.ID, item.ID, '');
+                    top.addTab(item.Title, GetContextPath + './Main/subpage.html?ID=' + item.ID, item.ID, '');
+                    // top.addTab(item.Title, GetContextPath + '../Property/InitialSetup/subpage.html?ID=' + item.ID, item.ID, '');
+                    // top.addTab(item.Title, GetContextPath + './page/subpage.html?ID=' + item.ID, item.ID, '');
+                    // top.addTab(item.Title, GetContextPath + '../InitialSetup/subpage.html?ID=' + item.ID, item.ID, '');
+                    // top.addTab(item.Title, GetContextPath + './InitialSetup/subpage.html?ID=' + item.ID, item.ID, '');
+                },
+                initialMenuBox: function () {
+                    var that = this;
+                    var pageWidth = $('body').width();
+                    if (pageWidth == 0) {
+                        return;
+                    }
+                    var pageHeight = $('body').height() - 80;
+
+                    that.itemwidth = pageWidth * 0.12;
+                    if (that.itemwidth <= 150) {
+                        that.itemwidth = 150;
+                    }
+                    var menuImgWidth = (that.itemwidth - 20) * 0.6;
+                    menuImgWidth = menuImgWidth > 100 ? 100 : menuImgWidth;
+                    menuImgWidth = menuImgWidth < 80 ? 80 : menuImgWidth;
+                    var menuBoxWidth = menuImgWidth + 80;
+                    that.linecount = parseInt(pageHeight / menuBoxWidth);
+
+                    var pagesize = parseInt(pageWidth / that.itemwidth);
+                    that.pagesize = pagesize;
+                    that.totalPage = Math.ceil(that.list.length / (that.pagesize * that.linecount));
+                    var positionRight = (pageWidth - pagesize * that.itemwidth);
+                    that.menuWidth = that.pagesize * that.itemwidth * that.totalPage;
+                    setTimeout(function () {
+                        $('.menucontent').css('left', (positionRight / 2) + 'px');
+                        $('.menucontent').css('right', (positionRight / 2) + 'px');
+                        $('.menucontent').css('height', (that.linecount * menuBoxWidth) + 'px');
+                        $('.menupage').css('width', (that.pagesize * that.itemwidth) + 'px');
+                        $('.menupage').css('height', $('.menucontent').height() + 'px');
+                        $('.mainmenu').css('width', that.menuWidth + 'px');
+                        $('.menu_box').css('width', that.itemwidth + 'px');
+                        $('.ModuleBox').css('width', menuImgWidth + 'px');
+                        $('.ModuleBox').css('height', menuImgWidth + 'px');
+                    }, 200)
+                },
+                go_next: function () {
+                    var that = this;
+                    if (that.startScroll) {
+                        return;
+                    }
+                    that.startScroll = true;
+                    that.autoScroll('.menucontent', 0, 'plus');
+                    setTimeout(function () {
+                        that.startScroll = false;
+                    }, 1000)
+                },
+                go_pre: function () {
+                    var that = this;
+                    if (that.startScroll) {
+                        return;
+                    }
+                    that.startScroll = true;
+                    that.autoScroll('.menucontent', 0, 'reduce');
+                    setTimeout(function () {
+                        that.startScroll = false;
+                    }, 200)
+                },
+                goto_page: function (index) {
+                    var that = this;
+                    that.autoScroll('.menucontent', index);
+                },
+                autoScroll: function (obj, pagesize, type) {
+                    var that = this;
+                    var width = that.itemwidth;
+                    var marginLeft = 0;
+                    if (pagesize > 0) {
+                        that.pageindex = pagesize - 1;
+                        marginLeft = width * (that.pagesize * that.pageindex);
+                    }
+                    else {
+                        marginLeft = width * (that.pagesize * (that.pageindex + 1));
+                        if (type == 'plus') {
+                            if (that.pageindex >= that.totalPage - 1) {
+                                return;
+                            }
+                            that.pageindex++;
+                        } else {
+                            if (that.pageindex <= 0) {
+                                return;
+                            }
+                            that.pageindex--;
+                            marginLeft = width * (that.pagesize * that.pageindex);
+                        }
+                    }
+                    $(obj).find(".mainmenu").animate({
+                        marginLeft: -marginLeft
+                    }, 500)
+                }
+            }
+        });
+        content.getdata();
+        windowResizeEvent(function () {
+            content.initialMenuBox();
+            content.goto_page(0);
+        });
+        windowAddMouseWheel();
+    })
+    function windowResizeEvent(callback) {
+        var firstFire = null;
+        window.onresize = function () {
+            if (firstFire === null) {
+                firstFire = setTimeout(function () {
+                    firstFire = null;
+                    callback();
+                }, 500);
+            }
+        }
+    }
+    function windowAddMouseWheel() {
+        var scrollFunc = function (e) {
+            e = e || window.event;
+            if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
+                if (e.wheelDelta > 0) { //当滑轮向上滚动时
+                    //alert("滑轮向上滚动");
+                    content.go_pre();
+                }
+                if (e.wheelDelta < 0) { //当滑轮向下滚动时
+                    //alert("滑轮向下滚动");
+                    content.go_next();
+                }
+            } else if (e.detail) {  //Firefox滑轮事件
+                if (e.detail > 0) { //当滑轮向上滚动时
+                    //alert("滑轮向上滚动");
+                    content.go_pre();
+                }
+                if (e.detail < 0) { //当滑轮向下滚动时
+                    //alert("滑轮向下滚动");
+                    content.go_next();
+                }
+            }
+        };
+        //给页面绑定滑轮滚动事件
+        if (document.addEventListener) {
+            document.addEventListener('DOMMouseScroll', scrollFunc, false);
+        }
+        //滚动滑轮触发scrollFunc方法
+        window.onmousewheel = document.onmousewheel = scrollFunc;
+    }
+</script>
+<style>
+    [v-cloak] {
+        display: none
+    }
+
+    .menucontent {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        height: 400px;
+    }
+
+    .mainmenu {}
+
+    .menunumber {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .menubg {
+        display: inline-block;
+        margin: 0 auto;
+        padding: 5px 20px;
+        /*background: #1d5a94;*/
+        line-height: 15px;
+        border-radius: 10px;
+    }
+
+    .menunumber label {
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .menupage {
+        float: left;
+    }
+
+
+    .menunumber label.marker.isactive {
+        background-color: #1d5a94;
+        width: 30px;
+    }
+
+    .menunumber label.marker {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #1d5a94;
+        border-radius: 30px;
+        /*background-color: #1d5a94;*/
+        opacity: 0.5;
+    }
+</style>
+<div id="fieldcontent" v-cloak>
+    <div class="menunumber" v-if="totalPage>1">
+        <div class="menubg">
+            <label v-for="count in totalPage" class="marker" v-bind:class="{'isactive':pageindex==(count-1)}"
+                v-on:click="goto_page(count)"></label>
+        </div>
+    </div>
+    <div class="menucontent">
+        <div class="mainmenu">
+            <div class="menupage" v-bind:id="'page_'+count" v-for="count in totalPage">
+                <div v-bind:id="'item_'+index"
+                    v-if="index>=(count-1)*pagesize*linecount&&index<count*pagesize*linecount" class="menu_box"
+                    style="cursor: pointer;" v-on:click="open_menu(item)" v-for="(item,index) in list">
+                    <div v-if="item.IconPath==''" class="ModuleBox" v-bind:class="item.CssClass">
+                    </div>
+                    <div v-if="item.IconPath!=''" class="ModuleBox"
+                        style="background-size: 80px 80px; background-repeat: no-repeat; background-position: center center;"
+                        v-bind:style="{backgroundImage:'url('+item.IconPath+')'}">
+                    </div>
+                    <label>{{item.Title}}</label>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>

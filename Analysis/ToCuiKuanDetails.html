@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../styles/iconfont/iconfont.css?v=10" rel="stylesheet" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=2019-09061000"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/bootstrap/easyui.css?v20" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=2019-09061000"></script>
+    <script src="../js/Page/Main/Content.js?t=2019-09061000"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=2019-09061000"></script>
+    <link href="../styles/basic.css?v=10180" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=10180" rel="stylesheet" />
+    <link href="../styles/window.css?v=10180" rel="stylesheet" />
+    <script>
+        window.SERVERPATH = "http://demo.saasyy.com";
+        function GetSelectedID() {
+            return top.GetSelectedID();
+        }
+        function GetSelectedType() {
+            return top.GetSelectedType();
+        }
+        function GetSelected() {
+            return top.GetSelected();
+        }
+        function GetSelectRoomName() {
+            return top.GetSelectRoomName();
+        }
+        function GetSelectRadio() {
+            return top.GetSelectRadio();
+        }
+        function GetSelectChargeCheck() {
+            return top.GetSelectChargeCheck();
+        }
+        function GetSelectedRooms() {
+            return top.GetSelectedRooms();
+        }
+        function GetSelectedProjects() {
+            return top.GetSelectedProjects();
+        }
+        function GetSelectedPublicProjects() {
+            return top.GetSelectedPublicProjects();
+        }
+        function GetALLSelectedProjects() {
+            return top.GetALLSelectedProjects();
+        }
+    </script>
+    <style type="text/css">
+        body,
+        .panel-body,
+        .textbox .textbox-text,
+        .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline-block;
+        }
+
+        #main_form,
+        .table_container .panel-body {
+            background: #fff;
+        }
+    </style>
+
+    <script>
+        var CompanyID, hdIDs, AddMan, tdStartTime, tdEndTime, tdChargeMan, tdChargeSummary, tdChargeType, tdCategory, tdChargeStatus, hdRoomIDs, hdProjectIDs, hdChargeMan, hdChargeSummary, hdChargeType, hdCategory, hdChargeStatus;
+        $(function () {
+            CompanyID = "1";
+            hdIDs = $("#content_hdIDs");
+            AddMan = "demo6";
+            tdStartTime = $("#content_tdStartTime");
+            tdEndTime = $("#content_tdEndTime");
+            tdChargeMan = $("#content_tdChargeMan");
+            hdChargeMan = $("#content_hdChargeMan");
+            tdChargeSummary = $("#content_tdChargeSummary");
+            hdChargeSummary = $("#content_hdChargeSummary");
+            tdChargeType = $("#content_tdChargeType");
+            hdChargeType = $("#content_hdChargeType");
+            tdCategory = $("#content_tdCategory");
+            hdCategory = $("#content_hdCategory");
+            tdChargeStatus = $("#content_tdChargeStatus");
+            hdChargeStatus = $("#content_hdChargeStatus");
+            hdRoomIDs = $("#content_hdRoomIDs");
+            hdProjectIDs = $("#content_hdProjectIDs");
+        })
+    </script>
+    <style>
+        .sfdd {
+            width: 51px;
+            height: 32px;
+            background: url("../styles/images/buttons/print.png") no-repeat center center;
+            display: block;
+        }
+
+        .lsff {
+            width: 51px;
+            height: 32px;
+            background: url("../styles/images/buttons/tempfee.png") no-repeat center center;
+            display: block;
+        }
+
+        .roomtable,
+        .operationtable {
+            width: 100%;
+        }
+
+        .roomtable,
+        .operationtable td {
+            text-align: center;
+        }
+    </style>
+    <script src="../js/Lodop/LodopFuncs.js?t=2019-09061000"></script>
+    <script>
+        var pageWidth, pageHeight;
+        function doPrint() {
+            var rows = $('#his_table').datagrid("getSelections");
+            if (rows.length == 0) {
+                show_message('请选择一条数据，操作取消', 'warning');
+                return;
+            }
+            var isCancel = false;
+            var RoomFeeIDList = [];
+            var PrintIDList = [];
+            $.each(rows, function (index, row) {
+                if (row.ChargeState == 2) {
+                    isCancel = true;
+                    return false;
+                }
+                RoomFeeIDList.push(row.HistoryID);
+                PrintIDList.push(row.PrintID);
+            });
+            if (isCancel) {
+                show_message('不能打印已作废的单据，操作取消', 'warning');
+                return;
+            }
+            MaskUtil.mask('body', '打印中');
+            pageWidth = 210;
+            pageHeight = 99;
+            var iframe = document.getElementById("myframe");
+            var url = "../PrintPage/printchargefeeview.aspx?PrintID=" + PrintIDList[0] + "&PageWidth=" + pageWidth + "&PageHeight=" + pageHeight;
+            iframe.src = url;
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", function () {
+                    MaskUtil.unmask();
+                    setTimeout(function () {
+                        var strHtml = iframe.contentWindow.document.documentElement.innerHTML;
+                        LODOPPrint(strHtml);
+                    }, 1000);
+                });
+            } else {
+                iframe.onload = function () {
+                    MaskUtil.unmask();
+                    setTimeout(function () {
+                        var strHtml = iframe.contentWindow.document.documentElement.innerHTML;
+                        LODOPPrint(strHtml);
+                    }, 1000);
+                };
+            }
+        }
+        var LODOP = null;
+        function LODOPPrint(strHtml) {
+            try {
+                LODOP = getLodop();
+                if ((LODOP != null) && (typeof (LODOP.VERSION) != "undefined")) {
+                    LODOP.PRINT_INIT("打印单据_催收单");
+                    LODOP.SET_PRINT_PAGESIZE(1, pageWidth + 'mm', 0, '')
+                    LODOP.ADD_PRINT_TABLE(0, '3%', '94%', '100%', strHtml);
+                    LODOP.PREVIEW();
+                }
+                else {
+                    alert("Error:该浏览器不支持打印插件!");
+                }
+            } catch (err) {
+                alert("Error:本机未安装或需要升级!");
+            }
+        }
+    </script>
+    <script src="../js/Page/Charge/RoomFeeHistoryComm.js?v=2019-09061000" type="text/javascript"></script>
+    <script src="../js/Page/Analysis/ToCuiKuanDetails.js?t=2019-09061000"></script>
+    <title>
+
+    </title>
+</head>
+
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+
+                <form method="post" action="./ToCuiKuanDetails.html" id="ctl00">
+                    <div class="aspNetHidden">
+                        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                            value="/wEPDwULLTEzNTM3MTg2NDdkZHBQFqRZggNUe0PVbv/KNflBKfaG" />
+                    </div>
+
+                    <div class="aspNetHidden">
+
+                        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9D45C68D" />
+                        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                            value="/wEdABC52dc4LeQxyI8OK6GufwBlKaCDixSabOrBm/NZMGDitRZaznq9o2+K4RRVAwh23O3Ie7jJk4PlvmL9j9eUWM4Sd2PWBNDvbpt7ZSBmwRBwhUSksuD0p+xRugf7tdzhUK+BeZQCeYvZlczDdEsneClabFMuz7updLb36wq1c9ZcxRXoIQlI+mQJjWdbpjOiDVAHxYhXUbmz9bNSb1sQpN/mYEnUxGBB1P/gAA6BUc+i81MndS3s9c9SXElwbPVJQHmrbuCsood7jiN8ylNHLzJhTprEamBgm8LCSaWQ0hr76o5wwbvYzHQTwu8PINHY0lt/W8JrguZmInRDQbZb5NLTcFnd0P4FCazbCxKnUWp91ntmxoA=" />
+                    </div>
+                    <div id="layout" class="easyui-layout" fit="true">
+                        <div data-options="region:'north'" class="hidenorth">
+                            <div class="tdsearch">
+                                <label>
+                                    收款时间:
+                                    <input name="ctl00$content$tdStartTime" type="text" id="content_tdStartTime"
+                                        class="easyui-datebox" style="width: 120px;" />
+                                    -
+                                    <input name="ctl00$content$tdEndTime" type="text" id="content_tdEndTime"
+                                        class="easyui-datebox" style="width: 120px;" />
+                                </label>
+                                <label>
+                                    收款人:
+                                    <input name="ctl00$content$tdChargeMan" type="text" id="content_tdChargeMan"
+                                        class="easyui-combobox" style="width: 150px;" />
+                                    <input type="hidden" name="ctl00$content$hdChargeMan" id="content_hdChargeMan" />
+                                </label>
+                                <label>
+                                    收费项目:
+                                    <input name="ctl00$content$tdChargeSummary" type="text" id="content_tdChargeSummary"
+                                        class="easyui-combobox" style="width: 150px;" />
+                                    <input type="hidden" name="ctl00$content$hdChargeSummary"
+                                        id="content_hdChargeSummary" />
+                                </label>
+                                <label>
+                                    收款方式:
+                                    <input name="ctl00$content$tdChargeType" type="text" id="content_tdChargeType"
+                                        class="easyui-combobox" style="width: 150px;" />
+                                    <input type="hidden" name="ctl00$content$hdChargeType" id="content_hdChargeType" />
+                                </label>
+                                <label>
+                                    费项分类:
+                                    <input name="ctl00$content$tdCategory" type="text" id="content_tdCategory"
+                                        class="easyui-combobox" style="width: 150px;" />
+                                    <input type="hidden" name="ctl00$content$hdCategory" id="content_hdCategory" />
+                                </label>
+                                <label>
+                                    收费状态:
+                                    <select name="ctl00$content$tdChargeStatus" id="content_tdChargeStatus"
+                                        class="easyui-combobox" style="width: 120px;">
+                                        <option value="5">催收中</option>
+                                        <option value="1">已收费</option>
+                                        <option value="2">已作废</option>
+                                    </select>
+                                    <input type="hidden" name="ctl00$content$hdChargeStatus"
+                                        id="content_hdChargeStatus" />
+                                </label>
+                                <label>
+                                    所属部门:
+                                    <input class="easyui-textbox" id="tdRelationBelongTeam" style="width: 150px;" />
+                                </label>
+                                <label class="searchlabel" style="margin-left: 10px;">
+                                    <a href="javascript:void(0)" onclick="SearchHis()"
+                                        class="easyui-linkbutton btntoolbar"
+                                        data-options="plain:true,iconCls:'icon-search'">搜索</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div data-options="region:'center'" title="">
+                            <table id="his_table">
+                            </table>
+                            <div id="tb">
+
+                                <a href="javascript:void(0)" onclick="do_export()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">导出</a>
+                                <input type="hidden" name="ctl00$content$hdRoomIDs" id="content_hdRoomIDs" />
+                                <input type="hidden" name="ctl00$content$hdProjectIDs" id="content_hdProjectIDs" />
+                                <input type="hidden" name="ctl00$content$hdIDs" id="content_hdIDs" />
+
+                                <a href="javascript:void(0)" onclick="openTableSetUp()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-setting'">配置</a>
+
+                                <a href="javascript:void(0)" onclick="doChargeRoomFee()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-shoufei'">收款确认</a>
+
+                                <a href="javascript:void(0)" onclick="doCancelRoomFee()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-zuofei'">作废单据</a>
+
+                                <a href="javascript:void(0)" onclick="doPrint()" class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-print'">批量打印</a>
+
+                                <a href="javascript:void(0)" onclick="ReChargeRoomFee()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-shoufei'">重新收费</a>
+
+                                <a href="javascript:void(0)" onclick="do_export_daikou()"
+                                    class="easyui-linkbutton btnlinkbar"
+                                    data-options="plain:true,iconCls:'icon-export'">代扣单导出</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <iframe name="myiframe" id="myframe" style="display: none;" src="" width="100%" height="100%"></iframe>
+
+            </div>
+            <div id="dialog_form" style="display: none" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()"
+                    class="easyui-linkbutton btntoolbar btn_dialog_close"
+                    data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src=""
+                    style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()"
+                class="easyui-linkbutton btntoolbar btn_dialog_close"
+                data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src=""
+                style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>
